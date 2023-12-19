@@ -14,4 +14,6 @@ public class SupriseSlot : ScriptableObject
         Tax
     };
     public Type slotType;
+
+    public int taxPrice; //This only for Tax options
 }

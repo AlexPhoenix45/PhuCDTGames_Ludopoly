@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7040365e4ce39ce4eaf803b5516415e1, type: 3}
-  m_Name: Color Property
+  m_Name: 6
   m_EditorClassIdentifier: 
-  propertyColor: 1
-  propertyImage: {fileID: 21300000, guid: eb00d606a2229d94cbccaf49b4a0e2f8, type: 3}
-  propertyName: Tottenham
+  propertyColor: 3
+  propertyImage: {fileID: 21300000, guid: 92e98473bd490a84a8d69dae0bcd4dd2, type: 3}
+  propertyName: Oriental Avenue
   propertyPrice: 100
-  rentPrice: 0
-  rentPrice_Set: 0
-  rentPrice_1House: 0
-  rentPrice_2House: 0
-  rentPrice_3House: 0
-  rentPrice_4House: 0
-  rentPrice_Hotel: 0
-  buildPrice_House: 0
-  buildPrice_Hotel: 0
+  rentPrice: 6
+  rentPrice_Set: 12
+  rentPrice_1House: 30
+  rentPrice_2House: 90
+  rentPrice_3House: 270
+  rentPrice_4House: 400
+  rentPrice_Hotel: 550
+  buildPrice: 50
+  mortgagePrice: 50

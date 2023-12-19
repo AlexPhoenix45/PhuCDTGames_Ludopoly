@@ -9,4 +9,9 @@ public class SpecialProperty : ScriptableObject
     public string propertyName;
     public Sprite propertyImage;
     public int propertyPrice;
+
+    //Others Data
+    public int mortgagePrice;
+    public int rentPrice; //This is unset
+    //25 if 1 owned, 50 if 2 owned, 100 if 3 owned, 200 if all 4 owned
 }

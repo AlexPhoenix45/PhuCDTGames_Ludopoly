@@ -31,6 +31,6 @@ public class ColorProperty : ScriptableObject
     public int rentPrice_3House;
     public int rentPrice_4House;
     public int rentPrice_Hotel;
-    public int buildPrice_House;
-    public int buildPrice_Hotel;
+    public int buildPrice;
+    public int mortgagePrice;
 }

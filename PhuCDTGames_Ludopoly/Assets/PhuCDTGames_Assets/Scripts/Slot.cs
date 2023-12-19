@@ -33,12 +33,12 @@ public class Slot : MonoBehaviour
     public GameObject specialProperty_Panel;
     public TextMeshProUGUI specialProperty_Panel_Name;
     public TextMeshProUGUI specialProperty_Panel_Price;
-    public Sprite specialProperty_Panel_Image;
+    public GameObject specialProperty_Panel_Image;
 
     [Header("Suprise Slot")]
     public GameObject supriseSlot_Panel;
     public TextMeshProUGUI supriseSlot_Panel_Name;
-    public Sprite supriseSlot_Panel_Image;
+    public GameObject supriseSlot_Panel_Image;
 
     private void Start()
     {
@@ -54,5 +54,19 @@ public class Slot : MonoBehaviour
             colorProperty_Panel_Name.text = colorProperty.propertyName.ToUpper();
             colorProperty_Panel_Price.text = colorProperty.propertyPrice.ToString() + "$";
         }
+        else if (slotType == Type.SpecialProperty)
+        {
+            specialProperty_Panel.SetActive(true);
+            specialProperty_Panel_Name.text = specialProperty.propertyName.ToUpper();
+            specialProperty_Panel_Price.text = specialProperty.propertyPrice.ToString() + "$";
+            specialProperty_Panel_Image.gameObject.GetComponent<Image>().sprite = specialProperty.propertyImage;
+        }
+        else if (slotType == Type.SupriseSlot)
+        {
+            supriseSlot_Panel.SetActive(true);
+            supriseSlot_Panel_Name.text = supriseSlot.slotName.ToUpper();
+            supriseSlot_Panel_Image.gameObject.GetComponent<Image>().sprite = supriseSlot.slotImage;
+        }
+
     }
 }
