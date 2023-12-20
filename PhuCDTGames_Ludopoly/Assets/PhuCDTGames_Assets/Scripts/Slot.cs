@@ -39,6 +39,7 @@ public class Slot : MonoBehaviour
     public GameObject supriseSlot_Panel;
     public TextMeshProUGUI supriseSlot_Panel_Name;
     public GameObject supriseSlot_Panel_Image;
+    public TextMeshProUGUI supriseSlot_Panel_Price; //This is for only tax slot
 
     private void Start()
     {
@@ -66,6 +67,14 @@ public class Slot : MonoBehaviour
             supriseSlot_Panel.SetActive(true);
             supriseSlot_Panel_Name.text = supriseSlot.slotName.ToUpper();
             supriseSlot_Panel_Image.gameObject.GetComponent<Image>().sprite = supriseSlot.slotImage;
+            if (supriseSlot.taxPrice > 0)
+            {
+                supriseSlot_Panel_Price.text = "PAY " + supriseSlot.taxPrice.ToString() + "$";
+            }
+            else
+            {
+                supriseSlot_Panel_Price.text = "";
+            }
         }
 
     }

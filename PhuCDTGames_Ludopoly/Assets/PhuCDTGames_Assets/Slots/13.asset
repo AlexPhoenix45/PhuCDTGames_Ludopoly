@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7040365e4ce39ce4eaf803b5516415e1, type: 3}
+  m_Name: 13
+  m_EditorClassIdentifier: 
+  propertyColor: 5
+  propertyImage: {fileID: 21300000, guid: 3bc1aac2f6006cf41bcd1dcc198f32df, type: 3}
+  propertyName: States Avenue
+  propertyPrice: 140
+  rentPrice: 10
+  rentPrice_Set: 20
+  rentPrice_1House: 50
+  rentPrice_2House: 150
+  rentPrice_3House: 450
+  rentPrice_4House: 625
+  rentPrice_Hotel: 750
+  buildPrice: 100
+  mortgagePrice: 70

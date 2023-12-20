@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7040365e4ce39ce4eaf803b5516415e1, type: 3}
+  m_Name: 34
+  m_EditorClassIdentifier: 
+  propertyColor: 2
+  propertyImage: {fileID: 21300000, guid: cc69b2ca42147574a9c7e363bde59f4d, type: 3}
+  propertyName: Pennsylvania Avenue
+  propertyPrice: 320
+  rentPrice: 28
+  rentPrice_Set: 56
+  rentPrice_1House: 150
+  rentPrice_2House: 450
+  rentPrice_3House: 1000
+  rentPrice_4House: 1200
+  rentPrice_Hotel: 1400
+  buildPrice: 200
+  mortgagePrice: 160

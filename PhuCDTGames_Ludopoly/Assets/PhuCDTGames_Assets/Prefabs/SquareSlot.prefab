@@ -93,3 +93,13 @@ MonoBehaviour:
   specialProperty: {fileID: 0}
   supriseSlot: {fileID: 0}
   cornerSlot: {fileID: 0}
+  colorProperty_Panel: {fileID: 0}
+  colorProperty_Panel_Name: {fileID: 0}
+  colorProperty_Panel_Price: {fileID: 0}
+  specialProperty_Panel: {fileID: 0}
+  specialProperty_Panel_Name: {fileID: 0}
+  specialProperty_Panel_Price: {fileID: 0}
+  specialProperty_Panel_Image: {fileID: 0}
+  supriseSlot_Panel: {fileID: 0}
+  supriseSlot_Panel_Name: {fileID: 0}
+  supriseSlot_Panel_Image: {fileID: 0}
