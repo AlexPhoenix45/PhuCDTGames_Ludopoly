@@ -1,0 +1,30 @@
+GameManager.cs
+
+- SwitchPlayer()				|Jail Panel, Dices Panel, Options Panel
+
+- CheckInJail()
+-- true: show jail UI
+-- false: show Dices UI and Options UI
+
+- If player roll Dices
+-- Move()
+--- After Move(), see which Slot player is stop at. Call SlotProcesser()
+--- Every steps, see if player pass GO
+
+- SlotProcesser()
+-- if (Slot == ColorProperty)
+--- show SlotProperty(slot) //Passing slot to show spicify Color Property
+--- show PropertyOptions (include Buy and Auction) 
+--- Call another method to process this one
+
+-- else if (Slot == SpecialProperty)
+--- show SlotProperty(slot)
+--- show PropertyOptions (include Buy and Auction)
+--- Call another method to process this one
+
+-- else if (Slot == SupriseSlot)
+--- show SlotProperty(slot) //This should makes like player has draw a card
+--- Call another method to process this one
+
+
+

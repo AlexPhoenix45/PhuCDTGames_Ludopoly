@@ -21,30 +21,25 @@ public class Table : MonoBehaviour
         {
             Instance = this;
         }
-
-        ChooseStartingPlayer();
     }
 
     //Starting
     public void ChooseStartingPlayer()
     {
-        int randomPlayer = Random.Range(0, numOfPlayers);
-        if (randomPlayer == 0)
+        IEnumerator chooseStarter()
         {
-            currentPlayer = CurrentPlayer.player1;
+            int randomPlayer = Random.Range(0, numOfPlayers);
+            float timeConsumed = 0;
+            do
+            {
+                yield return new WaitForSeconds(.2f);
+                SwitchPlayer(true);
+                timeConsumed += .2f;
+            }
+            while (timeConsumed < 3f);
+            SwitchPlayer(player[randomPlayer]);
         }
-        else if (randomPlayer == 1)
-        {
-            currentPlayer = CurrentPlayer.player2;
-        }
-        else if (randomPlayer == 2)
-        {
-            currentPlayer = CurrentPlayer.player3;
-        }
-        else
-        {
-            currentPlayer = CurrentPlayer.player4;
-        }
+        StartCoroutine(chooseStarter());
     }
 
     //Player's turn
@@ -57,62 +52,149 @@ public class Table : MonoBehaviour
         int dice1, dice2;
         dice1 = Random.Range(1, 7);
         dice2 = Random.Range(1, 7);
-
+        Move(getCurrentPlayer(), dice1 + dice2);
         return new int[] {dice1, dice2};
     }
 
-    private void Move()
+    //Move
+    private void Move(Player player, int distance)
     {
-
+        player.Move(distance);
     }
 
-    //Move
-
     //Choices
-    
-    //Others Methods
+
+    //Switch Player
     public void SwitchPlayer() //Switch to next player
     {
         if (currentPlayer == CurrentPlayer.player1)
         {
             currentPlayer = CurrentPlayer.player2;
+            player[0].setIsMyTurn(false);
+            player[1].setIsMyTurn(true);
+            UIManager.Instance.setTurn(player[1].playerIndex, false);
         }
         else if (currentPlayer == CurrentPlayer.player2)
         {
             currentPlayer = CurrentPlayer.player3;
+            player[1].setIsMyTurn(false);
+            player[2].setIsMyTurn(true);
+            UIManager.Instance.setTurn(player[2].playerIndex, false);
         }
         else if (currentPlayer == CurrentPlayer.player3)
         {
             currentPlayer = CurrentPlayer.player4;
+            player[2].setIsMyTurn(false);
+            player[3].setIsMyTurn(true);
+            UIManager.Instance.setTurn(player[3].playerIndex, false);
         }
         else if (currentPlayer == CurrentPlayer.player4)
         {
             currentPlayer = CurrentPlayer.player1;
+            player[3].setIsMyTurn(false);
+            player[0].setIsMyTurn(true);
+            UIManager.Instance.setTurn(player[0].playerIndex, false);
+        }
+    }
+    public void SwitchPlayer(bool isSuffle) //Switch to next player
+    {
+        if (isSuffle)
+        {
+            if (currentPlayer == CurrentPlayer.player1)
+            {
+                currentPlayer = CurrentPlayer.player2;
+                player[0].setIsMyTurn(false);
+                player[1].setIsMyTurn(true);
+                UIManager.Instance.setTurn(player[1].playerIndex, true);
+            }
+            else if (currentPlayer == CurrentPlayer.player2)
+            {
+                currentPlayer = CurrentPlayer.player3;
+                player[1].setIsMyTurn(false);
+                player[2].setIsMyTurn(true);
+                UIManager.Instance.setTurn(player[2].playerIndex, true);
+            }
+            else if (currentPlayer == CurrentPlayer.player3)
+            {
+                currentPlayer = CurrentPlayer.player4;
+                player[2].setIsMyTurn(false);
+                player[3].setIsMyTurn(true);
+                UIManager.Instance.setTurn(player[3].playerIndex, true);
+            }
+            else if (currentPlayer == CurrentPlayer.player4)
+            {
+                currentPlayer = CurrentPlayer.player1;
+                player[3].setIsMyTurn(false);
+                player[0].setIsMyTurn(true);
+                UIManager.Instance.setTurn(player[0].playerIndex, true);
+            }
+        }
+        else
+        {
+            SwitchPlayer();
         }
     }
 
-    public void SwitchPlayer(Player player) //Switch to specify player
+    public void SwitchPlayer(Player p) //Switch to specify player
     {
-        if (player.playerIndex == 1)
+        if (p.playerIndex == 1)
         {
             currentPlayer = CurrentPlayer.player1;
+            player[0].setIsMyTurn(true);
+            player[1].setIsMyTurn(false);
+            player[2].setIsMyTurn(false);
+            player[3].setIsMyTurn(false);
         }
-        else if (player.playerIndex == 2)
+        else if (p.playerIndex == 2)
         {
             currentPlayer = CurrentPlayer.player2;
+            player[0].setIsMyTurn(false);
+            player[1].setIsMyTurn(true);
+            player[2].setIsMyTurn(false);
+            player[3].setIsMyTurn(false);
         }
-        else if (player.playerIndex == 3)
+        else if (p.playerIndex == 3)
         {
-            currentPlayer = CurrentPlayer.player3;   
+            currentPlayer = CurrentPlayer.player3;
+            player[0].setIsMyTurn(false);
+            player[1].setIsMyTurn(false);
+            player[2].setIsMyTurn(true);
+            player[3].setIsMyTurn(false);
         }
-        else if (player.playerIndex == 4)
+        else if (p.playerIndex == 4)
         {
             currentPlayer = CurrentPlayer.player4;
+            player[0].setIsMyTurn(false);
+            player[1].setIsMyTurn(false);
+            player[2].setIsMyTurn(false);
+            player[3].setIsMyTurn(true);
         }
+        UIManager.Instance.setTurn(p.playerIndex, false);
     }
-    public string getPlayerName(int index)
+
+    //Get Current Player
+    public Player getCurrentPlayer()
     {
-        return player[index].playerName;
+        if (currentPlayer == CurrentPlayer.player1)
+        {
+            return player[0];
+        }
+        else if (currentPlayer == CurrentPlayer.player2)
+        {
+            return player[1];
+        }
+        else if (currentPlayer == CurrentPlayer.player3)
+        {
+            return player[2];
+        }
+        else if (currentPlayer == CurrentPlayer.player4)
+        {
+            return player[3];
+        }
+        else
+        {
+            return null;
+        }
     }
 }
 
