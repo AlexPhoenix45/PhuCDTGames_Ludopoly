@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 public class Slot : MonoBehaviour
 {
@@ -100,4 +101,65 @@ public class Slot : MonoBehaviour
             }
         }
     }
+
+    #region Slot Information
+
+    public string getSlotName(Type sType)
+    {
+        if (sType == Type.ColorProperty)
+        {
+            return colorProperty.propertyName;
+        }
+        else if (sType == Type.SpecialProperty)
+        { 
+            return specialProperty.propertyName;
+        }
+        else if (sType == Type.SupriseSlot)
+        {
+            return supriseSlot.slotName;
+        }
+        else if (sType == Type.CornerSlot)
+        {
+            if (cornerSlot.slotType == CornerSlot.Type.Go)
+            {
+                return "GO";
+            }
+            else if (cornerSlot.slotType == CornerSlot.Type.VisitingJail)
+            {
+                return "JAIL";
+            }
+            else if (cornerSlot.slotType == CornerSlot.Type.Parking)
+            {
+                return "PARK LOT";
+            }
+            else if (cornerSlot.slotType == CornerSlot.Type.GoToJail)
+            {
+                return "GO TO JAIL";
+            }
+            else
+                return null;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public int getSlotPrice(Type sType)
+    {
+        if (sType == Type.ColorProperty)
+        {
+            return colorProperty.propertyPrice;
+        }
+        else if (sType == Type.SpecialProperty)
+        {
+            return specialProperty.propertyPrice;
+        }
+        else
+            return 0;
+    }
+
+    #endregion
+
+
 }

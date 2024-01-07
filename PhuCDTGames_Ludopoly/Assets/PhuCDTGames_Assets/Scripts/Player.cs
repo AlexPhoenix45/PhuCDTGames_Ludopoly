@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public int currentSlot = 0;
-    public int oldSlot = 0;
+    public int prvSlot = 0;
     public int playerIndex;
     public string playerName;
     public int playerMoney;
@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     public void Move(int distance)
     {
         bool passGo;
-        oldSlot = currentSlot;
+        prvSlot = currentSlot;
         if (currentSlot + distance >= 40)
         {
             currentSlot = (currentSlot + distance) - 40;
@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
         {
             if (!passGo)
             {
-                for (int i = oldSlot + 1; i <= currentSlot; i++)
+                for (int i = prvSlot + 1; i <= currentSlot; i++)
                 {
                     LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .5f).setEaseInOutCirc();
                     yield return new WaitForSeconds(.5f);
@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
             }
             else
             {
-                for (int i = oldSlot + 1; i <= currentSlot + 40; i++)
+                for (int i = prvSlot + 1; i <= currentSlot + 40; i++)
                 {
                     if (i <= 39)
                     {
@@ -67,7 +67,9 @@ public class Player : MonoBehaviour
             }
             UIManager.Instance.DicesActive(true);
             UIManager.Instance.OptionsActive(true);
-            Table.Instance.SwitchPlayer();
+            UIManager.Instance.EndTurnActive(true);
+            UIManager.Instance.ShowInformation(currentSlot);
+            //Table.Instance.SwitchPlayer();
         }
         StartCoroutine(move());
     }

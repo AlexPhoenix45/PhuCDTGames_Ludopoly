@@ -9,12 +9,13 @@ public class UIManager : MonoBehaviour
     //Singleton
     public static UIManager Instance;
 
-    [Header("Choice")]
+    [Header("Actions")]
     public Button build;
     public Button sell;
     public Button mortgage;
     public Button redeem;
     public Button trade;
+    public Button endTurn;
 
     [Header("Dice")]
     public Button rollDice;
@@ -46,6 +47,12 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI player4Money;
     public Image player4Image;
 
+    [Header("Slot Information")]
+    public GameObject informationPanel;
+    public GameObject actionsCard;
+    public GameObject propertyInformationCard;
+    public GameObject supriseInformationCard;
+
     private void Start()
     {
         if (Instance == null)
@@ -55,11 +62,13 @@ public class UIManager : MonoBehaviour
         setPlayerInfo();
     }
 
-    //Dice
+    #region Dice
+
     public void OnClick_RollDice() //This include suffle and roll an actual dices
     {
         DicesActive(false);
         OptionsActive(false);
+        EndTurnActive(false);
         int[] dices = new int[2];
         IEnumerator diceSuffle()
         {
@@ -302,8 +311,15 @@ public class UIManager : MonoBehaviour
 
         }
     }
+    public void DicesActive(bool value)
+    {
+        rollDice.interactable = value;
+    }
 
-    //Player
+    #endregion
+
+    #region Player
+
     public void setPlayerInfo()
     {
         IEnumerator setInfo()
@@ -379,7 +395,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    //Turning on or off the Options Panel and Dices Panel
+    #endregion
+
+    #region Actions
+
+    #region Active
     public void OptionsActive(bool value)
     {
         build.interactable = value;
@@ -389,9 +409,37 @@ public class UIManager : MonoBehaviour
         trade.interactable = value;
     }
 
-    public void DicesActive(bool value)
+    public void EndTurnActive(bool value)
     {
-        rollDice.interactable = value;
+        endTurn.interactable = value;
+    }
+    #endregion
+
+    #region Actions On_Click
+
+    public void OnClick_EndTurn()
+    {
+        Table.Instance.SwitchPlayer();
+        EndTurnActive(false);
     }
 
+    #endregion
+
+    #endregion
+
+    #region Information Card
+    public void setPropertyInformationCard()
+    {
+
+    }
+    #endregion
+
+    #region Slot
+
+    public void ShowInformation(int slotNumber)
+    {
+        print(Table.Instance.slot[slotNumber].GetComponent<Slot>().getSlotName(Table.Instance.slot[slotNumber].GetComponent<Slot>().slotType));
+    }
+
+    #endregion
 }
