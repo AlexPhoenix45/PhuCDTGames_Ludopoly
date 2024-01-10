@@ -6,18 +6,8 @@ using UnityEngine;
 public class ColorProperty : ScriptableObject
 {
     //Display Data
-    public enum Color
-    { 
-        Blue,
-        Brown,
-        Green,
-        Light_Blue,
-        Orange,
-        Pink,
-        Red,
-        Yellow
-    };
-    public Color propertyColor;
+    
+    public ColorProperty_Color propertyColor;
 
     public Sprite propertyImage;
     public string propertyName;

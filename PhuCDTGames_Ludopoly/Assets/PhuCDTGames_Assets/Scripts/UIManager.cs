@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    //Table
+    public Table _Table;
+
     //Singleton
     public static UIManager Instance;
 
@@ -50,8 +53,48 @@ public class UIManager : MonoBehaviour
     [Header("Slot Information")]
     public GameObject informationPanel;
     public GameObject actionsCard;
-    public GameObject propertyInformationCard;
+    public GameObject colorPropertyInformationCard;
+    public GameObject specialPropertyInformationCard;
     public GameObject supriseInformationCard;
+
+    #region Color Property Information Card
+
+    [Header("Card Template")]
+    [Header("Color Property Information Card")]
+    public GameObject cpi_brownCard;
+    public GameObject cpi_blueCard;
+    public GameObject cpi_greenCard;
+    public GameObject cpi_orangeCard;
+    public GameObject cpi_pinkCard;
+    public GameObject cpi_purpleCard;
+    public GameObject cpi_redCard;
+    public GameObject cpi_yellowCard;
+
+    [Header("Information")]
+    public TextMeshProUGUI cpi_propertyName;
+    public TextMeshProUGUI cpi_rentPrice;
+    public TextMeshProUGUI cpi_rentDescription;
+    public TextMeshProUGUI cpi_house1;
+    public TextMeshProUGUI cpi_house2;
+    public TextMeshProUGUI cpi_house3;
+    public TextMeshProUGUI cpi_house4;
+    public TextMeshProUGUI cpi_hotel;
+    public TextMeshProUGUI cpi_buildPrice;
+    public TextMeshProUGUI cpi_mortgagePrice;
+
+    #endregion
+
+    [Header("Railroads Information")]
+    [Header("Special Property Information Card")]
+    public GameObject railroad_Panel;
+    public TextMeshProUGUI rr_propertyName;
+
+    [Header("Utilities Information")]
+    public GameObject utilities_Panel;
+    public TextMeshProUGUI ut_propertyName;
+    public GameObject ut_waterWorks_Image;
+    public GameObject ut_electricCompany_Image;
+
 
     private void Start()
     {
@@ -428,18 +471,186 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region Information Card
-    public void setPropertyInformationCard()
+    public void ShowInformationCard(int slotNumber)
+    {
+        Slot_Type type;
+        type = _Table.slot[slotNumber].GetComponent<Slot>().slotType;
+        if (type == Slot_Type.ColorProperty)
+        {
+            ShowColorPropertyCard(slotNumber);
+        }
+        else if (type == Slot_Type.SpecialProperty)
+        {
+            ShowSpecialPropertyCard(slotNumber);
+        }
+        else if (type == Slot_Type.SupriseSlot)
+        {
+            print("suprise slot");
+        }
+        else if (type == Slot_Type.CornerSlot)
+        {
+            print("corner slot");
+        }
+    }
+
+    //Property Information Card
+    public void ShowColorPropertyCard(int slotNumber)
+    {
+        informationPanel.SetActive(true);
+        colorPropertyInformationCard.SetActive(true);
+        Vector2 pos  = Camera.main.WorldToScreenPoint(_Table.transform.position);
+
+        colorPropertyInformationCard.transform.position = pos;
+        cpi_propertyName.text = _Table.slot[slotNumber].GetComponent<Slot>().getSlotName(Slot_Type.ColorProperty).ToUpper();
+        cpi_rentPrice.text = "RENT $" + _Table.slot[slotNumber].GetComponent<Slot>().getPropertyRent(Slot_Type.ColorProperty).ToString();
+        cpi_rentDescription.text = "Rent is doubled on owning all unimproved sites in the group.";
+        cpi_house1.text = "$" + _Table.slot[slotNumber].GetComponent<Slot>().getPropertyRent(Slot_Type.ColorProperty, 1).ToString();
+        cpi_house2.text = "$" + _Table.slot[slotNumber].GetComponent<Slot>().getPropertyRent(Slot_Type.ColorProperty, 2).ToString();
+        cpi_house3.text = "$" + _Table.slot[slotNumber].GetComponent<Slot>().getPropertyRent(Slot_Type.ColorProperty, 3).ToString();
+        cpi_house4.text = "$" + _Table.slot[slotNumber].GetComponent<Slot>().getPropertyRent(Slot_Type.ColorProperty, 4).ToString();
+        cpi_hotel.text = "$" + _Table.slot[slotNumber].GetComponent<Slot>().getPropertyRent(Slot_Type.ColorProperty, 5).ToString();
+        cpi_buildPrice.text = "Contruction $" + _Table.slot[slotNumber].GetComponent<Slot>().getBuildPrice(Slot_Type.ColorProperty).ToString() + " each";
+        cpi_mortgagePrice.text = "Mortgage $" + _Table.slot[slotNumber].GetComponent<Slot>().getMortgagePrice(Slot_Type.ColorProperty).ToString() + " each";
+
+        if (_Table.slot[slotNumber].GetComponent<Slot>().colorProperty.propertyColor == ColorProperty_Color.Brown)
+        {
+            cpi_brownCard.SetActive(true);
+            cpi_blueCard.SetActive(false);
+            cpi_greenCard.SetActive(false);
+            cpi_orangeCard.SetActive(false);
+            cpi_pinkCard.SetActive(false);
+            cpi_purpleCard.SetActive(false);
+            cpi_redCard.SetActive(false);
+            cpi_yellowCard.SetActive(false);
+        }
+        else if (_Table.slot[slotNumber].GetComponent<Slot>().colorProperty.propertyColor == ColorProperty_Color.Blue)
+        {
+            cpi_brownCard.SetActive(false);
+            cpi_blueCard.SetActive(true);
+            cpi_greenCard.SetActive(false);
+            cpi_orangeCard.SetActive(false);
+            cpi_pinkCard.SetActive(false);
+            cpi_purpleCard.SetActive(false);
+            cpi_redCard.SetActive(false);
+            cpi_yellowCard.SetActive(false);
+        }
+        else if (_Table.slot[slotNumber].GetComponent<Slot>().colorProperty.propertyColor == ColorProperty_Color.Green)
+        {
+            cpi_brownCard.SetActive(false);
+            cpi_blueCard.SetActive(false);
+            cpi_greenCard.SetActive(true);
+            cpi_orangeCard.SetActive(false);
+            cpi_pinkCard.SetActive(false);
+            cpi_purpleCard.SetActive(false);
+            cpi_redCard.SetActive(false);
+            cpi_yellowCard.SetActive(false);
+        }
+        else if (_Table.slot[slotNumber].GetComponent<Slot>().colorProperty.propertyColor == ColorProperty_Color.Orange)
+        {
+            cpi_brownCard.SetActive(false);
+            cpi_blueCard.SetActive(false);
+            cpi_greenCard.SetActive(false);
+            cpi_orangeCard.SetActive(true);
+            cpi_pinkCard.SetActive(false);
+            cpi_purpleCard.SetActive(false);
+            cpi_redCard.SetActive(false);
+            cpi_yellowCard.SetActive(false);
+        }
+        else if (_Table.slot[slotNumber].GetComponent<Slot>().colorProperty.propertyColor == ColorProperty_Color.Pink)
+        {
+            cpi_brownCard.SetActive(false);
+            cpi_blueCard.SetActive(false);
+            cpi_greenCard.SetActive(false);
+            cpi_orangeCard.SetActive(false);
+            cpi_pinkCard.SetActive(true);
+            cpi_purpleCard.SetActive(false);
+            cpi_redCard.SetActive(false);
+            cpi_yellowCard.SetActive(false);
+        }
+        else if (_Table.slot[slotNumber].GetComponent<Slot>().colorProperty.propertyColor == ColorProperty_Color.Purple)
+        {
+            cpi_brownCard.SetActive(false);
+            cpi_blueCard.SetActive(false);
+            cpi_greenCard.SetActive(false);
+            cpi_orangeCard.SetActive(false);
+            cpi_pinkCard.SetActive(false);
+            cpi_purpleCard.SetActive(true);
+            cpi_redCard.SetActive(false);
+            cpi_yellowCard.SetActive(false);
+        }
+        else if (_Table.slot[slotNumber].GetComponent<Slot>().colorProperty.propertyColor == ColorProperty_Color.Red)
+        {
+            cpi_brownCard.SetActive(false);
+            cpi_blueCard.SetActive(false);
+            cpi_greenCard.SetActive(false);
+            cpi_orangeCard.SetActive(false);
+            cpi_pinkCard.SetActive(false);
+            cpi_purpleCard.SetActive(false);
+            cpi_redCard.SetActive(true);
+            cpi_yellowCard.SetActive(false);
+        }
+        else if (_Table.slot[slotNumber].GetComponent<Slot>().colorProperty.propertyColor == ColorProperty_Color.Yellow)
+        {
+            cpi_brownCard.SetActive(false);
+            cpi_blueCard.SetActive(false);
+            cpi_greenCard.SetActive(false);
+            cpi_orangeCard.SetActive(false);
+            cpi_pinkCard.SetActive(false);
+            cpi_purpleCard.SetActive(false);
+            cpi_redCard.SetActive(false);
+            cpi_yellowCard.SetActive(true);
+        }
+    }   
+
+    public void ShowSpecialPropertyCard(int slotNumber)
+    {
+        informationPanel.SetActive(true);
+        specialPropertyInformationCard.SetActive(true);
+        Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
+        specialPropertyInformationCard.transform.position = pos;
+
+        if (_Table.slot[slotNumber].GetComponent<Slot>().specialProperty.propertyType == SpecialProperty_Type.RailRoad)
+        {
+            railroad_Panel.SetActive(true);
+            utilities_Panel.SetActive(false);
+
+            rr_propertyName.text = _Table.slot[slotNumber].GetComponent<Slot>().specialProperty.propertyName;
+        }
+        else if (_Table.slot[slotNumber].GetComponent<Slot>().specialProperty.propertyType == SpecialProperty_Type.Utility)
+        {
+            railroad_Panel.SetActive(false);
+            utilities_Panel.SetActive(true);
+
+            if (_Table.slot[slotNumber].GetComponent<Slot>().specialProperty.utilityType == Utility_Type.WaterRorks)
+            {
+                ut_waterWorks_Image.SetActive(true);
+                ut_electricCompany_Image.SetActive(false);
+            }
+            else if (_Table.slot[slotNumber].GetComponent<Slot>().specialProperty.utilityType == Utility_Type.ElectricCompany)
+            {
+                ut_waterWorks_Image.SetActive(false);
+                ut_electricCompany_Image.SetActive(true);
+            }
+        }
+    }
+
+    public void OnClick_Buy()
+    {
+        _Table.Buy();
+    }
+
+    public void OnClick_Auction() 
     {
 
     }
-    #endregion
 
-    #region Slot
-
-    public void ShowInformation(int slotNumber)
+    public void HideInformationCard()
     {
-        print(Table.Instance.slot[slotNumber].GetComponent<Slot>().getSlotName(Table.Instance.slot[slotNumber].GetComponent<Slot>().slotType));
+        informationPanel.SetActive(false);
+        //actionsCard.SetActive(false);
+        colorPropertyInformationCard.SetActive(false);
+        specialPropertyInformationCard.SetActive(false);
+        //supriseInformationCard.SetActive(false);
     }
-
     #endregion
 }

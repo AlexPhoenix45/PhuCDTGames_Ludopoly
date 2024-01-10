@@ -7,16 +7,9 @@ using System.Runtime.InteropServices.WindowsRuntime;
 
 public class Slot : MonoBehaviour
 {
-    public enum Type 
-    {
-        Empty,
-        ColorProperty,
-        SpecialProperty,
-        SupriseSlot,
-        CornerSlot
-    }
+    
     [Header("Slot Type")]
-    public Type slotType;
+    public Slot_Type slotType;
 
     [Header("Attach Slot")]
     public ColorProperty colorProperty;
@@ -45,6 +38,10 @@ public class Slot : MonoBehaviour
     [Header("Corner Slot")]
     public GameObject cornerSlot_Text;
 
+    [Header("Owner PArameters")]
+    public bool isOwned = false;
+    public Player owner;
+
     private void Start()
     {
         DisplaySlot();
@@ -52,21 +49,21 @@ public class Slot : MonoBehaviour
 
     private void DisplaySlot()
     {
-        if (slotType == Type.ColorProperty)
+        if (slotType == Slot_Type.ColorProperty)
         {
             gameObject.GetComponent<SpriteRenderer>().sprite = colorProperty.propertyImage;
             colorProperty_Panel.SetActive(true);
             colorProperty_Panel_Name.GetComponent<TextMeshPro>().text = colorProperty.propertyName.ToUpper();
             colorProperty_Panel_Price.GetComponent<TextMeshPro>().text = colorProperty.propertyPrice.ToString() + "$";
         }
-        else if (slotType == Type.SpecialProperty)
+        else if (slotType == Slot_Type.SpecialProperty)
         {
             specialProperty_Panel.SetActive(true);
             specialProperty_Panel_Name.GetComponent<TextMeshPro>().text = specialProperty.propertyName.ToUpper();
             specialProperty_Panel_Price.GetComponent<TextMeshPro>().text = specialProperty.propertyPrice.ToString() + "$";
             specialProperty_Panel_Image.gameObject.GetComponent<SpriteRenderer>().sprite = specialProperty.propertyImage;
         }
-        else if (slotType == Type.SupriseSlot)
+        else if (slotType == Slot_Type.SupriseSlot)
         {
             supriseSlot_Panel.SetActive(true);
             supriseSlot_Panel_Name.GetComponent<TextMeshPro>().text = supriseSlot.slotName.ToUpper();
@@ -80,22 +77,22 @@ public class Slot : MonoBehaviour
             }
             supriseSlot_Panel_Image.gameObject.GetComponent<SpriteRenderer>().sprite = supriseSlot.slotImage;
         }
-        else if (slotType == Type.CornerSlot)
+        else if (slotType == Slot_Type.CornerSlot)
         {
             cornerSlot_Text.SetActive(true);
-            if (cornerSlot.slotType == CornerSlot.Type.Go)
+            if (cornerSlot.slotType == CornerSlot_Type.Go)
             {
                 cornerSlot_Text.GetComponent<TextMeshPro>().text = "GO";
             }
-            else if (cornerSlot.slotType == CornerSlot.Type.VisitingJail)
+            else if (cornerSlot.slotType == CornerSlot_Type.VisitingJail)
             {
                 cornerSlot_Text.GetComponent<TextMeshPro>().text = "JAIL";
             }
-            else if (cornerSlot.slotType == CornerSlot.Type.Parking)
+            else if (cornerSlot.slotType == CornerSlot_Type.Parking)
             {
                 cornerSlot_Text.GetComponent<TextMeshPro>().text = "PARK LOT";
             }
-            else if (cornerSlot.slotType == CornerSlot.Type.GoToJail)
+            else if (cornerSlot.slotType == CornerSlot_Type.GoToJail)
             {
                 cornerSlot_Text.GetComponent<TextMeshPro>().text = "GO TO JAIL";
             }
@@ -104,35 +101,35 @@ public class Slot : MonoBehaviour
 
     #region Slot Information
 
-    public string getSlotName(Type sType)
+    public string getSlotName(Slot_Type sType)
     {
-        if (sType == Type.ColorProperty)
+        if (sType == Slot_Type.ColorProperty)
         {
             return colorProperty.propertyName;
         }
-        else if (sType == Type.SpecialProperty)
+        else if (sType == Slot_Type.SpecialProperty)
         { 
             return specialProperty.propertyName;
         }
-        else if (sType == Type.SupriseSlot)
+        else if (sType == Slot_Type.SupriseSlot)
         {
             return supriseSlot.slotName;
         }
-        else if (sType == Type.CornerSlot)
+        else if (sType == Slot_Type.CornerSlot)
         {
-            if (cornerSlot.slotType == CornerSlot.Type.Go)
+            if (cornerSlot.slotType == CornerSlot_Type.Go)
             {
                 return "GO";
             }
-            else if (cornerSlot.slotType == CornerSlot.Type.VisitingJail)
+            else if (cornerSlot.slotType == CornerSlot_Type.VisitingJail)
             {
                 return "JAIL";
             }
-            else if (cornerSlot.slotType == CornerSlot.Type.Parking)
+            else if (cornerSlot.slotType == CornerSlot_Type.Parking)
             {
                 return "PARK LOT";
             }
-            else if (cornerSlot.slotType == CornerSlot.Type.GoToJail)
+            else if (cornerSlot.slotType == CornerSlot_Type.GoToJail)
             {
                 return "GO TO JAIL";
             }
@@ -145,13 +142,13 @@ public class Slot : MonoBehaviour
         }
     }
 
-    public int getSlotPrice(Type sType)
+    public int getSlotPrice(Slot_Type sType)
     {
-        if (sType == Type.ColorProperty)
+        if (sType == Slot_Type.ColorProperty)
         {
             return colorProperty.propertyPrice;
         }
-        else if (sType == Type.SpecialProperty)
+        else if (sType == Slot_Type.SpecialProperty)
         {
             return specialProperty.propertyPrice;
         }
@@ -159,7 +156,109 @@ public class Slot : MonoBehaviour
             return 0;
     }
 
+    public int getPropertyRent(Slot_Type sType)
+    {
+        if (sType == Slot_Type.ColorProperty)
+        {
+            return colorProperty.rentPrice;
+        }
+        else if (sType == Slot_Type.SpecialProperty)
+        {
+            return specialProperty.rentPrice;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public int getPropertyRent(Slot_Type sType, int numOfHouse)
+    {
+        if (sType == Slot_Type.ColorProperty)
+        {
+            if (numOfHouse == 1)
+            {
+                return colorProperty.rentPrice_1House;
+            }
+            else if (numOfHouse == 2)
+            {
+                return colorProperty.rentPrice_2House;
+            }
+            else if (numOfHouse == 3)
+            {
+                return colorProperty.rentPrice_3House;
+            }
+            else if (numOfHouse == 4)
+            {
+                return colorProperty.rentPrice_4House;
+            }
+            else if (numOfHouse == 5)
+            {
+                return colorProperty.rentPrice_Hotel;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public int getBuildPrice(Slot_Type sType)
+    {
+        if (sType == Slot_Type.ColorProperty)
+        {
+            return colorProperty.buildPrice;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public int getMortgagePrice(Slot_Type sType)
+    {
+        if (sType == Slot_Type.ColorProperty)
+        {
+            return colorProperty.mortgagePrice;
+        }
+        else
+        {
+            return 0; 
+        }
+    }
+
     #endregion
 
+    #region Owner Set Get
+    public void setOwner(Player player)
+    {
+        if (!isOwned)
+        {
+            owner = player;
+            isOwned = true;
+        }
+        else
+        {
+            return;
 
+        }
+    }
+
+    public Player getOwner() { return owner; }
+
+    public bool getIsOwned() { return isOwned; }
+
+    #endregion
+
+    #region Card Drawing
+    public void DrawAChance()
+    {
+
+    }
+
+    #endregion
 }

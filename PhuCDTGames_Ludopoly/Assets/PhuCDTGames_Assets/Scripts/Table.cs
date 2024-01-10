@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Table : MonoBehaviour
 {
+    public UIManager _UIManager;
     public static Table Instance;
     public GameObject[] slot;
     public Player[] player;
@@ -18,9 +19,7 @@ public class Table : MonoBehaviour
     private void Start()
     {
         if (Instance == null)
-        {
             Instance = this;
-        }
     }
 
     //Starting
@@ -42,10 +41,6 @@ public class Table : MonoBehaviour
         StartCoroutine(chooseStarter());
     }
 
-    //Player's turn
-
-
-
     //Roll
     public int[] RollDice()
     {
@@ -61,8 +56,6 @@ public class Table : MonoBehaviour
     {
         player.Move(distance);
     }
-
-    //Choices
 
     //Switch Player
     public void SwitchPlayer() //Switch to next player
@@ -196,6 +189,28 @@ public class Table : MonoBehaviour
             return null;
         }
     }
+
+    #region Property Information Card
+    public void StandOnThisSlot(int slotNumber)
+    {
+        if (!slot[slotNumber].GetComponent<Slot>().getIsOwned()) //If that slot didnt have an owner
+        {
+            //Call Property Information Card
+            _UIManager.ShowInformationCard(slotNumber);
+        }
+    }
+
+    public void Buy()
+    {
+        slot[getCurrentPlayer().currentSlot].GetComponent<Slot>().setOwner(getCurrentPlayer());
+        _UIManager.HideInformationCard();
+    }
+
+    public void Auction()
+    {
+
+    }
+    #endregion
 }
 
 public enum CurrentPlayer

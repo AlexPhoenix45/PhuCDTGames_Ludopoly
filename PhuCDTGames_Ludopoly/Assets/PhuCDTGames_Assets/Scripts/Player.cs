@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
             UIManager.Instance.DicesActive(true);
             UIManager.Instance.OptionsActive(true);
             UIManager.Instance.EndTurnActive(true);
-            UIManager.Instance.ShowInformation(currentSlot);
+            Table.Instance.StandOnThisSlot(currentSlot);
             //Table.Instance.SwitchPlayer();
         }
         StartCoroutine(move());

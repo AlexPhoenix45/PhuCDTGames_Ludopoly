@@ -6,12 +6,6 @@ using UnityEngine;
 public class CornerSlot : ScriptableObject
 {
     public Sprite slotImage;
-    public enum Type
-    {
-        Go,
-        VisitingJail,
-        Parking,
-        GoToJail
-    }
-    public Type slotType;
+  
+    public CornerSlot_Type slotType;
 }

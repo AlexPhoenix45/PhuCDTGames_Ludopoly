@@ -17,3 +17,5 @@ MonoBehaviour:
   propertyPrice: 200
   mortgagePrice: 100
   rentPrice: 0
+  propertyType: 1
+  utilityType: 2
