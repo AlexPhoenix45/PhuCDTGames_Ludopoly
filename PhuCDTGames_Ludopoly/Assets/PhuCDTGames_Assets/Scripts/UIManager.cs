@@ -84,6 +84,7 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
+    #region Special Property Information Card
     [Header("Railroads Information")]
     [Header("Special Property Information Card")]
     public GameObject railroad_Panel;
@@ -94,7 +95,21 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI ut_propertyName;
     public GameObject ut_waterWorks_Image;
     public GameObject ut_electricCompany_Image;
+    #endregion
 
+    #region Suprise Information Card
+
+    [Header("Suprise Information Card")]
+    public GameObject chanceAndCommunityChestInformation;
+    public TextMeshProUGUI cc_description;
+    public GameObject cc_communityChestImage;
+    public GameObject cc_chanceImage;
+
+    public GameObject taxInformation;
+    public TextMeshProUGUI t_title;
+    public TextMeshProUGUI t_description;
+
+    #endregion
 
     private void Start()
     {
@@ -485,7 +500,7 @@ public class UIManager : MonoBehaviour
         }
         else if (type == Slot_Type.SupriseSlot)
         {
-            print("suprise slot");
+            ShowSupriseCard(slotNumber);
         }
         else if (type == Slot_Type.CornerSlot)
         {
@@ -493,7 +508,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    //Property Information Card
+    //Color Property Information Card
     public void ShowColorPropertyCard(int slotNumber)
     {
         informationPanel.SetActive(true);
@@ -600,8 +615,10 @@ public class UIManager : MonoBehaviour
             cpi_redCard.SetActive(false);
             cpi_yellowCard.SetActive(true);
         }
-    }   
-
+    }
+    
+    
+    //Special Property Information Card
     public void ShowSpecialPropertyCard(int slotNumber)
     {
         informationPanel.SetActive(true);
@@ -614,7 +631,7 @@ public class UIManager : MonoBehaviour
             railroad_Panel.SetActive(true);
             utilities_Panel.SetActive(false);
 
-            rr_propertyName.text = _Table.slot[slotNumber].GetComponent<Slot>().specialProperty.propertyName;
+            rr_propertyName.text = _Table.slot[slotNumber].GetComponent<Slot>().getSlotName(Slot_Type.SpecialProperty);
         }
         else if (_Table.slot[slotNumber].GetComponent<Slot>().specialProperty.propertyType == SpecialProperty_Type.Utility)
         {
@@ -625,11 +642,168 @@ public class UIManager : MonoBehaviour
             {
                 ut_waterWorks_Image.SetActive(true);
                 ut_electricCompany_Image.SetActive(false);
+                ut_propertyName.text = _Table.slot[slotNumber].GetComponent<Slot>().getSlotName(Slot_Type.SpecialProperty);
             }
             else if (_Table.slot[slotNumber].GetComponent<Slot>().specialProperty.utilityType == Utility_Type.ElectricCompany)
             {
                 ut_waterWorks_Image.SetActive(false);
                 ut_electricCompany_Image.SetActive(true);
+                ut_propertyName.text = _Table.slot[slotNumber].GetComponent<Slot>().getSlotName(Slot_Type.SpecialProperty);
+            }
+        }
+    }
+
+    //Suprise Information Card
+    public void ShowSupriseCard(int slotNumber)
+    {
+        informationPanel.SetActive(true);
+        supriseInformationCard.SetActive(true);
+        Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
+        supriseInformationCard.transform.position = pos;
+
+        if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.Chance)
+        {
+            chanceAndCommunityChestInformation.SetActive(true);
+            taxInformation.SetActive(false);
+
+            cc_communityChestImage.SetActive(false);
+            cc_chanceImage.SetActive(true);
+
+            int chanceCardNumber = _Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.DrawChance();
+
+            switch (chanceCardNumber)
+            {
+                case 0:
+                    cc_description.text = "Advance to Boardwalk";
+                    break;
+                case 1:
+                    cc_description.text = "Advance to Go (Collect $200)";
+                    break;
+                case 2:
+                    cc_description.text = "Advance to Illinois Avenue. If you pass Go, collect $200";
+                    break;
+                case 3:
+                    cc_description.text = "Advance to St. Charles Place. If you pass Go, collect $200";
+                    break;
+                case 4:
+                    cc_description.text = "Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled";
+                    break;
+                case 5:
+                    cc_description.text = "Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled";
+                    break;
+                case 6:
+                    cc_description.text = "Advance token to nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total ten times amount thrown.";
+                    break;
+                case 7:
+                    cc_description.text = "Bank pays you dividend of $50";
+                    break;
+                case 8:
+                    cc_description.text = "Get Out of Jail Free";
+                    break;
+                case 9:
+                    cc_description.text = "Get Out of Jail Free";
+                    break;
+                case 10:
+                    cc_description.text = "Go to Jail. Go directly to Jail, do not pass Go, do not collect $200";
+                    break;
+                case 11:
+                    cc_description.text = "Make general repairs on all your property. For each house pay $25. For each hotel pay $100";
+                    break;
+                case 12:
+                    cc_description.text = "Speeding fine $15";
+                    break;
+                case 13:
+                    cc_description.text = "Take a trip to Reading Railroad. If you pass Go, collect $200";
+                    break;
+                case 14:
+                    cc_description.text = "You have been elected Chairman of the Board. Pay each player $50";
+                    break;
+                case 15:
+                    cc_description.text = "Your building loan matures. Collect $150";
+                    break;
+                default: 
+                    break;
+            }
+        }
+        else if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.CommunityChest)
+        {
+            chanceAndCommunityChestInformation.SetActive(true);
+            taxInformation.SetActive(false);
+
+            cc_communityChestImage.SetActive(true);
+            cc_chanceImage.SetActive(false);
+
+            int communityChestNumber = _Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.DrawCommunityChest();
+
+            switch (communityChestNumber) 
+            {
+                case 0:
+                    cc_description.text = "Advance to Go (Collect $200)";
+                    break;
+                case 1:
+                    cc_description.text = "Bank error in your favor. Collect $200";
+                    break;
+                case 2:
+                    cc_description.text = "Doctor’s fee. Pay $50";
+                    break;
+                case 3:
+                    cc_description.text = "From sale of stock you get $50";
+                    break;
+                case 4:
+                    cc_description.text = "Get Out of Jail Free";
+                    break;
+                case 5:
+                    cc_description.text = "Go to Jail. Go directly to jail, do not pass Go, do not collect $200";
+                    break;
+                case 6:
+                    cc_description.text = "Holiday fund matures. Receive $100";
+                    break;
+                case 7:
+                    cc_description.text = "Income tax refund. Collect $20";
+                    break;
+                case 8:
+                    cc_description.text = "It is your birthday. Collect $10 from every player";
+                    break;
+                case 9:
+                    cc_description.text = "Life insurance matures. Collect $100";
+                    break;
+                case 10:
+                    cc_description.text = "Pay hospital fees of $100";
+                    break;
+                case 11:
+                    cc_description.text = "Pay school fees of $50";
+                    break;
+                case 12:
+                    cc_description.text = "Receive $25 consultancy fee";
+                    break;
+                case 13:
+                    cc_description.text = "You are assessed for street repair. $40 per house. $115 per hotel";
+                    break;
+                case 14:
+                    cc_description.text = "You have won second prize in a beauty contest. Collect $10";
+                    break;
+                case 15:
+                    cc_description.text = "You inherit $100";
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.Tax)
+        {
+
+            chanceAndCommunityChestInformation.SetActive(false);
+            taxInformation.SetActive(true);
+
+            if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.taxPrice == 100)
+            {
+                t_title.text = "SUPER TAX";
+                t_description.text = "PAY $100";
+            }
+            else if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.taxPrice == 200)
+            {
+                t_title.text = "INCOME TAX";
+                t_description.text = "PAY $200";
             }
         }
     }
@@ -644,13 +818,18 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void OnClick_Done()
+    {
+        HideInformationCard();
+    }
+
     public void HideInformationCard()
     {
         informationPanel.SetActive(false);
         //actionsCard.SetActive(false);
         colorPropertyInformationCard.SetActive(false);
         specialPropertyInformationCard.SetActive(false);
-        //supriseInformationCard.SetActive(false);
+        supriseInformationCard.SetActive(false);
     }
     #endregion
 }

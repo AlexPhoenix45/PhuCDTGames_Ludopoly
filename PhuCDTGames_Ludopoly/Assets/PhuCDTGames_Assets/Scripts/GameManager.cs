@@ -73,5 +73,36 @@ public enum ChanceCards
     AdvanceToGo, //slot no.0 (Advance to Go (Collect $200))
     AdvanceToIllinois, //slot no.24 (Advance to Illinois Avenue. If you pass Go, collect $200)
     AdvanceToStCharles, //slot no.11 (Advance to St. Charles Place. If you pass Go, collect $200)
-    AdvanceToRailroad, 
+    AdvanceToRailroad1, //Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled
+    AdvanceToRailroad2,
+    AdvanceToUtility, //Advance token to nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total ten times amount thrown
+    Earn50, //Bank pays you dividend of $50
+    JailFree, //Get Out of Jail Free
+    Back3, //Go back 3 spaces
+    GoToJail, //Go to Jail. Go directly to Jail, do not pass Go, do not collect $200
+    Repair, //Make general repairs on all your property. For each house pay $25. For each hotel pay $100
+    Speeding, //Speeding fine 15$
+    ReadingRailroad, //Take a trip to Reading Railroad. If you pass Go, collect $200
+    Chairman, //You have been elected Chairman of the Board. Pay each player $50
+    Earn150, //Your building loan matures. Collect $150
+}
+
+public enum CommunityChestCards
+{
+    AdvanceToGo, //Collect 200$
+    BankError, //Collect 200$
+    Doctor, //Pay 50$
+    Stock, //Collect 50$
+    JailFree, //Get out of jail free
+    GoToJail, //Go directly to jail, do not pass go, do not collect 200$
+    Holiday, //Collect 100$
+    Income, //Collect 20$
+    Birthday, //Collect 10$ from each player
+    Insurance, //Collect 100$
+    Hospital, //Pay 100$
+    School, //Pay 50$
+    Consultancy, //Collect 25$
+    StreetRepair, //Pay 40$ per house, 115$ per hotel
+    Beauty, //Colelct 10$
+    Inherit, //Collect 100$
 }
