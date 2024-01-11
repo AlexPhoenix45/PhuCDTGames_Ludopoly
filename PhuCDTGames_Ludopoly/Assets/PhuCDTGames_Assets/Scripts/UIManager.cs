@@ -369,9 +369,36 @@ public class UIManager : MonoBehaviour
 
         }
     }
+
     public void DicesActive(bool value)
     {
         rollDice.interactable = value;
+    }
+
+    public void DicesFacesActive()
+    {
+        if (rollDice.interactable)
+        {
+            foreach (var dice in dice1Faces)
+            {
+                dice.GetComponent<Image>().color = new Vector4(1, 1, 1, 1);
+            }
+            foreach (var dice in dice2Faces)
+            {
+                dice.GetComponent<Image>().color = new Vector4(1, 1, 1, 1);
+            }
+        }
+        else
+        {
+            foreach (var dice in dice1Faces)
+            {
+                dice.GetComponent<Image>().color = new Vector4(1, 1, 1, .5f);
+            }
+            foreach (var dice in dice2Faces)
+            {
+                dice.GetComponent<Image>().color = new Vector4(1, 1, 1, .5f);
+            }
+        }
     }
 
     #endregion
@@ -450,6 +477,7 @@ public class UIManager : MonoBehaviour
         {
             OptionsActive(true);
             DicesActive(true);
+            DicesFacesActive();
         }
     }
 

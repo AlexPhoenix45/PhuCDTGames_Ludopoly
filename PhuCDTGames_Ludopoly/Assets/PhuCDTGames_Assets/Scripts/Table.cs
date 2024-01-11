@@ -47,7 +47,19 @@ public class Table : MonoBehaviour
         int dice1, dice2;
         dice1 = Random.Range(1, 7);
         dice2 = Random.Range(1, 7);
+
+
         Move(getCurrentPlayer(), dice1 + dice2);
+        if (dice1 == dice2)
+        {
+            _UIManager.DicesActive(true);
+            getCurrentPlayer().setTimesGetDoubles(true);
+        }
+        else
+        {
+            _UIManager.DicesActive(false);
+            getCurrentPlayer().setTimesGetDoubles(false);
+        }
         return new int[] {dice1, dice2};
     }
 

@@ -13,6 +13,9 @@ public class Player : MonoBehaviour
     public bool isMyTurn = false;
     public bool isInJail = false;
 
+    //Roll a double
+    public int timesGetDoubles = 0;
+
 
     public void setPlayerIndex(int index)
     {
@@ -65,9 +68,16 @@ public class Player : MonoBehaviour
                     }
                 }
             }
-            UIManager.Instance.DicesActive(true);
+            UIManager.Instance.DicesFacesActive();
             UIManager.Instance.OptionsActive(true);
-            UIManager.Instance.EndTurnActive(true);
+            if (timesGetDoubles != 0)
+            {
+                UIManager.Instance.EndTurnActive(false);
+            }
+            else
+            {
+                UIManager.Instance.EndTurnActive(true);
+            }
             Table.Instance.StandOnThisSlot(currentSlot);
             //Table.Instance.SwitchPlayer();
         }
@@ -83,5 +93,26 @@ public class Player : MonoBehaviour
     public bool getIsMyTurn()
     {
         return isMyTurn;
+    }
+
+    //Call whenever roll a double
+    public void setTimesGetDoubles(bool hasDoubles)
+    {
+        if (hasDoubles)
+        {
+            if (timesGetDoubles < 2)
+            {
+                timesGetDoubles++;
+            }
+            else if (timesGetDoubles >= 2)
+            {
+                print("GO TO JAIL!");
+                timesGetDoubles = 0;
+            }
+        }
+        else
+        {
+            timesGetDoubles = 0;
+        }
     }
 }
