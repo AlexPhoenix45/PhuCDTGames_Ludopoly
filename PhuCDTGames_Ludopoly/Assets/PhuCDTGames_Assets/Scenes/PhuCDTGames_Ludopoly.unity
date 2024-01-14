@@ -9754,6 +9754,7 @@ MonoBehaviour:
   playerColor: {x: 255, y: 255, z: 0, w: 255}
   isMyTurn: 0
   isInJail: 0
+  timesGetDoubles: 0
 --- !u!1 &1089224137
 GameObject:
   m_ObjectHideFlags: 0
@@ -10507,6 +10508,7 @@ MonoBehaviour:
   playerColor: {x: 0, y: 255, z: 0, w: 255}
   isMyTurn: 0
   isInJail: 0
+  timesGetDoubles: 0
 --- !u!1 &1174741189 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1801934443706198382, guid: bd22179d1f0ba9649bebea85fa76558c, type: 3}
@@ -10997,6 +10999,7 @@ MonoBehaviour:
   playerColor: {x: 255, y: 0, z: 0, w: 255}
   isMyTurn: 0
   isInJail: 0
+  timesGetDoubles: 0
 --- !u!1 &1335801888
 GameObject:
   m_ObjectHideFlags: 0
@@ -11480,6 +11483,7 @@ MonoBehaviour:
   playerColor: {x: 0, y: 0, z: 255, w: 255}
   isMyTurn: 0
   isInJail: 0
+  timesGetDoubles: 0
 --- !u!1 &1416133778
 GameObject:
   m_ObjectHideFlags: 0

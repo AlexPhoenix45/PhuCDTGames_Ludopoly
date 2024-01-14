@@ -38,9 +38,14 @@ public class Slot : MonoBehaviour
     [Header("Corner Slot")]
     public GameObject cornerSlot_Text;
 
-    [Header("Owner PArameters")]
+    [Header("Owner Parameters")]
     public bool isOwned = false;
     public Player owner;
+    public GameObject ownerTag;
+    public GameObject redTag;
+    public GameObject blueTag;
+    public GameObject greenTag;
+    public GameObject yellowTag;
 
     private void Start()
     {
@@ -240,11 +245,38 @@ public class Slot : MonoBehaviour
         {
             owner = player;
             isOwned = true;
-        }
-        else
-        {
-            return;
-
+            if (player.playerColor == new Vector4(255, 0, 0, 255)) //red
+            {
+                ownerTag.SetActive(true);
+                redTag.SetActive(true);
+                blueTag.SetActive(false);
+                greenTag.SetActive(false);
+                yellowTag.SetActive(false);
+            }
+            else if (player.playerColor == new Vector4(0, 0, 255, 255)) //blue
+            {
+                ownerTag.SetActive(true);
+                redTag.SetActive(false);
+                blueTag.SetActive(true);
+                greenTag.SetActive(false);
+                yellowTag.SetActive(false);
+            }
+            else if (player.playerColor == new Vector4(0, 255, 0, 255)) //green
+            {
+                ownerTag.SetActive(true);
+                redTag.SetActive(false);
+                blueTag.SetActive(false);
+                greenTag.SetActive(true);
+                yellowTag.SetActive(false);
+            }
+            else if (player.playerColor == new Vector4(255, 255, 0, 255)) //yellow
+            {
+                ownerTag.SetActive(true);
+                redTag.SetActive(false);
+                blueTag.SetActive(false);
+                greenTag.SetActive(false);
+                yellowTag.SetActive(true);
+            }
         }
     }
 

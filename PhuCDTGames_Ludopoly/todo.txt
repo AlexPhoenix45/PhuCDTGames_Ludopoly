@@ -1,0 +1,8 @@
+StandOnThisSlot => Slot_Type == SupriseSlot => SupriseSlot_Type == Chance
+khi được chỉ định tới 1 ô bất kỳ:
+hiện tại:
+- chỉ hiện UI của thẻ Chance, không hiện Ui của ô được chỉ định (khi chưa tắt UI của ChanceCard)
+- lỗi ChanceCard.JailFree
+cần làm:
+- khi tắt UI của thẻ Chance mới bắt đầu thực hiện di chuyển,sau đó hiện UI ô chỉ định
+  khi người chơi không ấn tắt thì sẽ tự động tắt tỏng 2-3s

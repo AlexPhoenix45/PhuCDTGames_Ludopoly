@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,7 +24,10 @@ public class Player : MonoBehaviour
         playerIndex = index;
     }
 
-    public void Move(int distance)
+    //Move with distance
+    //
+
+    public void Move(int distance, bool isFastMove)
     {
         bool passGo;
         prvSlot = currentSlot;
@@ -36,11 +41,43 @@ public class Player : MonoBehaviour
             currentSlot += distance;
             passGo = false;
         }
-        setPos(passGo); //Set position on table right after Move
+
+        if (!isFastMove)
+        {
+            setPos(passGo, false); //Set position on table right after Move
+        }
+        else
+        {
+            setPos(passGo, true); //Set position on table right after Move
+        }
+    }
+
+    //Move with destination
+    //
+
+    public void MoveToward(int destinationSlot, bool isForward)
+    {
+        if (isForward) //Move forward
+        {
+            if (destinationSlot > currentSlot)
+            {
+                Move(destinationSlot - currentSlot, true);
+            }
+            else if (destinationSlot < currentSlot)
+            { 
+                Move((destinationSlot + 40) - currentSlot, true);
+            }
+        }
+        else //Move backward (to jail or back 3 spaces)
+        {
+            setPosNeg(destinationSlot);
+        }
     }
 
     //This is set position on table
-    public void setPos(bool passGo)
+    //
+
+    public void setPos(bool passGo, bool isFastMove)
     {
         IEnumerator move()
         {
@@ -48,42 +85,75 @@ public class Player : MonoBehaviour
             {
                 for (int i = prvSlot + 1; i <= currentSlot; i++)
                 {
-                    LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .5f).setEaseInOutCirc();
-                    yield return new WaitForSeconds(.5f);
-                }
-            }
-            else
-            {
-                for (int i = prvSlot + 1; i <= currentSlot + 40; i++)
-                {
-                    if (i <= 39)
+                    if (!isFastMove)
                     {
                         LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .5f).setEaseInOutCirc();
                         yield return new WaitForSeconds(.5f);
                     }
                     else
                     {
-                        LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .5f).setEaseInOutCirc();
-                        yield return new WaitForSeconds(.5f);
+                        LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
+                        yield return new WaitForSeconds(.15f);
                     }
                 }
             }
-            UIManager.Instance.DicesFacesActive();
-            UIManager.Instance.OptionsActive(true);
-            if (timesGetDoubles != 0)
-            {
-                UIManager.Instance.EndTurnActive(false);
-            }
             else
             {
-                UIManager.Instance.EndTurnActive(true);
+                for (int i = prvSlot + 1; i <= currentSlot + 40; i++)
+                {
+                    if (!isFastMove)
+                    {
+                        if (i <= 39)
+                        {
+                            LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .5f).setEaseInOutCirc();
+                            yield return new WaitForSeconds(.5f);
+                        }
+                        else
+                        {
+                            LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .5f).setEaseInOutCirc();
+                            yield return new WaitForSeconds(.5f);
+                        }
+                    }
+                    else
+                    {
+                        if (i <= 39)
+                        {
+                            LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
+                            yield return new WaitForSeconds(.15f);
+                        }
+                        else
+                        {
+                            LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .15f);
+                            yield return new WaitForSeconds(.15f);
+                        }
+                    }
+                }
             }
-            Table.Instance.StandOnThisSlot(currentSlot);
+            Table.Instance.AfterPlayerMove(this);
             //Table.Instance.SwitchPlayer();
         }
         StartCoroutine(move());
     }
+
+    public void setPosNeg (int destinationNumber)
+    {
+        IEnumerator move()
+        { 
+            for (int i = currentSlot - 1; i >= destinationNumber; i--)
+            {
+                LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
+                yield return new WaitForSeconds(.15f);
+            }
+
+            currentSlot = destinationNumber;
+            Table.Instance.AfterPlayerMove(this);
+        }
+        StartCoroutine(move());
+    }
     
+    //Turn
+    //
+
     public void setIsMyTurn(bool value)
     {
         this.isMyTurn = value;
@@ -96,6 +166,8 @@ public class Player : MonoBehaviour
     }
 
     //Call whenever roll a double
+    //
+
     public void setTimesGetDoubles(bool hasDoubles)
     {
         if (hasDoubles)
@@ -106,6 +178,8 @@ public class Player : MonoBehaviour
             }
             else if (timesGetDoubles >= 2)
             {
+                MoveToward(10, false);
+                isInJail = true;
                 print("GO TO JAIL!");
                 timesGetDoubles = 0;
             }

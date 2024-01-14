@@ -532,7 +532,7 @@ public class UIManager : MonoBehaviour
         }
         else if (type == Slot_Type.CornerSlot)
         {
-            print("corner slot");
+            ShowCornerCard(slotNumber);
         }
     }
 
@@ -832,6 +832,23 @@ public class UIManager : MonoBehaviour
             {
                 t_title.text = "INCOME TAX";
                 t_description.text = "PAY $200";
+            }
+        }
+    }
+
+    public void ShowCornerCard(int slotNumber)
+    {
+        if (_Table.slot[slotNumber].GetComponent<Slot>().cornerSlot.slotType == CornerSlot_Type.GoToJail)
+        {
+            _Table.getCurrentPlayer().isInJail = true;
+            _Table.getCurrentPlayer().MoveToward(10, false);
+            print(_Table.getCurrentPlayer().playerName + " was sent to Jail!");
+        }
+        else if (_Table.slot[slotNumber].GetComponent<Slot>().cornerSlot.slotType == CornerSlot_Type.VisitingJail)
+        {
+            if (!_Table.getCurrentPlayer().isInJail)
+            {
+                print(_Table.getCurrentPlayer().playerName + " just visiting Jail!");
             }
         }
     }

@@ -42,31 +42,50 @@ public class Table : MonoBehaviour
     }
 
     //Roll
-    public int[] RollDice()
+    public int[] RollDice() //The return just for UI
     {
         int dice1, dice2;
         dice1 = Random.Range(1, 7);
         dice2 = Random.Range(1, 7);
 
+        dice1 = 3;
+        dice2 = 4;
 
-        Move(getCurrentPlayer(), dice1 + dice2);
+
         if (dice1 == dice2)
         {
             _UIManager.DicesActive(true);
+            if (getCurrentPlayer().timesGetDoubles != 2)
+            { 
+                Move(getCurrentPlayer(), dice1 + dice2);
+            }
             getCurrentPlayer().setTimesGetDoubles(true);
         }
         else
         {
             _UIManager.DicesActive(false);
             getCurrentPlayer().setTimesGetDoubles(false);
+            Move(getCurrentPlayer(), dice1 + dice2);
         }
-        return new int[] {dice1, dice2};
+        return new int[] { dice1, dice2 };
     }
 
     //Move
     private void Move(Player player, int distance)
     {
-        player.Move(distance);
+        player.Move(distance, false);
+    }
+
+    private void MoveToward(Player player, int destinationNumber, bool isForward)
+    {
+        if (isForward)
+        {
+            player.MoveToward(destinationNumber, true);
+        }
+        else
+        {
+            player.MoveToward(destinationNumber, false);
+        }
     }
 
     //Switch Player
@@ -101,6 +120,7 @@ public class Table : MonoBehaviour
             UIManager.Instance.setTurn(player[0].playerIndex, false);
         }
     }
+
     public void SwitchPlayer(bool isSuffle) //Switch to next player
     {
         if (isSuffle)
@@ -209,6 +229,165 @@ public class Table : MonoBehaviour
         {
             //Call Property Information Card
             _UIManager.ShowInformationCard(slotNumber);
+
+            if (slot[slotNumber].GetComponent<Slot>().slotType == Slot_Type.SupriseSlot)
+            {
+                if (slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.Chance)
+                {
+                    ChanceCards chanceCardsType = slot[slotNumber].GetComponent<Slot>().supriseSlot.chanceCards;
+                    //Process Chance Card in here
+
+                    switch (chanceCardsType)
+                    {
+                        case ChanceCards.AdvanceToBoardwalk:
+                            MoveToward(getCurrentPlayer(), 39, true); break;
+                        case ChanceCards.AdvanceToGo:
+                            MoveToward(getCurrentPlayer(), 0, true); break;
+                        case ChanceCards.AdvanceToIllinois:
+                            MoveToward(getCurrentPlayer(), 24, true); break;
+                        case ChanceCards.AdvanceToStCharles:
+                            MoveToward(getCurrentPlayer(), 11, true); break;
+                        case ChanceCards.AdvanceToRailroad1:
+                            if (getCurrentPlayer().currentSlot == 7)
+                            {
+                                MoveToward(getCurrentPlayer(), 15, true); break;
+                            }
+                            else if (getCurrentPlayer().currentSlot == 22)
+                            {
+                                MoveToward(getCurrentPlayer(), 25, true); break;
+                            }
+                            else if (getCurrentPlayer().currentSlot == 36)
+                            {
+                                MoveToward(getCurrentPlayer(), 5, true); break;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        case ChanceCards.AdvanceToRailroad2:
+                            if (getCurrentPlayer().currentSlot == 7)
+                            {
+                                MoveToward(getCurrentPlayer(), 15, true); break;
+                            }
+                            else if (getCurrentPlayer().currentSlot == 22)
+                            {
+                                MoveToward(getCurrentPlayer(), 25, true); break;
+                            }
+                            else if (getCurrentPlayer().currentSlot == 36)
+                            {
+                                MoveToward(getCurrentPlayer(), 5, true); break;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        case ChanceCards.AdvanceToUtility:
+                            if (getCurrentPlayer().currentSlot == 7)
+                            {
+                                MoveToward(getCurrentPlayer(), 12, true); break;
+                            }
+                            else if (getCurrentPlayer().currentSlot == 22)
+                            {
+                                MoveToward(getCurrentPlayer(), 28, true); break;
+                            }
+                            else if (getCurrentPlayer().currentSlot == 36)
+                            {
+                                MoveToward(getCurrentPlayer(), 28, false); break;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        case ChanceCards.Earn50:
+                            print(getCurrentPlayer() + " collects 50$");
+                            break;
+                        case ChanceCards.JailFree:
+                            print(getCurrentPlayer() + " Get Out of Jail Free Card");
+                            break;
+                        case ChanceCards.Back3:
+                            if (getCurrentPlayer().currentSlot == 7)
+                            {
+                                MoveToward(getCurrentPlayer(), 7 - 3, false); break;
+                            }
+                            else if (getCurrentPlayer().currentSlot == 22)
+                            {
+                                MoveToward(getCurrentPlayer(), 22 - 3, false); break;
+                            }
+                            else if (getCurrentPlayer().currentSlot == 36)
+                            {
+                                MoveToward(getCurrentPlayer(), 36 - 3, false); break;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        case ChanceCards.GoToJail:
+                            if (getCurrentPlayer().currentSlot == 7)
+                            {
+                                MoveToward(getCurrentPlayer(), 10, true); break;
+                            }
+                            else if (getCurrentPlayer().currentSlot == 22)
+                            {
+                                MoveToward(getCurrentPlayer(), 10, false); break;
+                            }
+                            else if (getCurrentPlayer().currentSlot == 36)
+                            {
+                                MoveToward(getCurrentPlayer(), 10, false); break;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        case ChanceCards.Repair:
+                            print("not yet");
+                            break;
+                        case ChanceCards.Speeding:
+                            print(getCurrentPlayer() + " Pays 15$");
+                            break;
+                        case ChanceCards.ReadingRailroad:
+                            MoveToward(getCurrentPlayer(), 5, true);
+                            break;
+                        case ChanceCards.Chairman:
+                            print(getCurrentPlayer() + " Pays each player 50$");
+                            break;
+                        case ChanceCards.Earn150:
+                            print(getCurrentPlayer() + " Collect 150$");
+                            break;
+                    }
+                }
+                else if (slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.CommunityChest)
+                {
+                    //Process Community Chest Card in here
+                    CommunityChestCards communityChestCardsType = slot[slotNumber].GetComponent<Slot>().supriseSlot.communityChestCards;
+
+                    switch (communityChestCardsType) 
+                    {
+                        case CommunityChestCards.AdvanceToGo:
+                            MoveToward(getCurrentPlayer(), 0, true); break;
+                        case CommunityChestCards.BankError:
+                            print(getCurrentPlayer().ToString() + " Collect 200$"); break;
+                        case CommunityChestCards.Doctor:
+                            print(getCurrentPlayer().ToString() + " Pays 50$"); break;
+                        case CommunityChestCards.Stock:
+                            print(getCurrentPlayer().ToString() + " Collect 50$"); break;
+                        case CommunityChestCards.JailFree:
+                            print(getCurrentPlayer().ToString() + " Get Out of Jaili Free Card"); break;
+                        case CommunityChestCards.GoToJail:
+                            MoveToward(getCurrentPlayer(), 10, true); break;
+                    }
+                }
+                else if (slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.Tax)
+                {
+                    //Process Tax Card in here
+                }
+            }
+        }
+        else
+        {
+            if (slot[slotNumber].GetComponent<Slot>().slotType == Slot_Type.ColorProperty || slot[slotNumber].GetComponent<Slot>().slotType == Slot_Type.SpecialProperty)
+            {
+                print("Player " + getCurrentPlayer().playerName + " has to pay" + slot[slotNumber].GetComponent<Slot>().getOwner().playerName + " amount of " + slot[slotNumber].GetComponent<Slot>().getPropertyRent(slot[slotNumber].GetComponent<Slot>().slotType) + "$");
+            }
         }
     }
 
@@ -223,6 +402,23 @@ public class Table : MonoBehaviour
 
     }
     #endregion
+
+    //After player's move
+    //
+    public void AfterPlayerMove(Player player)
+    {
+        UIManager.Instance.DicesFacesActive();
+        UIManager.Instance.OptionsActive(true);
+        if (player.timesGetDoubles != 0)
+        {
+            UIManager.Instance.EndTurnActive(false);
+        }
+        else
+        {
+            UIManager.Instance.EndTurnActive(true);
+        }
+        StandOnThisSlot(player.currentSlot);
+    }
 }
 
 public enum CurrentPlayer
