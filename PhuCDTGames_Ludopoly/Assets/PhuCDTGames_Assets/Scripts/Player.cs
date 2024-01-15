@@ -18,6 +18,13 @@ public class Player : MonoBehaviour
     //Roll a double
     public int timesGetDoubles = 0;
 
+    //Late Move
+    public int temp_destinationSlot;
+    public bool temp_isForward;
+    public bool lateMoveSet = false;
+
+    //Jai;
+    public bool rollForJail = false;
 
     public void setPlayerIndex(int index)
     {
@@ -71,6 +78,22 @@ public class Player : MonoBehaviour
         else //Move backward (to jail or back 3 spaces)
         {
             setPosNeg(destinationSlot);
+        }
+    }
+
+    public void setLateMove(int destinationSlot, bool isForward)
+    {
+        temp_destinationSlot = destinationSlot;
+        temp_isForward = isForward;
+        lateMoveSet = true;
+    }
+
+    public void LateMove()
+    {
+        if (lateMoveSet)
+        {
+            MoveToward(temp_destinationSlot, temp_isForward);
+            lateMoveSet = false;
         }
     }
 
@@ -158,6 +181,14 @@ public class Player : MonoBehaviour
     {
         this.isMyTurn = value;
 
+        if (isMyTurn)
+        {
+            if (isInJail)
+            {
+                UIManager.Instance.ShowIsInJail();
+            }
+        }
+
     }
 
     public bool getIsMyTurn()
@@ -178,15 +209,37 @@ public class Player : MonoBehaviour
             }
             else if (timesGetDoubles >= 2)
             {
-                MoveToward(10, false);
-                isInJail = true;
+                if (currentSlot < 10)
+                {
+                    MoveToward(10, true);
+                }
+                else if (currentSlot > 10)
+                {
+                    MoveToward(10, false);
+                }
+
                 print("GO TO JAIL!");
+                isInJail = true;    
                 timesGetDoubles = 0;
             }
         }
         else
         {
             timesGetDoubles = 0;
+        }
+    }
+
+    public void setIsInJail(bool value)
+    {
+        if (isInJail && !value)
+        {
+            isInJail = value;
+        }
+        else if (!isInJail && value)
+        {
+            isInJail = value;
+            timesGetDoubles = 0;
+            UIManager.Instance.DicesActive(false);
         }
     }
 }

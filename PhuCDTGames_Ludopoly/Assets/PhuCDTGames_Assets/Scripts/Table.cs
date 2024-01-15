@@ -48,44 +48,24 @@ public class Table : MonoBehaviour
         dice1 = Random.Range(1, 7);
         dice2 = Random.Range(1, 7);
 
-        dice1 = 3;
-        dice2 = 4;
+        dice1 = dice2 = 1;
 
+        _UIManager.DicesActive(false);
 
         if (dice1 == dice2)
         {
-            _UIManager.DicesActive(true);
             if (getCurrentPlayer().timesGetDoubles != 2)
             { 
-                Move(getCurrentPlayer(), dice1 + dice2);
+                getCurrentPlayer().Move(dice2 + dice1, false);
             }
             getCurrentPlayer().setTimesGetDoubles(true);
         }
         else
         {
-            _UIManager.DicesActive(false);
             getCurrentPlayer().setTimesGetDoubles(false);
-            Move(getCurrentPlayer(), dice1 + dice2);
+            getCurrentPlayer().Move(dice1 + dice2, false);
         }
         return new int[] { dice1, dice2 };
-    }
-
-    //Move
-    private void Move(Player player, int distance)
-    {
-        player.Move(distance, false);
-    }
-
-    private void MoveToward(Player player, int destinationNumber, bool isForward)
-    {
-        if (isForward)
-        {
-            player.MoveToward(destinationNumber, true);
-        }
-        else
-        {
-            player.MoveToward(destinationNumber, false);
-        }
     }
 
     //Switch Player
@@ -222,7 +202,7 @@ public class Table : MonoBehaviour
         }
     }
 
-    #region Property Information Card
+    #region Property Information Card Action And Show
     public void StandOnThisSlot(int slotNumber)
     {
         if (!slot[slotNumber].GetComponent<Slot>().getIsOwned()) //If that slot didnt have an owner
@@ -240,25 +220,25 @@ public class Table : MonoBehaviour
                     switch (chanceCardsType)
                     {
                         case ChanceCards.AdvanceToBoardwalk:
-                            MoveToward(getCurrentPlayer(), 39, true); break;
+                            getCurrentPlayer().setLateMove(39, true); break;
                         case ChanceCards.AdvanceToGo:
-                            MoveToward(getCurrentPlayer(), 0, true); break;
+                            getCurrentPlayer().setLateMove(0, true); break;
                         case ChanceCards.AdvanceToIllinois:
-                            MoveToward(getCurrentPlayer(), 24, true); break;
+                            getCurrentPlayer().setLateMove(24, true); break;
                         case ChanceCards.AdvanceToStCharles:
-                            MoveToward(getCurrentPlayer(), 11, true); break;
+                            getCurrentPlayer().setLateMove(11, true); break;
                         case ChanceCards.AdvanceToRailroad1:
                             if (getCurrentPlayer().currentSlot == 7)
                             {
-                                MoveToward(getCurrentPlayer(), 15, true); break;
+                                getCurrentPlayer().setLateMove(15, true); break;
                             }
                             else if (getCurrentPlayer().currentSlot == 22)
                             {
-                                MoveToward(getCurrentPlayer(), 25, true); break;
+                                getCurrentPlayer().setLateMove(25, true); break;
                             }
                             else if (getCurrentPlayer().currentSlot == 36)
                             {
-                                MoveToward(getCurrentPlayer(), 5, true); break;
+                                getCurrentPlayer().setLateMove(5, true); break;
                             }
                             else
                             {
@@ -267,15 +247,15 @@ public class Table : MonoBehaviour
                         case ChanceCards.AdvanceToRailroad2:
                             if (getCurrentPlayer().currentSlot == 7)
                             {
-                                MoveToward(getCurrentPlayer(), 15, true); break;
+                                getCurrentPlayer().setLateMove(15, true); break;
                             }
                             else if (getCurrentPlayer().currentSlot == 22)
                             {
-                                MoveToward(getCurrentPlayer(), 25, true); break;
+                                getCurrentPlayer().setLateMove(25, true); break;
                             }
                             else if (getCurrentPlayer().currentSlot == 36)
                             {
-                                MoveToward(getCurrentPlayer(), 5, true); break;
+                                getCurrentPlayer().setLateMove(5, true); break;
                             }
                             else
                             {
@@ -284,15 +264,15 @@ public class Table : MonoBehaviour
                         case ChanceCards.AdvanceToUtility:
                             if (getCurrentPlayer().currentSlot == 7)
                             {
-                                MoveToward(getCurrentPlayer(), 12, true); break;
+                                getCurrentPlayer().setLateMove(12, true); break;
                             }
                             else if (getCurrentPlayer().currentSlot == 22)
                             {
-                                MoveToward(getCurrentPlayer(), 28, true); break;
+                                getCurrentPlayer().setLateMove(28, true); break;
                             }
                             else if (getCurrentPlayer().currentSlot == 36)
                             {
-                                MoveToward(getCurrentPlayer(), 28, false); break;
+                                getCurrentPlayer().setLateMove(28, false); break;
                             }
                             else
                             {
@@ -307,15 +287,15 @@ public class Table : MonoBehaviour
                         case ChanceCards.Back3:
                             if (getCurrentPlayer().currentSlot == 7)
                             {
-                                MoveToward(getCurrentPlayer(), 7 - 3, false); break;
+                                getCurrentPlayer().setLateMove(7 - 3, false); break;
                             }
                             else if (getCurrentPlayer().currentSlot == 22)
                             {
-                                MoveToward(getCurrentPlayer(), 22 - 3, false); break;
+                                getCurrentPlayer().setLateMove(22 - 3, false); break;
                             }
                             else if (getCurrentPlayer().currentSlot == 36)
                             {
-                                MoveToward(getCurrentPlayer(), 36 - 3, false); break;
+                                getCurrentPlayer().setLateMove(36 - 3, false); break;
                             }
                             else
                             {
@@ -324,15 +304,15 @@ public class Table : MonoBehaviour
                         case ChanceCards.GoToJail:
                             if (getCurrentPlayer().currentSlot == 7)
                             {
-                                MoveToward(getCurrentPlayer(), 10, true); break;
+                                getCurrentPlayer().setLateMove(10, true); break;
                             }
                             else if (getCurrentPlayer().currentSlot == 22)
                             {
-                                MoveToward(getCurrentPlayer(), 10, false); break;
+                                getCurrentPlayer().setLateMove(10, false); break;
                             }
                             else if (getCurrentPlayer().currentSlot == 36)
                             {
-                                MoveToward(getCurrentPlayer(), 10, false); break;
+                                getCurrentPlayer().setLateMove(10, false); break;
                             }
                             else
                             {
@@ -345,7 +325,7 @@ public class Table : MonoBehaviour
                             print(getCurrentPlayer() + " Pays 15$");
                             break;
                         case ChanceCards.ReadingRailroad:
-                            MoveToward(getCurrentPlayer(), 5, true);
+                            getCurrentPlayer().setLateMove(5, true);
                             break;
                         case ChanceCards.Chairman:
                             print(getCurrentPlayer() + " Pays each player 50$");
@@ -363,7 +343,7 @@ public class Table : MonoBehaviour
                     switch (communityChestCardsType) 
                     {
                         case CommunityChestCards.AdvanceToGo:
-                            MoveToward(getCurrentPlayer(), 0, true); break;
+                            getCurrentPlayer().setLateMove(0, true); break;
                         case CommunityChestCards.BankError:
                             print(getCurrentPlayer().ToString() + " Collect 200$"); break;
                         case CommunityChestCards.Doctor:
@@ -373,7 +353,27 @@ public class Table : MonoBehaviour
                         case CommunityChestCards.JailFree:
                             print(getCurrentPlayer().ToString() + " Get Out of Jaili Free Card"); break;
                         case CommunityChestCards.GoToJail:
-                            MoveToward(getCurrentPlayer(), 10, true); break;
+                            getCurrentPlayer().setLateMove(10, true); break;
+                        case CommunityChestCards.Holiday:
+                            print(getCurrentPlayer().ToString() + " Collect 100"); break;
+                        case CommunityChestCards.Income:
+                            print(getCurrentPlayer().ToString() + " Collect 20$"); break;
+                        case CommunityChestCards.Birthday:
+                            print(getCurrentPlayer().ToString() + " Collect 10$ from each player"); break;
+                        case CommunityChestCards.Insurance:
+                            print(getCurrentPlayer().ToString() + " Collect 100$"); break;
+                        case CommunityChestCards.Hospital:
+                            print(getCurrentPlayer().ToString() + " Pays 100$"); break;
+                        case CommunityChestCards.School:
+                            print(getCurrentPlayer().ToString() + " Pays 50$"); break;
+                        case CommunityChestCards.Consultancy:
+                            print(getCurrentPlayer().ToString() + " Collect 25$"); break;
+                        case CommunityChestCards.StreetRepair:
+                            print(getCurrentPlayer().ToString() + " Pay 40$ per house, 115$ per hotel"); break;
+                        case CommunityChestCards.Beauty:
+                            print(getCurrentPlayer().ToString() + " Collect 10$"); break;
+                        case CommunityChestCards.Inherit:
+                            print(getCurrentPlayer().ToString() + " Collect 100$"); break;
                     }
                 }
                 else if (slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.Tax)
@@ -401,12 +401,39 @@ public class Table : MonoBehaviour
     {
 
     }
+
+    public void JailPay()
+    {
+        print(getCurrentPlayer().ToString() + " Pays 100$ to get out of Jail!");
+
+    }
+
+    public void JailUseCard()
+    {
+        print(getCurrentPlayer().ToString() + " Use card to get out of Jail!");
+
+    }
+
+    public void JailRollDouble()
+    {
+        _UIManager.HideInformationCard();
+        getCurrentPlayer().rollForJail = true;
+    }
     #endregion
 
     //After player's move
     //
     public void AfterPlayerMove(Player player)
     {
+        if (getCurrentPlayer().isInJail)
+        {
+            _UIManager.DicesActive(false);
+        }
+
+        if (getCurrentPlayer().timesGetDoubles > 0)
+        {
+            _UIManager.DicesActive(true);
+        }
         UIManager.Instance.DicesFacesActive();
         UIManager.Instance.OptionsActive(true);
         if (player.timesGetDoubles != 0)

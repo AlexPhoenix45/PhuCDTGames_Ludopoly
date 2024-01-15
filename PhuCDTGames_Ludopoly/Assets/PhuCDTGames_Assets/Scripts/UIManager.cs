@@ -111,6 +111,43 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
+    #region Jail Card
+    [Header("Jail Card")]
+    public GameObject jailPanel;
+    public GameObject inJailPanel;
+    public GameObject goToJailPanel;
+    public GameObject visitingJailPanel;
+
+    //In Jail
+    //
+    [Header("In Jail")]
+    public Button ij_Pay;
+    public Button ij_useCard;
+    public Button ij_rollDouble;
+
+    public GameObject ij_redPawn;
+    public GameObject ij_greenPawn;
+    public GameObject ij_bluePawn;
+    public GameObject ij_yellowPawn;
+
+    //Go To Jail
+    //
+    [Header("Go To Jail")]
+    public GameObject gtj_redPawn;
+    public GameObject gtj_greenPawn;
+    public GameObject gtj_bluePawn;
+    public GameObject gtj_yellowPawn;
+
+    //Visiting Jail
+    //
+    [Header("Visiting Jail")]
+    public GameObject vj_redPawn;
+    public GameObject vj_greenPawn;
+    public GameObject vj_bluePawn;
+    public GameObject vj_yellowPawn;
+
+    #endregion
+
     private void Start()
     {
         if (Instance == null)
@@ -513,7 +550,7 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region Information Card
+    #region Information Card on Table
     public void ShowInformationCard(int slotNumber)
     {
         Slot_Type type;
@@ -645,7 +682,6 @@ public class UIManager : MonoBehaviour
         }
     }
     
-    
     //Special Property Information Card
     public void ShowSpecialPropertyCard(int slotNumber)
     {
@@ -684,154 +720,170 @@ public class UIManager : MonoBehaviour
     //Suprise Information Card
     public void ShowSupriseCard(int slotNumber)
     {
+        float timeConsumed = 0;
+        int chanceCardNumber = _Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.DrawChance();
+        int communityChestNumber = _Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.DrawCommunityChest();
         informationPanel.SetActive(true);
         supriseInformationCard.SetActive(true);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         supriseInformationCard.transform.position = pos;
 
-        if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.Chance)
+        StartCoroutine(actions());
+
+        IEnumerator actions()
         {
-            chanceAndCommunityChestInformation.SetActive(true);
-            taxInformation.SetActive(false);
-
-            cc_communityChestImage.SetActive(false);
-            cc_chanceImage.SetActive(true);
-
-            int chanceCardNumber = _Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.DrawChance();
-
-            switch (chanceCardNumber)
+            do
             {
-                case 0:
-                    cc_description.text = "Advance to Boardwalk";
-                    break;
-                case 1:
-                    cc_description.text = "Advance to Go (Collect $200)";
-                    break;
-                case 2:
-                    cc_description.text = "Advance to Illinois Avenue. If you pass Go, collect $200";
-                    break;
-                case 3:
-                    cc_description.text = "Advance to St. Charles Place. If you pass Go, collect $200";
-                    break;
-                case 4:
-                    cc_description.text = "Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled";
-                    break;
-                case 5:
-                    cc_description.text = "Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled";
-                    break;
-                case 6:
-                    cc_description.text = "Advance token to nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total ten times amount thrown.";
-                    break;
-                case 7:
-                    cc_description.text = "Bank pays you dividend of $50";
-                    break;
-                case 8:
-                    cc_description.text = "Get Out of Jail Free";
-                    break;
-                case 9:
-                    cc_description.text = "Get Out of Jail Free";
-                    break;
-                case 10:
-                    cc_description.text = "Go to Jail. Go directly to Jail, do not pass Go, do not collect $200";
-                    break;
-                case 11:
-                    cc_description.text = "Make general repairs on all your property. For each house pay $25. For each hotel pay $100";
-                    break;
-                case 12:
-                    cc_description.text = "Speeding fine $15";
-                    break;
-                case 13:
-                    cc_description.text = "Take a trip to Reading Railroad. If you pass Go, collect $200";
-                    break;
-                case 14:
-                    cc_description.text = "You have been elected Chairman of the Board. Pay each player $50";
-                    break;
-                case 15:
-                    cc_description.text = "Your building loan matures. Collect $150";
-                    break;
-                default: 
-                    break;
+                if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.Chance)
+                {
+                    chanceAndCommunityChestInformation.SetActive(true);
+                    taxInformation.SetActive(false);
+
+                    cc_communityChestImage.SetActive(false);
+                    cc_chanceImage.SetActive(true);
+
+                    switch (chanceCardNumber)
+                    {
+                        case 0:
+                            cc_description.text = "Advance to Boardwalk";
+                            break;
+                        case 1:
+                            cc_description.text = "Advance to Go (Collect $200)";
+                            break;
+                        case 2:
+                            cc_description.text = "Advance to Illinois Avenue. If you pass Go, collect $200";
+                            break;
+                        case 3:
+                            cc_description.text = "Advance to St. Charles Place. If you pass Go, collect $200";
+                            break;
+                        case 4:
+                            cc_description.text = "Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled";
+                            break;
+                        case 5:
+                            cc_description.text = "Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled";
+                            break;
+                        case 6:
+                            cc_description.text = "Advance token to nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total ten times amount thrown.";
+                            break;
+                        case 7:
+                            cc_description.text = "Bank pays you dividend of $50";
+                            break;
+                        case 8:
+                            cc_description.text = "Get Out of Jail Free";
+                            break;
+                        case 9:
+                            cc_description.text = "Go back 3 spaces";
+                            break;
+                        case 10:
+                            cc_description.text = "Go to Jail. Go directly to Jail, do not pass Go, do not collect $200";
+                            break;
+                        case 11:
+                            cc_description.text = "Make general repairs on all your property. For each house pay $25. For each hotel pay $100";
+                            break;
+                        case 12:
+                            cc_description.text = "Speeding fine $15";
+                            break;
+                        case 13:
+                            cc_description.text = "Take a trip to Reading Railroad. If you pass Go, collect $200";
+                            break;
+                        case 14:
+                            cc_description.text = "You have been elected Chairman of the Board. Pay each player $50";
+                            break;
+                        case 15:
+                            cc_description.text = "Your building loan matures. Collect $150";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.CommunityChest)
+                {
+                    chanceAndCommunityChestInformation.SetActive(true);
+                    taxInformation.SetActive(false);
+
+                    cc_communityChestImage.SetActive(true);
+                    cc_chanceImage.SetActive(false);
+
+                    switch (communityChestNumber)
+                    {
+                        case 0:
+                            cc_description.text = "Advance to Go (Collect $200)";
+                            break;
+                        case 1:
+                            cc_description.text = "Bank error in your favor. Collect $200";
+                            break;
+                        case 2:
+                            cc_description.text = "Doctor’s fee. Pay $50";
+                            break;
+                        case 3:
+                            cc_description.text = "From sale of stock you get $50";
+                            break;
+                        case 4:
+                            cc_description.text = "Get Out of Jail Free";
+                            break;
+                        case 5:
+                            cc_description.text = "Go to Jail. Go directly to jail, do not pass Go, do not collect $200";
+                            break;
+                        case 6:
+                            cc_description.text = "Holiday fund matures. Receive $100";
+                            break;
+                        case 7:
+                            cc_description.text = "Income tax refund. Collect $20";
+                            break;
+                        case 8:
+                            cc_description.text = "It is your birthday. Collect $10 from every player";
+                            break;
+                        case 9:
+                            cc_description.text = "Life insurance matures. Collect $100";
+                            break;
+                        case 10:
+                            cc_description.text = "Pay hospital fees of $100";
+                            break;
+                        case 11:
+                            cc_description.text = "Pay school fees of $50";
+                            break;
+                        case 12:
+                            cc_description.text = "Receive $25 consultancy fee";
+                            break;
+                        case 13:
+                            cc_description.text = "You are assessed for street repair. $40 per house. $115 per hotel";
+                            break;
+                        case 14:
+                            cc_description.text = "You have won second prize in a beauty contest. Collect $10";
+                            break;
+                        case 15:
+                            cc_description.text = "You inherit $100";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.Tax)
+                {
+
+                    chanceAndCommunityChestInformation.SetActive(false);
+                    taxInformation.SetActive(true);
+
+                    if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.taxPrice == 100)
+                    {
+                        t_title.text = "SUPER TAX";
+                        t_description.text = "PAY $100";
+                    }
+                    else if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.taxPrice == 200)
+                    {
+                        t_title.text = "INCOME TAX";
+                        t_description.text = "PAY $200";
+                    }
+                }
+                yield return new WaitForSeconds(.2f);
+
+                timeConsumed += .2f;
             }
-        }
-        else if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.CommunityChest)
-        {
-            chanceAndCommunityChestInformation.SetActive(true);
-            taxInformation.SetActive(false);
+            while (timeConsumed < 3 && supriseInformationCard.activeSelf);
 
-            cc_communityChestImage.SetActive(true);
-            cc_chanceImage.SetActive(false);
-
-            int communityChestNumber = _Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.DrawCommunityChest();
-
-            switch (communityChestNumber) 
+            if (timeConsumed > 3)
             {
-                case 0:
-                    cc_description.text = "Advance to Go (Collect $200)";
-                    break;
-                case 1:
-                    cc_description.text = "Bank error in your favor. Collect $200";
-                    break;
-                case 2:
-                    cc_description.text = "Doctor’s fee. Pay $50";
-                    break;
-                case 3:
-                    cc_description.text = "From sale of stock you get $50";
-                    break;
-                case 4:
-                    cc_description.text = "Get Out of Jail Free";
-                    break;
-                case 5:
-                    cc_description.text = "Go to Jail. Go directly to jail, do not pass Go, do not collect $200";
-                    break;
-                case 6:
-                    cc_description.text = "Holiday fund matures. Receive $100";
-                    break;
-                case 7:
-                    cc_description.text = "Income tax refund. Collect $20";
-                    break;
-                case 8:
-                    cc_description.text = "It is your birthday. Collect $10 from every player";
-                    break;
-                case 9:
-                    cc_description.text = "Life insurance matures. Collect $100";
-                    break;
-                case 10:
-                    cc_description.text = "Pay hospital fees of $100";
-                    break;
-                case 11:
-                    cc_description.text = "Pay school fees of $50";
-                    break;
-                case 12:
-                    cc_description.text = "Receive $25 consultancy fee";
-                    break;
-                case 13:
-                    cc_description.text = "You are assessed for street repair. $40 per house. $115 per hotel";
-                    break;
-                case 14:
-                    cc_description.text = "You have won second prize in a beauty contest. Collect $10";
-                    break;
-                case 15:
-                    cc_description.text = "You inherit $100";
-                    break;
-                default:
-                    break;
-            }
-        }
-        else if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.Tax)
-        {
-
-            chanceAndCommunityChestInformation.SetActive(false);
-            taxInformation.SetActive(true);
-
-            if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.taxPrice == 100)
-            {
-                t_title.text = "SUPER TAX";
-                t_description.text = "PAY $100";
-            }
-            else if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.taxPrice == 200)
-            {
-                t_title.text = "INCOME TAX";
-                t_description.text = "PAY $200";
+                OnClick_Done();
             }
         }
     }
@@ -840,16 +892,123 @@ public class UIManager : MonoBehaviour
     {
         if (_Table.slot[slotNumber].GetComponent<Slot>().cornerSlot.slotType == CornerSlot_Type.GoToJail)
         {
-            _Table.getCurrentPlayer().isInJail = true;
-            _Table.getCurrentPlayer().MoveToward(10, false);
-            print(_Table.getCurrentPlayer().playerName + " was sent to Jail!");
+            _Table.getCurrentPlayer().setIsInJail(true);
+            _Table.getCurrentPlayer().setLateMove(10, false);
+
+            jailPanel.SetActive(true);
+            goToJailPanel.SetActive(true);
+            Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
+            goToJailPanel.transform.position = pos;
+
+            if (_Table.getCurrentPlayer().playerColor == new Vector4(255, 0, 0, 255)) //red
+            {
+                gtj_redPawn.SetActive(true);
+                gtj_greenPawn.SetActive(false);
+                gtj_bluePawn.SetActive(false);
+                gtj_yellowPawn.SetActive(false);
+            }
+            else if (_Table.getCurrentPlayer().playerColor == new Vector4(0, 0, 255, 255)) //blue
+            {
+                gtj_redPawn.SetActive(false);
+                gtj_greenPawn.SetActive(false);
+                gtj_bluePawn.SetActive(true);
+                gtj_yellowPawn.SetActive(false);
+            }
+            else if (_Table.getCurrentPlayer().playerColor == new Vector4(0, 255, 0, 255)) //green
+            {
+                gtj_redPawn.SetActive(false);
+                gtj_greenPawn.SetActive(true);
+                gtj_bluePawn.SetActive(false);
+                gtj_yellowPawn.SetActive(false);
+            }
+            else if (_Table.getCurrentPlayer().playerColor == new Vector4(255, 255, 0, 255)) //yellow
+            {
+                gtj_redPawn.SetActive(false);
+                gtj_greenPawn.SetActive(false);
+                gtj_bluePawn.SetActive(false);
+                gtj_yellowPawn.SetActive(true);
+            }
         }
         else if (_Table.slot[slotNumber].GetComponent<Slot>().cornerSlot.slotType == CornerSlot_Type.VisitingJail)
         {
+
             if (!_Table.getCurrentPlayer().isInJail)
             {
-                print(_Table.getCurrentPlayer().playerName + " just visiting Jail!");
+                jailPanel.SetActive(true);
+                visitingJailPanel.SetActive(true);
+                Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
+                visitingJailPanel.transform.position = pos;
+
+                if (_Table.getCurrentPlayer().playerColor == new Vector4(255, 0, 0, 255)) //red
+                {
+                    vj_redPawn.SetActive(true);
+                    vj_greenPawn.SetActive(false);
+                    vj_bluePawn.SetActive(false);
+                    vj_yellowPawn.SetActive(false);
+                }
+                else if (_Table.getCurrentPlayer().playerColor == new Vector4(0, 0, 255, 255)) //blue
+                {
+                    vj_redPawn.SetActive(false);
+                    vj_greenPawn.SetActive(false);
+                    vj_bluePawn.SetActive(true);
+                    vj_yellowPawn.SetActive(false);
+                }
+                else if (_Table.getCurrentPlayer().playerColor == new Vector4(0, 255, 0, 255)) //green
+                {
+                    vj_redPawn.SetActive(false);
+                    vj_greenPawn.SetActive(true);
+                    vj_bluePawn.SetActive(false);
+                    vj_yellowPawn.SetActive(false);
+                }
+                else if (_Table.getCurrentPlayer().playerColor == new Vector4(255, 255, 0, 255)) //yellow
+                {
+                    vj_redPawn.SetActive(false);
+                    vj_greenPawn.SetActive(false);
+                    vj_bluePawn.SetActive(false);
+                    vj_yellowPawn.SetActive(true);
+                }
             }
+            else
+            {
+
+            }
+        }
+    }
+
+    public void ShowIsInJail()
+    {
+        jailPanel.SetActive(true);
+        inJailPanel.SetActive(true);
+        Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
+        inJailPanel.transform.position = pos;
+
+        if (_Table.getCurrentPlayer().playerColor == new Vector4(255, 0, 0, 255)) //red
+        {
+            ij_redPawn.SetActive(true);
+            ij_greenPawn.SetActive(false);
+            ij_bluePawn.SetActive(false);
+            ij_yellowPawn.SetActive(false);
+        }
+        else if (_Table.getCurrentPlayer().playerColor == new Vector4(0, 0, 255, 255)) //blue
+        {
+            ij_redPawn.SetActive(false);
+            ij_greenPawn.SetActive(false);
+            ij_bluePawn.SetActive(true);
+            ij_yellowPawn.SetActive(false);
+        }
+        else if (_Table.getCurrentPlayer().playerColor == new Vector4(0, 255, 0, 255)) //green
+        {
+            ij_redPawn.SetActive(false);
+            ij_greenPawn.SetActive(true);
+            ij_bluePawn.SetActive(false);
+            ij_yellowPawn.SetActive(false);
+        }
+        else if (_Table.getCurrentPlayer().playerColor == new Vector4(255, 255, 0, 255)) //yellow
+        {
+            ij_redPawn.SetActive(false);
+            ij_greenPawn.SetActive(false);
+            ij_bluePawn.SetActive(false);
+            ij_yellowPawn.SetActive(true);
         }
     }
 
@@ -863,9 +1022,11 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void OnClick_Done()
+    public void OnClick_Done() //For suprise card
     {
         HideInformationCard();
+        //Then move player if needed
+        _Table.getCurrentPlayer().LateMove();
     }
 
     public void HideInformationCard()
@@ -875,6 +1036,11 @@ public class UIManager : MonoBehaviour
         colorPropertyInformationCard.SetActive(false);
         specialPropertyInformationCard.SetActive(false);
         supriseInformationCard.SetActive(false);
+
+        jailPanel.SetActive(false);
+        inJailPanel.SetActive(false);
+        goToJailPanel.SetActive(false);
+        visitingJailPanel.SetActive(false);
     }
     #endregion
 }
