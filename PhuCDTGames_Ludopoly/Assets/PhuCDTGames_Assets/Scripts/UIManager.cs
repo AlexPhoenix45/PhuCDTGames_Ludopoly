@@ -1,5 +1,7 @@
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -180,6 +182,12 @@ public class UIManager : MonoBehaviour
             while (timeConsumed < 1.5f);
             dices = Table.Instance.RollDice();
             setDicesFaces(dices, false);
+            if (_Table.getCurrentPlayer().isInJail)
+            {
+                OptionsActive(true);
+                DicesActive(false);
+                DicesFacesActive();
+            }
         }
         StartCoroutine(diceSuffle());
     }
@@ -450,23 +458,25 @@ public class UIManager : MonoBehaviour
 
             //Player 1
             player1Name.text = Table.Instance.player[0].playerName.ToString();
-            player1Money.text = Table.Instance.player[0].playerMoney.ToString() + "$";
+            //player1Money.text = Table.Instance.player[0].playerMoney.ToString() + "$";
             player1Image.color = Table.Instance.player[0].playerColor;
 
             //Player 2
             player2Name.text = Table.Instance.player[1].playerName.ToString();
-            player2Money.text = Table.Instance.player[1].playerMoney.ToString() + "$";
+            //player2Money.text = Table.Instance.player[1].playerMoney.ToString() + "$";
             player2Image.color = Table.Instance.player[1].playerColor;
 
             //Player 3
             player3Name.text = Table.Instance.player[2].playerName.ToString();
-            player3Money.text = Table.Instance.player[2].playerMoney.ToString() + "$";
+            //player3Money.text = Table.Instance.player[2].playerMoney.ToString() + "$";
             player3Image.color = Table.Instance.player[2].playerColor;
 
             //Player 4
             player4Name.text = Table.Instance.player[3].playerName.ToString();
-            player4Money.text = Table.Instance.player[3].playerMoney.ToString() + "$";
+            //player4Money.text = Table.Instance.player[3].playerMoney.ToString() + "$";
             player4Image.color = Table.Instance.player[3].playerColor;
+
+            MoneyUpdate();
         }
         StartCoroutine(setInfo());
     }
@@ -518,11 +528,235 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    [Button]
+    public void MoneyUpdate()
+    {
+        Player p1 = _Table.player[0];
+        Player p2 = _Table.player[1];
+        Player p3 = _Table.player[2];
+        Player p4 = _Table.player[3];
+
+        IEnumerator p1Update()
+        {
+            print("p1 update");
+            int CountFPS = 30;
+            float Duration = 1f;
+            WaitForSeconds Wait = new WaitForSeconds(1f / CountFPS);
+            int newValue = p1.playerMoney;
+            int previousValue = p1.oldPlayerMoney;
+            int stepAmount;
+
+            if (newValue - previousValue < 0)
+            {
+                stepAmount = Mathf.FloorToInt((newValue - previousValue) / (CountFPS * Duration));
+            }
+            else
+            {
+                stepAmount = Mathf.CeilToInt((newValue - previousValue) / (CountFPS * Duration));
+            }
+
+            if (previousValue < newValue)
+            {
+                while (previousValue < newValue)
+                {
+                    previousValue += stepAmount;
+                    if (previousValue > newValue)
+                    {
+                        previousValue = newValue;
+                    }
+                    
+                    player1Money.text = previousValue.ToString("N0") + "$";
+
+                    yield return Wait;
+                }
+            }
+            else
+            {
+                while (previousValue > newValue)
+                {
+                    previousValue += stepAmount;
+                    if (previousValue < newValue)
+                    {
+                        previousValue = newValue;
+                    }
+                    
+                    player1Money.text = previousValue.ToString("N0") + "$";
+
+                    yield return Wait;
+                }
+            }
+            p1.oldPlayerMoney = p1.playerMoney;
+        }
+
+        IEnumerator p2Update()
+        {
+            print("p2 update");
+            int CountFPS = 30;
+            float Duration = 1f;
+            WaitForSeconds Wait = new WaitForSeconds(1f / CountFPS);
+            int newValue = p2.playerMoney;
+            int previousValue = p2.oldPlayerMoney;
+            int stepAmount;
+
+            if (newValue - previousValue < 0)
+            {
+                stepAmount = Mathf.FloorToInt((newValue - previousValue) / (CountFPS * Duration));
+            }
+            else
+            {
+                stepAmount = Mathf.CeilToInt((newValue - previousValue) / (CountFPS * Duration));
+            }
+
+            if (previousValue < newValue)
+            {
+                while (previousValue < newValue)
+                {
+                    previousValue += stepAmount;
+                    if (previousValue > newValue)
+                    {
+                        previousValue = newValue;
+                    }
+
+                    player2Money.text = previousValue.ToString("N0") + "$";
+
+                    yield return Wait;
+                }
+            }
+            else
+            {
+                while (previousValue > newValue)
+                {
+                    previousValue += stepAmount;
+                    if (previousValue < newValue)
+                    {
+                        previousValue = newValue;
+                    }
+
+                    player2Money.text = previousValue.ToString("N0") + "$";
+
+                    yield return Wait;
+                }
+            }
+            p2.oldPlayerMoney = p2.playerMoney;
+        }
+
+        IEnumerator p3Update()
+        {
+            print("p3 update");
+            int CountFPS = 30;
+            float Duration = 1f;
+            WaitForSeconds Wait = new WaitForSeconds(1f / CountFPS);
+            int newValue = p3.playerMoney;
+            int previousValue = p3.oldPlayerMoney;
+            int stepAmount;
+
+            if (newValue - previousValue < 0)
+            {
+                stepAmount = Mathf.FloorToInt((newValue - previousValue) / (CountFPS * Duration));
+            }
+            else
+            {
+                stepAmount = Mathf.CeilToInt((newValue - previousValue) / (CountFPS * Duration));
+            }
+
+            if (previousValue < newValue)
+            {
+                while (previousValue < newValue)
+                {
+                    previousValue += stepAmount;
+                    if (previousValue > newValue)
+                    {
+                        previousValue = newValue;
+                    }
+
+                    player3Money.text = previousValue.ToString("N0") + "$";
+
+                    yield return Wait;
+                }
+            }
+            else
+            {
+                while (previousValue > newValue)
+                {
+                    previousValue += stepAmount;
+                    if (previousValue < newValue)
+                    {
+                        previousValue = newValue;
+                    }
+
+                    player3Money.text = previousValue.ToString("N0") + "$";
+
+                    yield return Wait;
+                }
+            }
+            p3.oldPlayerMoney = p3.playerMoney;
+        }
+
+        IEnumerator p4Update()
+        {
+            print("p4 update");
+            int CountFPS = 30;
+            float Duration = 1f;
+            WaitForSeconds Wait = new WaitForSeconds(1f / CountFPS);
+            int newValue = p4.playerMoney;
+            int previousValue = p4.oldPlayerMoney;
+            int stepAmount;
+
+            if (newValue - previousValue < 0)
+            {
+                stepAmount = Mathf.FloorToInt((newValue - previousValue) / (CountFPS * Duration));
+            }
+            else
+            {
+                stepAmount = Mathf.CeilToInt((newValue - previousValue) / (CountFPS * Duration));
+            }
+
+            if (previousValue < newValue)
+            {
+                while (previousValue < newValue)
+                {
+                    previousValue += stepAmount;
+                    if (previousValue > newValue)
+                    {
+                        previousValue = newValue;
+                    }
+
+                    player4Money.text = previousValue.ToString("N0") + "$";
+
+                    yield return Wait;
+                }
+            }
+            else
+            {
+                while (previousValue > newValue)
+                {
+                    previousValue += stepAmount;
+                    if (previousValue < newValue)
+                    {
+                        previousValue = newValue;
+                    }
+
+                    player4Money.text = previousValue.ToString("N0") + "$";
+
+                    yield return Wait;
+                }
+            }
+            p4.oldPlayerMoney = p4.playerMoney;
+        }
+
+        StartCoroutine(p1Update());
+        StartCoroutine(p2Update());
+        StartCoroutine(p3Update());
+        StartCoroutine(p4Update());
+    }
+
     #endregion
 
     #region Actions
 
-    #region Active
+    //Active
+    //
+
     public void OptionsActive(bool value)
     {
         build.interactable = value;
@@ -536,17 +770,15 @@ public class UIManager : MonoBehaviour
     {
         endTurn.interactable = value;
     }
-    #endregion
 
-    #region Actions On_Click
+    //On_Click
+    //
 
     public void OnClick_EndTurn()
     {
         Table.Instance.SwitchPlayer();
         EndTurnActive(false);
     }
-
-    #endregion
 
     #endregion
 
@@ -928,9 +1160,30 @@ public class UIManager : MonoBehaviour
                 gtj_bluePawn.SetActive(false);
                 gtj_yellowPawn.SetActive(true);
             }
+
+            float timeConsumed = 0;
+
+            IEnumerator actions()
+            {
+                do
+                {
+                    yield return new WaitForSeconds(.2f);
+                    timeConsumed += .2f;
+                }
+                while (timeConsumed < 3);
+
+                if (timeConsumed > 3)
+                {
+                    OnClick_Done();
+                }
+            }
+
+            StartCoroutine(actions());
         }
         else if (_Table.slot[slotNumber].GetComponent<Slot>().cornerSlot.slotType == CornerSlot_Type.VisitingJail)
         {
+            float timeConsumed = 0;
+
 
             if (!_Table.getCurrentPlayer().isInJail)
             {
@@ -968,10 +1221,23 @@ public class UIManager : MonoBehaviour
                     vj_yellowPawn.SetActive(true);
                 }
             }
-            else
-            {
 
+            IEnumerator actions()
+            {
+                do
+                {
+                    yield return new WaitForSeconds(.2f);
+                    timeConsumed += .2f;
+                }
+                while (timeConsumed < 3);
+
+                if (timeConsumed > 3)
+                {
+                    OnClick_Done();
+                }
             }
+
+            StartCoroutine(actions());
         }
     }
 
@@ -1010,6 +1276,26 @@ public class UIManager : MonoBehaviour
             ij_bluePawn.SetActive(false);
             ij_yellowPawn.SetActive(true);
         }
+
+        //Pay Button
+        if (_Table.getCurrentPlayer().playerMoney > 100)
+        {
+            ij_Pay.interactable = true;
+        }
+        else
+        {
+            ij_Pay.interactable = false;
+        }
+
+        //Use Card
+        if (_Table.getCurrentPlayer().numberJailFreeCard > 0)
+        {
+            ij_useCard.interactable = true;
+        }
+        else
+        {
+            ij_useCard.interactable = false;
+        }
     }
 
     public void OnClick_Buy()
@@ -1027,6 +1313,21 @@ public class UIManager : MonoBehaviour
         HideInformationCard();
         //Then move player if needed
         _Table.getCurrentPlayer().LateMove();
+    }
+
+    public void OnClick_JailPay()
+    {
+        _Table.JailPay();
+    }
+
+    public void OnClick_JailUseCard()
+    {
+        _Table.JailUseCard();
+    }
+
+    public void OnClick_JailRollDouble()
+    {
+        _Table.JailRollDouble();
     }
 
     public void HideInformationCard()

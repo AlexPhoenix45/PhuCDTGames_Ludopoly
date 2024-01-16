@@ -6,25 +6,37 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [Header("Base Information")]
     public int currentSlot = 0;
     public int prvSlot = 0;
     public int playerIndex;
     public string playerName;
-    public int playerMoney;
     public Vector4 playerColor;
     public bool isMyTurn = false;
     public bool isInJail = false;
 
+    public bool hasSecondTurn = false;
+
     //Roll a double
+    [Header("Roll Double")]
     public int timesGetDoubles = 0;
+    public int timesNotGetDoubles = 0;
 
     //Late Move
+    [Header("Late Move")]
     public int temp_destinationSlot;
     public bool temp_isForward;
     public bool lateMoveSet = false;
 
-    //Jai;
+    //Jail
+    [Header("Jail")]
     public bool rollForJail = false;
+    public short numberJailFreeCard = 0;
+
+    //Money
+    [Header("Money")]
+    public int playerMoney = 1000;
+    public int oldPlayerMoney = 0;
 
     public void setPlayerIndex(int index)
     {
@@ -92,6 +104,12 @@ public class Player : MonoBehaviour
     {
         if (lateMoveSet)
         {
+            UIManager.Instance.EndTurnActive(false);
+            UIManager.Instance.OptionsActive(false);
+            if (isInJail && hasSecondTurn)
+            {
+                UIManager.Instance.DicesFacesActive();
+            }
             MoveToward(temp_destinationSlot, temp_isForward);
             lateMoveSet = false;
         }
@@ -124,6 +142,12 @@ public class Player : MonoBehaviour
             {
                 for (int i = prvSlot + 1; i <= currentSlot + 40; i++)
                 {
+                    if (i == 40)
+                    {
+                        print("Receive 200$");
+                        Table.Instance.CurrentPlayerReceiveBank(200);
+                    }
+
                     if (!isFastMove)
                     {
                         if (i <= 39)
@@ -188,7 +212,6 @@ public class Player : MonoBehaviour
                 UIManager.Instance.ShowIsInJail();
             }
         }
-
     }
 
     public bool getIsMyTurn()
@@ -199,36 +222,67 @@ public class Player : MonoBehaviour
     //Call whenever roll a double
     //
 
-    public void setTimesGetDoubles(bool hasDoubles)
+    public void setTimesGetDoubles(bool hasDoubles, bool rollForJail)
     {
-        if (hasDoubles)
+        if (!rollForJail)
         {
-            if (timesGetDoubles < 2)
+            if (hasDoubles)
             {
-                timesGetDoubles++;
-            }
-            else if (timesGetDoubles >= 2)
-            {
-                if (currentSlot < 10)
+                if (timesGetDoubles < 2)
                 {
-                    MoveToward(10, true);
+                    timesGetDoubles++;
+                    hasSecondTurn = true;
                 }
-                else if (currentSlot > 10)
+                else if (timesGetDoubles >= 2)
                 {
-                    MoveToward(10, false);
-                }
+                    if (currentSlot < 10)
+                    {
+                        MoveToward(10, true);
+                    }
+                    else if (currentSlot > 10)
+                    {
+                        MoveToward(10, false);
+                    }
 
-                print("GO TO JAIL!");
-                isInJail = true;    
+                    hasSecondTurn = false;
+                    print("GO TO JAIL!");
+                    isInJail = true;    
+                    timesGetDoubles = 0;
+                }
+            }
+            else
+            {
                 timesGetDoubles = 0;
+                hasSecondTurn = false;
             }
         }
         else
         {
-            timesGetDoubles = 0;
+            if (!hasDoubles)
+            {
+                if (timesNotGetDoubles < 2)
+                {
+                    timesNotGetDoubles++;
+                    UIManager.Instance.EndTurnActive(true);
+                }
+                else if (timesNotGetDoubles >= 2)
+                {
+                    print("pay 100$");
+                    Table.Instance.CurrentPlayerPayBank(100);
+                    isInJail = false;
+                    timesNotGetDoubles = 0;
+                }
+            }
+            else
+            {
+                timesNotGetDoubles = 0;
+                isInJail = false;
+            }
         }
     }
 
+    //Jail
+    //
     public void setIsInJail(bool value)
     {
         if (isInJail && !value)
@@ -242,4 +296,40 @@ public class Player : MonoBehaviour
             UIManager.Instance.DicesActive(false);
         }
     }
+
+    public void JailPay()
+    {
+        print("pay 100$");
+        isInJail = false;
+        UIManager.Instance.HideInformationCard();
+    }
+
+    public void JailUseCard()
+    {
+        if (numberJailFreeCard > 0)
+        {
+            numberJailFreeCard--;
+            isInJail = false;
+            UIManager.Instance.HideInformationCard();
+        }
+        else
+            return;
+    }
+
+    public void AddJailFreeCard()
+    {
+        numberJailFreeCard++;
+    }
+
+    #region Money
+    public void ReceiveMoney(int amount)
+    {
+        playerMoney += amount;
+    }
+
+    public void PayMoney(int amount)
+    {
+        playerMoney -= amount;
+    }
+    #endregion
 }

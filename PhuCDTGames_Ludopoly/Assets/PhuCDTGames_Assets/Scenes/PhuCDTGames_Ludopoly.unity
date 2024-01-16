@@ -4582,19 +4582,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 374039509}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1801566339}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnClick_Done
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &374039509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11360,15 +11348,19 @@ MonoBehaviour:
   prvSlot: 0
   playerIndex: 4
   playerName: Player 4
-  playerMoney: 1000
   playerColor: {x: 255, y: 255, z: 0, w: 255}
   isMyTurn: 0
   isInJail: 0
+  hasSecondTurn: 0
   timesGetDoubles: 0
+  timesNotGetDoubles: 0
   temp_destinationSlot: 0
   temp_isForward: 0
   lateMoveSet: 0
   rollForJail: 0
+  numberJailFreeCard: 0
+  playerMoney: 1000
+  oldPlayerMoney: 0
 --- !u!1 &1084966344
 GameObject:
   m_ObjectHideFlags: 0
@@ -12193,15 +12185,19 @@ MonoBehaviour:
   prvSlot: 0
   playerIndex: 3
   playerName: Player 3
-  playerMoney: 1000
   playerColor: {x: 0, y: 255, z: 0, w: 255}
   isMyTurn: 0
   isInJail: 0
+  hasSecondTurn: 0
   timesGetDoubles: 0
+  timesNotGetDoubles: 0
   temp_destinationSlot: 0
   temp_isForward: 0
   lateMoveSet: 0
   rollForJail: 0
+  numberJailFreeCard: 0
+  playerMoney: 1000
+  oldPlayerMoney: 0
 --- !u!1 &1172232077
 GameObject:
   m_ObjectHideFlags: 0
@@ -12737,7 +12733,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1205898818}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1801566339}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: OnClick_JailUseCard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1205898818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13077,15 +13085,19 @@ MonoBehaviour:
   prvSlot: 0
   playerIndex: 1
   playerName: Alex
-  playerMoney: 1000
   playerColor: {x: 255, y: 0, z: 0, w: 255}
   isMyTurn: 0
   isInJail: 0
+  hasSecondTurn: 0
   timesGetDoubles: 0
+  timesNotGetDoubles: 0
   temp_destinationSlot: 0
   temp_isForward: 0
   lateMoveSet: 0
   rollForJail: 0
+  numberJailFreeCard: 0
+  playerMoney: 1000
+  oldPlayerMoney: 0
 --- !u!1 &1335801888
 GameObject:
   m_ObjectHideFlags: 0
@@ -13679,15 +13691,19 @@ MonoBehaviour:
   prvSlot: 0
   playerIndex: 2
   playerName: Player 2
-  playerMoney: 1000
   playerColor: {x: 0, y: 0, z: 255, w: 255}
   isMyTurn: 0
   isInJail: 0
+  hasSecondTurn: 0
   timesGetDoubles: 0
+  timesNotGetDoubles: 0
   temp_destinationSlot: 0
   temp_isForward: 0
   lateMoveSet: 0
   rollForJail: 0
+  numberJailFreeCard: 0
+  playerMoney: 1000
+  oldPlayerMoney: 0
 --- !u!1 &1416133778
 GameObject:
   m_ObjectHideFlags: 0
@@ -14397,9 +14413,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1916538440}
-        m_TargetAssemblyTypeName: Table, Assembly-CSharp
-        m_MethodName: JailRollDouble
+      - m_Target: {fileID: 1801566339}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: OnClick_JailRollDouble
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15894,7 +15910,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1590070306}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1801566339}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: OnClick_JailPay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1590070306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18691,6 +18719,9 @@ MonoBehaviour:
   - {fileID: 1068305331}
   numOfPlayers: 4
   currentPlayer: 0
+  test_dice1: 0
+  test_dice2: 0
+  opentest: 0
 --- !u!1 &1920528614
 GameObject:
   m_ObjectHideFlags: 0

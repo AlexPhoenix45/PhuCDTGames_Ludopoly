@@ -6,3 +6,12 @@ hiện tại:
 cần làm:
 - khi tắt UI của thẻ Chance mới bắt đầu thực hiện di chuyển,sau đó hiện UI ô chỉ định
   khi người chơi không ấn tắt thì sẽ tự động tắt tỏng 2-3s
+
+Khi người chơi đi vào ô vào tù, khi đang di chuyển vẫn có thể ấn skip lượt, điều đó làm cho người chơi tiếp theo bị hiện UI Visiting Jail và skip lượt (x)
+khi vào tù, lựa chọn đổ xúc sắc đôi khi không ra xúc sắc đôi thì không hiện skip lượt 
+khi đổ xúc sắc đôi để ra được tù, người chơi không được phép tung thêm lần nữa
+trong quá trình di chuyển vào tù, người chơi vẫn có thể được lựa chọn 5 actions
+
+xúc sắc vẫn hiện mặc dù không ấn được khi người chơi đổ xúc sắc đôi vào ô vào tù
+
+chưa add tiền khi qua vạch xuất phát
