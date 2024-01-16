@@ -47,6 +47,7 @@ public class Table : MonoBehaviour
     bool opentest = false;
 
     //Roll
+    //
     public int[] RollDice() //The return just for UI
     {
         int dice1, dice2;
@@ -103,7 +104,13 @@ public class Table : MonoBehaviour
         return new int[] { dice1, dice2 };
     }
 
-    //Switch Player
+    //Get Slot script
+    public Slot getSlot(int slotNumber)
+    {
+        return slot[slotNumber].GetComponent<Slot>();
+    }
+
+    #region Player Switching and Getter
     public void SwitchPlayer() //Switch to next player
     {
         if (currentPlayer == CurrentPlayer.player1)
@@ -260,6 +267,8 @@ public class Table : MonoBehaviour
             return null;
         }
     }
+
+    #endregion
 
     #region Property Information Card Action And Show
     public void StandOnThisSlot(int slotNumber)
