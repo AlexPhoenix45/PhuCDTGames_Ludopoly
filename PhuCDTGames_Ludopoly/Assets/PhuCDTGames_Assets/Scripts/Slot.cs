@@ -47,6 +47,10 @@ public class Slot : MonoBehaviour
     public GameObject greenTag;
     public GameObject yellowTag;
 
+    [Header("Houses")]
+    public short numberOfHouse = 0;
+    public bool inSet = false;
+
     private void Start()
     {
         DisplaySlot();
@@ -106,21 +110,21 @@ public class Slot : MonoBehaviour
 
     #region Slot Information
 
-    public string getSlotName(Slot_Type sType)
+    public string getSlotName()
     {
-        if (sType == Slot_Type.ColorProperty)
+        if (slotType == Slot_Type.ColorProperty)
         {
             return colorProperty.propertyName;
         }
-        else if (sType == Slot_Type.SpecialProperty)
+        else if (slotType == Slot_Type.SpecialProperty)
         { 
             return specialProperty.propertyName;
         }
-        else if (sType == Slot_Type.SupriseSlot)
+        else if (slotType == Slot_Type.SupriseSlot)
         {
             return supriseSlot.slotName;
         }
-        else if (sType == Slot_Type.CornerSlot)
+        else if (slotType == Slot_Type.CornerSlot)
         {
             if (cornerSlot.slotType == CornerSlot_Type.Go)
             {
@@ -147,13 +151,13 @@ public class Slot : MonoBehaviour
         }
     }
 
-    public int getSlotPrice(Slot_Type sType)
+    public int getSlotPrice()
     {
-        if (sType == Slot_Type.ColorProperty)
+        if (slotType == Slot_Type.ColorProperty)
         {
             return colorProperty.propertyPrice;
         }
-        else if (sType == Slot_Type.SpecialProperty)
+        else if (slotType == Slot_Type.SpecialProperty)
         {
             return specialProperty.propertyPrice;
         }
@@ -161,15 +165,71 @@ public class Slot : MonoBehaviour
             return 0;
     }
 
-    public int getPropertyRent(Slot_Type sType)
+    public int getPropertyRent()
     {
-        if (sType == Slot_Type.ColorProperty)
+        if (slotType == Slot_Type.ColorProperty)
         {
-            return colorProperty.rentPrice;
+            if (numberOfHouse == 0)
+            {
+                if (!inSet)
+                {
+                    return colorProperty.rentPrice;
+                }
+                else
+                {
+                    return colorProperty.rentPrice_Set;
+                }
+            }
+            if (numberOfHouse == 1)
+            {
+                return colorProperty.rentPrice_1House;
+            }
+            else if (numberOfHouse == 2)
+            {
+                return colorProperty.rentPrice_2House;
+            }
+            else if (numberOfHouse == 3)
+            {
+                return colorProperty.rentPrice_3House;
+            }
+            else if (numberOfHouse == 4)
+            {
+                return colorProperty.rentPrice_4House;
+            }
+            else if (numberOfHouse == 5)
+            {
+                return colorProperty.rentPrice_Hotel;
+            }
+            else
+            {
+                return 0;
+            }
         }
-        else if (sType == Slot_Type.SpecialProperty)
+        else if (slotType == Slot_Type.SpecialProperty)
         {
-            return specialProperty.rentPrice;
+            if (specialProperty.propertyType == SpecialProperty_Type.RailRoad)
+            {
+                return 50 * getOwner().railroadOwned;
+            }
+            else if (specialProperty.propertyType == SpecialProperty_Type.Utility)
+            {
+                if (getOwner().utilityOwned == 1)
+                {
+                    return Table.Instance.getCurrentPlayer().currentDices * 4;
+                }
+                else if (getOwner().utilityOwned == 2)
+                {
+                    return Table.Instance.getCurrentPlayer().currentDices * 10;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                return 0;
+            }
         }
         else
         {
@@ -177,9 +237,9 @@ public class Slot : MonoBehaviour
         }
     }
 
-    public int getPropertyRent(Slot_Type sType, int numOfHouse)
+    public int getPropertyRent(int numOfHouse)
     {
-        if (sType == Slot_Type.ColorProperty)
+        if (slotType == Slot_Type.ColorProperty)
         {
             if (numOfHouse == 1)
             {
@@ -212,9 +272,9 @@ public class Slot : MonoBehaviour
         }
     }
 
-    public int getBuildPrice(Slot_Type sType)
+    public int getBuildPrice()
     {
-        if (sType == Slot_Type.ColorProperty)
+        if (slotType == Slot_Type.ColorProperty)
         {
             return colorProperty.buildPrice;
         }
@@ -224,9 +284,9 @@ public class Slot : MonoBehaviour
         }
     }
 
-    public int getMortgagePrice(Slot_Type sType)
+    public int getMortgagePrice()
     {
-        if (sType == Slot_Type.ColorProperty)
+        if (slotType == Slot_Type.ColorProperty)
         {
             return colorProperty.mortgagePrice;
         }
@@ -282,8 +342,6 @@ public class Slot : MonoBehaviour
 
     public Player getOwner() { return owner; }
 
-    public bool getIsOwned() { return isOwned; }
-
     #endregion
 
     #region Card Drawing
@@ -293,4 +351,13 @@ public class Slot : MonoBehaviour
     }
 
     #endregion
+
+    //Click on Slot to show Information
+    public void OnMouseDown()
+    {
+        if (slotType == Slot_Type.ColorProperty || slotType == Slot_Type.SpecialProperty)
+        {
+            UIManager.Instance.OnClick_ShowInformationCard(this);
+        }
+    }
 }

@@ -1,9 +1,9 @@
 using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -148,6 +148,66 @@ public class UIManager : MonoBehaviour
     public GameObject vj_bluePawn;
     public GameObject vj_yellowPawn;
 
+    #endregion
+
+    #region Money
+    [Header("Money")]
+    public GameObject moneyPanel;
+    public GameObject paidRentPanel;
+    public TextMeshProUGUI paidAmount;
+
+    [Header("Paid Profile")]
+    public GameObject pp_redPawn;
+    public GameObject pp_greenPawn;
+    public GameObject pp_bluePawn;
+    public GameObject pp_yellowPawn;
+
+    [Header("Collect Profile")]
+    public GameObject cp_redPawn;
+    public GameObject cp_greenPawn;
+    public GameObject cp_bluePawn;
+    public GameObject cp_yellowPawn;
+    #endregion
+
+    #region On-click Information
+    [Header("On-click Information")]
+    public GameObject Onclick_InformationPanel;
+    public GameObject Onclick_ColorPropertyInformationCard;
+    public GameObject Onclick_SpecialPropertyInformationCard;
+
+    [Header("OC Card Template")]
+    [Header("OC Color Property Information Card")]
+    public GameObject oc_cpi_brownCard;
+    public GameObject oc_cpi_blueCard;
+    public GameObject oc_cpi_greenCard;
+    public GameObject oc_cpi_orangeCard;
+    public GameObject oc_cpi_pinkCard;
+    public GameObject oc_cpi_purpleCard;
+    public GameObject oc_cpi_redCard;
+    public GameObject oc_cpi_yellowCard;
+
+    [Header("Information")]
+    public TextMeshProUGUI oc_cpi_propertyName;
+    public TextMeshProUGUI oc_cpi_rentPrice;
+    public TextMeshProUGUI oc_cpi_rentDescription;
+    public TextMeshProUGUI oc_cpi_house1;
+    public TextMeshProUGUI oc_cpi_house2;
+    public TextMeshProUGUI oc_cpi_house3;
+    public TextMeshProUGUI oc_cpi_house4;
+    public TextMeshProUGUI oc_cpi_hotel;
+    public TextMeshProUGUI oc_cpi_buildPrice;
+    public TextMeshProUGUI oc_cpi_mortgagePrice;
+
+    [Header("OC Railroads Information")]
+    [Header("OC Special Property Information Card")]
+    public GameObject oc_railroad_Panel;
+    public TextMeshProUGUI oc_rr_propertyName;
+
+    [Header("Utilities Information")]
+    public GameObject oc_utilities_Panel;
+    public TextMeshProUGUI oc_ut_propertyName;
+    public GameObject oc_ut_waterWorks_Image;
+    public GameObject oc_ut_electricCompany_Image;
     #endregion
 
     private void Start()
@@ -448,7 +508,7 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region Player
+    #region Player & Money
 
     public void setPlayerInfo()
     {
@@ -538,13 +598,13 @@ public class UIManager : MonoBehaviour
 
         IEnumerator p1Update()
         {
-            print("p1 update");
             int CountFPS = 30;
-            float Duration = 1f;
+            float Duration = .5f;
             WaitForSeconds Wait = new WaitForSeconds(1f / CountFPS);
             int newValue = p1.playerMoney;
             int previousValue = p1.oldPlayerMoney;
             int stepAmount;
+            print("p1 update: \nold: " + previousValue.ToString() + " new: " + newValue.ToString());
 
             if (newValue - previousValue < 0)
             {
@@ -590,13 +650,13 @@ public class UIManager : MonoBehaviour
 
         IEnumerator p2Update()
         {
-            print("p2 update");
             int CountFPS = 30;
-            float Duration = 1f;
+            float Duration = .5f;
             WaitForSeconds Wait = new WaitForSeconds(1f / CountFPS);
             int newValue = p2.playerMoney;
             int previousValue = p2.oldPlayerMoney;
             int stepAmount;
+            print("p2 update: \nold: " + previousValue.ToString() + " new: " + newValue.ToString());
 
             if (newValue - previousValue < 0)
             {
@@ -642,13 +702,13 @@ public class UIManager : MonoBehaviour
 
         IEnumerator p3Update()
         {
-            print("p3 update");
             int CountFPS = 30;
-            float Duration = 1f;
+            float Duration = .5f;
             WaitForSeconds Wait = new WaitForSeconds(1f / CountFPS);
             int newValue = p3.playerMoney;
             int previousValue = p3.oldPlayerMoney;
             int stepAmount;
+            print("p3 update: \nold: " + previousValue.ToString() + " new: " + newValue.ToString());
 
             if (newValue - previousValue < 0)
             {
@@ -694,13 +754,13 @@ public class UIManager : MonoBehaviour
 
         IEnumerator p4Update()
         {
-            print("p4 update");
             int CountFPS = 30;
-            float Duration = 1f;
+            float Duration = .5f;
             WaitForSeconds Wait = new WaitForSeconds(1f / CountFPS);
             int newValue = p4.playerMoney;
             int previousValue = p4.oldPlayerMoney;
             int stepAmount;
+            print("p4 update: \nold: " + previousValue.ToString() + " new: " + newValue.ToString());
 
             if (newValue - previousValue < 0)
             {
@@ -750,6 +810,89 @@ public class UIManager : MonoBehaviour
         StartCoroutine(p4Update());
     }
 
+    public void ShowRentPaidUI(Player p_paid, Player p_collect, int amount)
+    {
+        moneyPanel.SetActive(true);
+        paidRentPanel.SetActive(true);
+
+        Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
+        paidRentPanel.transform.position = pos;
+
+        if (p_paid.playerColor == new Vector4(255, 0, 0, 255)) //red
+        {
+            pp_redPawn.SetActive(true);
+            pp_greenPawn.SetActive(false);
+            pp_bluePawn.SetActive(false);
+            pp_yellowPawn.SetActive(false);
+        }
+        else if (p_paid.playerColor == new Vector4(0, 0, 255, 255)) //blue
+        {
+            pp_redPawn.SetActive(false);
+            pp_greenPawn.SetActive(false);
+            pp_bluePawn.SetActive(true);
+            pp_yellowPawn.SetActive(false);
+        }
+        else if (p_paid.playerColor == new Vector4(0, 255, 0, 255)) //green
+        {
+            pp_redPawn.SetActive(false);
+            pp_greenPawn.SetActive(true);
+            pp_bluePawn.SetActive(false);
+            pp_yellowPawn.SetActive(false);
+        }
+        else if (p_paid.playerColor == new Vector4(255, 255, 0, 255)) //yellow
+        {
+            pp_redPawn.SetActive(false);
+            pp_greenPawn.SetActive(false);
+            pp_bluePawn.SetActive(false);
+            pp_yellowPawn.SetActive(true);
+        }
+
+        if (p_collect.playerColor == new Vector4(255, 0, 0, 255)) //red
+        {
+            cp_redPawn.SetActive(true);
+            cp_greenPawn.SetActive(false);
+            cp_bluePawn.SetActive(false);
+            cp_yellowPawn.SetActive(false);
+        }
+        else if (p_collect.playerColor == new Vector4(0, 0, 255, 255)) //blue
+        {
+            cp_redPawn.SetActive(false);
+            cp_greenPawn.SetActive(false);
+            cp_bluePawn.SetActive(true);
+            cp_yellowPawn.SetActive(false);
+        }
+        else if (p_collect.playerColor == new Vector4(0, 255, 0, 255)) //green
+        {
+            cp_redPawn.SetActive(false);
+            cp_greenPawn.SetActive(true);
+            cp_bluePawn.SetActive(false);
+            cp_yellowPawn.SetActive(false);
+        }
+        else if (p_collect.playerColor == new Vector4(255, 255, 0, 255)) //yellow
+        {
+            cp_redPawn.SetActive(false);
+            cp_greenPawn.SetActive(false);
+            cp_bluePawn.SetActive(false);
+            cp_yellowPawn.SetActive(true);
+        }
+
+        paidAmount.text = amount.ToString() + "$";
+
+        IEnumerator wait()
+        {
+            float timeConsumed = 0f;
+            do
+            {
+                yield return new WaitForSeconds(1f);
+                timeConsumed = 1f;
+            }
+            while (timeConsumed < 1);
+            paidRentPanel.SetActive(false);
+            moneyPanel.SetActive(false);
+        }
+        StartCoroutine(wait());
+    }
+
     #endregion
 
     #region Actions
@@ -786,7 +929,8 @@ public class UIManager : MonoBehaviour
     public void ShowInformationCard(int slotNumber)
     {
         Slot_Type type;
-        type = _Table.slot[slotNumber].GetComponent<Slot>().slotType;
+        type = _Table.getSlot(slotNumber).slotType;
+        OnClick_CloseOnClickInformation();
         if (type == Slot_Type.ColorProperty)
         {
             ShowColorPropertyCard(slotNumber);
@@ -813,18 +957,18 @@ public class UIManager : MonoBehaviour
         Vector2 pos  = Camera.main.WorldToScreenPoint(_Table.transform.position);
 
         colorPropertyInformationCard.transform.position = pos;
-        cpi_propertyName.text = _Table.slot[slotNumber].GetComponent<Slot>().getSlotName(Slot_Type.ColorProperty).ToUpper();
-        cpi_rentPrice.text = "RENT $" + _Table.slot[slotNumber].GetComponent<Slot>().getPropertyRent(Slot_Type.ColorProperty).ToString();
+        cpi_propertyName.text = _Table.getSlot(slotNumber).getSlotName().ToUpper();
+        cpi_rentPrice.text = "RENT $" + _Table.getSlot(slotNumber).getPropertyRent().ToString();
         cpi_rentDescription.text = "Rent is doubled on owning all unimproved sites in the group.";
-        cpi_house1.text = "$" + _Table.slot[slotNumber].GetComponent<Slot>().getPropertyRent(Slot_Type.ColorProperty, 1).ToString();
-        cpi_house2.text = "$" + _Table.slot[slotNumber].GetComponent<Slot>().getPropertyRent(Slot_Type.ColorProperty, 2).ToString();
-        cpi_house3.text = "$" + _Table.slot[slotNumber].GetComponent<Slot>().getPropertyRent(Slot_Type.ColorProperty, 3).ToString();
-        cpi_house4.text = "$" + _Table.slot[slotNumber].GetComponent<Slot>().getPropertyRent(Slot_Type.ColorProperty, 4).ToString();
-        cpi_hotel.text = "$" + _Table.slot[slotNumber].GetComponent<Slot>().getPropertyRent(Slot_Type.ColorProperty, 5).ToString();
-        cpi_buildPrice.text = "Contruction $" + _Table.slot[slotNumber].GetComponent<Slot>().getBuildPrice(Slot_Type.ColorProperty).ToString() + " each";
-        cpi_mortgagePrice.text = "Mortgage $" + _Table.slot[slotNumber].GetComponent<Slot>().getMortgagePrice(Slot_Type.ColorProperty).ToString() + " each";
+        cpi_house1.text = "$" + _Table.getSlot(slotNumber).getPropertyRent(1).ToString();
+        cpi_house2.text = "$" + _Table.getSlot(slotNumber).getPropertyRent(2).ToString();
+        cpi_house3.text = "$" + _Table.getSlot(slotNumber).getPropertyRent(3).ToString();
+        cpi_house4.text = "$" + _Table.getSlot(slotNumber).getPropertyRent(4).ToString();
+        cpi_hotel.text = "$" + _Table.getSlot(slotNumber).getPropertyRent(5).ToString();
+        cpi_buildPrice.text = "Contruction $" + _Table.getSlot(slotNumber).getBuildPrice().ToString() + " each";
+        cpi_mortgagePrice.text = "Mortgage $" + _Table.getSlot(slotNumber).getMortgagePrice().ToString() + " each";
 
-        if (_Table.slot[slotNumber].GetComponent<Slot>().colorProperty.propertyColor == ColorProperty_Color.Brown)
+        if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Brown)
         {
             cpi_brownCard.SetActive(true);
             cpi_blueCard.SetActive(false);
@@ -835,7 +979,7 @@ public class UIManager : MonoBehaviour
             cpi_redCard.SetActive(false);
             cpi_yellowCard.SetActive(false);
         }
-        else if (_Table.slot[slotNumber].GetComponent<Slot>().colorProperty.propertyColor == ColorProperty_Color.Blue)
+        else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Blue)
         {
             cpi_brownCard.SetActive(false);
             cpi_blueCard.SetActive(true);
@@ -846,7 +990,7 @@ public class UIManager : MonoBehaviour
             cpi_redCard.SetActive(false);
             cpi_yellowCard.SetActive(false);
         }
-        else if (_Table.slot[slotNumber].GetComponent<Slot>().colorProperty.propertyColor == ColorProperty_Color.Green)
+        else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Green)
         {
             cpi_brownCard.SetActive(false);
             cpi_blueCard.SetActive(false);
@@ -857,7 +1001,7 @@ public class UIManager : MonoBehaviour
             cpi_redCard.SetActive(false);
             cpi_yellowCard.SetActive(false);
         }
-        else if (_Table.slot[slotNumber].GetComponent<Slot>().colorProperty.propertyColor == ColorProperty_Color.Orange)
+        else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Orange)
         {
             cpi_brownCard.SetActive(false);
             cpi_blueCard.SetActive(false);
@@ -868,7 +1012,7 @@ public class UIManager : MonoBehaviour
             cpi_redCard.SetActive(false);
             cpi_yellowCard.SetActive(false);
         }
-        else if (_Table.slot[slotNumber].GetComponent<Slot>().colorProperty.propertyColor == ColorProperty_Color.Pink)
+        else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Pink)
         {
             cpi_brownCard.SetActive(false);
             cpi_blueCard.SetActive(false);
@@ -879,7 +1023,7 @@ public class UIManager : MonoBehaviour
             cpi_redCard.SetActive(false);
             cpi_yellowCard.SetActive(false);
         }
-        else if (_Table.slot[slotNumber].GetComponent<Slot>().colorProperty.propertyColor == ColorProperty_Color.Purple)
+        else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Purple)
         {
             cpi_brownCard.SetActive(false);
             cpi_blueCard.SetActive(false);
@@ -890,7 +1034,7 @@ public class UIManager : MonoBehaviour
             cpi_redCard.SetActive(false);
             cpi_yellowCard.SetActive(false);
         }
-        else if (_Table.slot[slotNumber].GetComponent<Slot>().colorProperty.propertyColor == ColorProperty_Color.Red)
+        else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Red)
         {
             cpi_brownCard.SetActive(false);
             cpi_blueCard.SetActive(false);
@@ -901,7 +1045,7 @@ public class UIManager : MonoBehaviour
             cpi_redCard.SetActive(true);
             cpi_yellowCard.SetActive(false);
         }
-        else if (_Table.slot[slotNumber].GetComponent<Slot>().colorProperty.propertyColor == ColorProperty_Color.Yellow)
+        else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Yellow)
         {
             cpi_brownCard.SetActive(false);
             cpi_blueCard.SetActive(false);
@@ -922,29 +1066,29 @@ public class UIManager : MonoBehaviour
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         specialPropertyInformationCard.transform.position = pos;
 
-        if (_Table.slot[slotNumber].GetComponent<Slot>().specialProperty.propertyType == SpecialProperty_Type.RailRoad)
+        if (_Table.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.RailRoad)
         {
             railroad_Panel.SetActive(true);
             utilities_Panel.SetActive(false);
 
-            rr_propertyName.text = _Table.slot[slotNumber].GetComponent<Slot>().getSlotName(Slot_Type.SpecialProperty);
+            rr_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
         }
-        else if (_Table.slot[slotNumber].GetComponent<Slot>().specialProperty.propertyType == SpecialProperty_Type.Utility)
+        else if (_Table.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.Utility)
         {
             railroad_Panel.SetActive(false);
             utilities_Panel.SetActive(true);
 
-            if (_Table.slot[slotNumber].GetComponent<Slot>().specialProperty.utilityType == Utility_Type.WaterRorks)
+            if (_Table.getSlot(slotNumber).specialProperty.utilityType == Utility_Type.WaterRorks)
             {
                 ut_waterWorks_Image.SetActive(true);
                 ut_electricCompany_Image.SetActive(false);
-                ut_propertyName.text = _Table.slot[slotNumber].GetComponent<Slot>().getSlotName(Slot_Type.SpecialProperty);
+                ut_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
             }
-            else if (_Table.slot[slotNumber].GetComponent<Slot>().specialProperty.utilityType == Utility_Type.ElectricCompany)
+            else if (_Table.getSlot(slotNumber).specialProperty.utilityType == Utility_Type.ElectricCompany)
             {
                 ut_waterWorks_Image.SetActive(false);
                 ut_electricCompany_Image.SetActive(true);
-                ut_propertyName.text = _Table.slot[slotNumber].GetComponent<Slot>().getSlotName(Slot_Type.SpecialProperty);
+                ut_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
             }
         }
     }
@@ -953,8 +1097,8 @@ public class UIManager : MonoBehaviour
     public void ShowSupriseCard(int slotNumber)
     {
         float timeConsumed = 0;
-        int chanceCardNumber = _Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.DrawChance();
-        int communityChestNumber = _Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.DrawCommunityChest();
+        int chanceCardNumber = _Table.getSlot(slotNumber).supriseSlot.DrawChance();
+        int communityChestNumber = _Table.getSlot(slotNumber).supriseSlot.DrawCommunityChest();
         informationPanel.SetActive(true);
         supriseInformationCard.SetActive(true);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
@@ -966,7 +1110,7 @@ public class UIManager : MonoBehaviour
         {
             do
             {
-                if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.Chance)
+                if (_Table.getSlot(slotNumber).supriseSlot.slotType == SupriseSlot_Type.Chance)
                 {
                     chanceAndCommunityChestInformation.SetActive(true);
                     taxInformation.SetActive(false);
@@ -1028,7 +1172,7 @@ public class UIManager : MonoBehaviour
                             break;
                     }
                 }
-                else if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.CommunityChest)
+                else if (_Table.getSlot(slotNumber).supriseSlot.slotType == SupriseSlot_Type.CommunityChest)
                 {
                     chanceAndCommunityChestInformation.SetActive(true);
                     taxInformation.SetActive(false);
@@ -1090,18 +1234,18 @@ public class UIManager : MonoBehaviour
                             break;
                     }
                 }
-                else if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.Tax)
+                else if (_Table.getSlot(slotNumber).supriseSlot.slotType == SupriseSlot_Type.Tax)
                 {
 
                     chanceAndCommunityChestInformation.SetActive(false);
                     taxInformation.SetActive(true);
 
-                    if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.taxPrice == 100)
+                    if (_Table.getSlot(slotNumber).supriseSlot.taxPrice == 100)
                     {
                         t_title.text = "SUPER TAX";
                         t_description.text = "PAY $100";
                     }
-                    else if (_Table.slot[slotNumber].GetComponent<Slot>().supriseSlot.taxPrice == 200)
+                    else if (_Table.getSlot(slotNumber).supriseSlot.taxPrice == 200)
                     {
                         t_title.text = "INCOME TAX";
                         t_description.text = "PAY $200";
@@ -1122,7 +1266,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowCornerCard(int slotNumber)
     {
-        if (_Table.slot[slotNumber].GetComponent<Slot>().cornerSlot.slotType == CornerSlot_Type.GoToJail)
+        if (_Table.getSlot(slotNumber).cornerSlot.slotType == CornerSlot_Type.GoToJail)
         {
             _Table.getCurrentPlayer().setIsInJail(true);
             _Table.getCurrentPlayer().setLateMove(10, false);
@@ -1180,7 +1324,7 @@ public class UIManager : MonoBehaviour
 
             StartCoroutine(actions());
         }
-        else if (_Table.slot[slotNumber].GetComponent<Slot>().cornerSlot.slotType == CornerSlot_Type.VisitingJail)
+        else if (_Table.getSlot(slotNumber).cornerSlot.slotType == CornerSlot_Type.VisitingJail)
         {
             float timeConsumed = 0;
 
@@ -1330,6 +1474,204 @@ public class UIManager : MonoBehaviour
         _Table.JailRollDouble();
     }
 
+    //Hold to see board (Pending)
+    //
+
+    //On Click Show Information Card
+    public void OnClick_ShowInformationCard(Slot tempSlot)
+    {
+        if (tempSlot.slotType == Slot_Type.ColorProperty)
+        {
+            OCShowColorPropertyCard(tempSlot);
+        }
+        else if (tempSlot.slotType == Slot_Type.SpecialProperty)
+        {
+            OCShowSpecialPropertyCard(tempSlot);
+        }
+    }
+
+    public void OCShowColorPropertyCard(Slot tempSlot)
+    {
+        Onclick_InformationPanel.SetActive(true);
+        Onclick_ColorPropertyInformationCard.SetActive(true);
+        Onclick_SpecialPropertyInformationCard.SetActive(false);
+
+        Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
+
+        Onclick_ColorPropertyInformationCard.transform.position = pos;
+        oc_cpi_propertyName.text = tempSlot.getSlotName().ToUpper();
+        oc_cpi_rentPrice.text = "RENT $" + tempSlot.getPropertyRent().ToString();
+        oc_cpi_rentDescription.text = "Rent is doubled on owning all unimproved sites in the group.";
+        oc_cpi_house1.text = "$" + tempSlot.getPropertyRent(1).ToString();
+        oc_cpi_house2.text = "$" + tempSlot.getPropertyRent(2).ToString();
+        oc_cpi_house3.text = "$" + tempSlot.getPropertyRent(3).ToString();
+        oc_cpi_house4.text = "$" + tempSlot.getPropertyRent(4).ToString();
+        oc_cpi_hotel.text = "$" + tempSlot.getPropertyRent(5).ToString();
+        oc_cpi_buildPrice.text = "Contruction $" + tempSlot.getBuildPrice().ToString() + " each";
+        oc_cpi_mortgagePrice.text = "Mortgage $" + tempSlot.getMortgagePrice().ToString() + " each";
+
+        if (tempSlot.colorProperty.propertyColor == ColorProperty_Color.Brown)
+        {
+            oc_cpi_brownCard.SetActive(true);
+            oc_cpi_blueCard.SetActive(false);
+            oc_cpi_greenCard.SetActive(false);
+            oc_cpi_orangeCard.SetActive(false);
+            oc_cpi_pinkCard.SetActive(false);
+            oc_cpi_purpleCard.SetActive(false);
+            oc_cpi_redCard.SetActive(false);
+            oc_cpi_yellowCard.SetActive(false);
+        }
+        else if (tempSlot.colorProperty.propertyColor == ColorProperty_Color.Blue)
+        {
+            oc_cpi_brownCard.SetActive(false);
+            oc_cpi_blueCard.SetActive(true);
+            oc_cpi_greenCard.SetActive(false);
+            oc_cpi_orangeCard.SetActive(false);
+            oc_cpi_pinkCard.SetActive(false);
+            oc_cpi_purpleCard.SetActive(false);
+            oc_cpi_redCard.SetActive(false);
+            oc_cpi_yellowCard.SetActive(false);
+        }
+        else if (tempSlot.colorProperty.propertyColor == ColorProperty_Color.Green)
+        {
+            oc_cpi_brownCard.SetActive(false);
+            oc_cpi_blueCard.SetActive(false);
+            oc_cpi_greenCard.SetActive(true);
+            oc_cpi_orangeCard.SetActive(false);
+            oc_cpi_pinkCard.SetActive(false);
+            oc_cpi_purpleCard.SetActive(false);
+            oc_cpi_redCard.SetActive(false);
+            oc_cpi_yellowCard.SetActive(false);
+        }
+        else if (tempSlot.colorProperty.propertyColor == ColorProperty_Color.Orange)
+        {
+            oc_cpi_brownCard.SetActive(false);
+            oc_cpi_blueCard.SetActive(false);
+            oc_cpi_greenCard.SetActive(false);
+            oc_cpi_orangeCard.SetActive(true);
+            oc_cpi_pinkCard.SetActive(false);
+            oc_cpi_purpleCard.SetActive(false);
+            oc_cpi_redCard.SetActive(false);
+            oc_cpi_yellowCard.SetActive(false);
+        }
+        else if (tempSlot.colorProperty.propertyColor == ColorProperty_Color.Pink)
+        {
+            oc_cpi_brownCard.SetActive(false);
+            oc_cpi_blueCard.SetActive(false);
+            oc_cpi_greenCard.SetActive(false);
+            oc_cpi_orangeCard.SetActive(false);
+            oc_cpi_pinkCard.SetActive(true);
+            oc_cpi_purpleCard.SetActive(false);
+            oc_cpi_redCard.SetActive(false);
+            oc_cpi_yellowCard.SetActive(false);
+        }
+        else if (tempSlot.colorProperty.propertyColor == ColorProperty_Color.Purple)
+        {
+            oc_cpi_brownCard.SetActive(false);
+            oc_cpi_blueCard.SetActive(false);
+            oc_cpi_greenCard.SetActive(false);
+            oc_cpi_orangeCard.SetActive(false);
+            oc_cpi_pinkCard.SetActive(false);
+            oc_cpi_purpleCard.SetActive(true);
+            oc_cpi_redCard.SetActive(false);
+            oc_cpi_yellowCard.SetActive(false);
+        }
+        else if (tempSlot.colorProperty.propertyColor == ColorProperty_Color.Red)
+        {
+            oc_cpi_brownCard.SetActive(false);
+            oc_cpi_blueCard.SetActive(false);
+            oc_cpi_greenCard.SetActive(false);
+            oc_cpi_orangeCard.SetActive(false);
+            oc_cpi_pinkCard.SetActive(false);
+            oc_cpi_purpleCard.SetActive(false);
+            oc_cpi_redCard.SetActive(true);
+            oc_cpi_yellowCard.SetActive(false);
+        }
+        else if (tempSlot.colorProperty.propertyColor == ColorProperty_Color.Yellow)
+        {
+            oc_cpi_brownCard.SetActive(false);
+            oc_cpi_blueCard.SetActive(false);
+            oc_cpi_greenCard.SetActive(false);
+            oc_cpi_orangeCard.SetActive(false);
+            oc_cpi_pinkCard.SetActive(false);
+            oc_cpi_purpleCard.SetActive(false);
+            oc_cpi_redCard.SetActive(false);
+            oc_cpi_yellowCard.SetActive(true);
+        }
+    }
+
+    public void OCShowSpecialPropertyCard(Slot tempSlot)
+    {
+        Onclick_InformationPanel.SetActive(true);
+        Onclick_SpecialPropertyInformationCard.SetActive(true);
+        Onclick_ColorPropertyInformationCard.SetActive(false);
+
+        Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
+        Onclick_SpecialPropertyInformationCard.transform.position = pos;
+
+        if (tempSlot.specialProperty.propertyType == SpecialProperty_Type.RailRoad)
+        {
+            oc_railroad_Panel.SetActive(true);
+            oc_utilities_Panel.SetActive(false);
+
+            oc_rr_propertyName.text = tempSlot.getSlotName();
+        }
+        else if (tempSlot.specialProperty.propertyType == SpecialProperty_Type.Utility)
+        {
+            oc_railroad_Panel.SetActive(false);
+            oc_utilities_Panel.SetActive(true);
+
+            if (tempSlot.specialProperty.utilityType == Utility_Type.WaterRorks)
+            {
+                oc_ut_waterWorks_Image.SetActive(true);
+                oc_ut_electricCompany_Image.SetActive(false);
+                oc_ut_propertyName.text = tempSlot.getSlotName();
+            }
+            else if (tempSlot.specialProperty.utilityType == Utility_Type.ElectricCompany)
+            {
+                oc_ut_waterWorks_Image.SetActive(false);
+                oc_ut_electricCompany_Image.SetActive(true);
+                oc_ut_propertyName.text = tempSlot.getSlotName();
+            }
+        }
+    }
+
+    public void OnClick_CloseOnClickInformation()
+    {
+        Onclick_SpecialPropertyInformationCard.SetActive(false);
+        Onclick_ColorPropertyInformationCard.SetActive(false);
+        Onclick_InformationPanel.SetActive(false);
+    }
+
+    public void PointerDown_ShowBoard(bool _down)
+    {
+        if (_down)
+        {
+            StartCoroutine(showColor());
+            IEnumerator showColor()
+            {
+                Color shown = new Color(0f, 0f, 0f, 0.3529412f);
+                Color unshown = new Color(0f, 0f, 0f, 0f);
+                informationPanel.GetComponent<Image>().color = Color.Lerp(shown, unshown, Mathf.PingPong(Time.time, .2f));
+                yield return new WaitForSeconds(.2f);
+            }
+            print("down");
+        }
+        else
+        {
+
+            StartCoroutine(showColor());
+            IEnumerator showColor()
+            {
+                Color shown = new Color(0f, 0f, 0f, 0.3529412f);
+                Color unshown = new Color(0f, 0f, 0f, 0f);
+                informationPanel.GetComponent<Image>().color = Color.Lerp(unshown, shown, Mathf.PingPong(Time.time, .2f));
+                yield return new WaitForSeconds(.2f);
+            }
+            print("up");
+        }
+    }
+
     public void HideInformationCard()
     {
         informationPanel.SetActive(false);
@@ -1342,6 +1684,8 @@ public class UIManager : MonoBehaviour
         inJailPanel.SetActive(false);
         goToJailPanel.SetActive(false);
         visitingJailPanel.SetActive(false);
+
+        MoneyUpdate();
     }
     #endregion
 }

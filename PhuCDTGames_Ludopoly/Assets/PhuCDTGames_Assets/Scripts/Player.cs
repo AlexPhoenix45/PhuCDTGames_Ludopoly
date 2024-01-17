@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [Header("Base Information")]
+    //Base Information
+    //
     public int currentSlot = 0;
     public int prvSlot = 0;
     public int playerIndex;
@@ -18,25 +19,33 @@ public class Player : MonoBehaviour
     public bool hasSecondTurn = false;
 
     //Roll a double
-    [Header("Roll Double")]
+    //
     public int timesGetDoubles = 0;
     public int timesNotGetDoubles = 0;
+    public int currentDices;
 
     //Late Move
-    [Header("Late Move")]
+    //
     public int temp_destinationSlot;
     public bool temp_isForward;
     public bool lateMoveSet = false;
 
     //Jail
-    [Header("Jail")]
+    //
     public bool rollForJail = false;
     public short numberJailFreeCard = 0;
 
     //Money
-    [Header("Money")]
+    //
     public int playerMoney = 1000;
     public int oldPlayerMoney = 0;
+
+    //House
+    //
+    public short houseOwned = 0;
+    public short hotelOwned = 0;
+    public short railroadOwned = 0;
+    public short utilityOwned = 0;
 
     public void setPlayerIndex(int index)
     {
@@ -145,7 +154,7 @@ public class Player : MonoBehaviour
                     if (i == 40)
                     {
                         print("Receive 200$");
-                        Table.Instance.CurrentPlayerReceiveBank(200);
+                        Table.Instance.CurrentPlayerInstantReceiveBank(200);
                     }
 
                     if (!isFastMove)

@@ -391,6 +391,7 @@ GameObject:
   - component: {fileID: 3882657721485511061}
   - component: {fileID: 1406428019018402819}
   - component: {fileID: 1197293388765512049}
+  - component: {fileID: -65156077542597516}
   m_Layer: 0
   m_Name: Bottom Slot
   m_TagString: Untagged
@@ -514,6 +515,32 @@ MonoBehaviour:
   blueTag: {fileID: 6406887741274836884}
   greenTag: {fileID: 1325010738426354413}
   yellowTag: {fileID: 4081095993591047915}
+--- !u!61 &-65156077542597516
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1965843160720955417}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1.6}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.6}
+  m_EdgeRadius: 0
 --- !u!1 &1992599249777539275
 GameObject:
   m_ObjectHideFlags: 0

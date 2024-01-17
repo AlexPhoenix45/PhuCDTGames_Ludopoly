@@ -106,3 +106,11 @@ public enum CommunityChestCards
     Beauty, //Colelct 10$
     Inherit, //Collect 100$
 }
+
+public enum CurrentPlayer
+{
+    player1,
+    player2,
+    player3,
+    player4,
+}

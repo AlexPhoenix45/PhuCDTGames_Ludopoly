@@ -60,6 +60,8 @@ public class Table : MonoBehaviour
             dice2 = test_dice2;
         }
 
+        getCurrentPlayer().currentDices = dice1 + dice2;
+
         _UIManager.DicesActive(false);
 
         if (!getCurrentPlayer().rollForJail)
@@ -105,6 +107,8 @@ public class Table : MonoBehaviour
     }
 
     //Get Slot script
+    //
+
     public Slot getSlot(int slotNumber)
     {
         return slot[slotNumber].GetComponent<Slot>();
@@ -273,16 +277,16 @@ public class Table : MonoBehaviour
     #region Property Information Card Action And Show
     public void StandOnThisSlot(int slotNumber)
     {
-        if (!slot[slotNumber].GetComponent<Slot>().getIsOwned()) //If that slot didnt have an owner
+        if (!getSlot(slotNumber).isOwned) //If that slot didnt have an owner
         {
             //Call Property Information Card
             _UIManager.ShowInformationCard(slotNumber);
 
-            if (slot[slotNumber].GetComponent<Slot>().slotType == Slot_Type.SupriseSlot) //Suprise slot
+            if (getSlot(slotNumber).slotType == Slot_Type.SupriseSlot) //Suprise slot
             {
-                if (slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.Chance)
+                if (getSlot(slotNumber).supriseSlot.slotType == SupriseSlot_Type.Chance)
                 {
-                    ChanceCards chanceCardsType = slot[slotNumber].GetComponent<Slot>().supriseSlot.chanceCards;
+                    ChanceCards chanceCardsType = getSlot(slotNumber).supriseSlot.chanceCards;
                     getCurrentPlayer().hasSecondTurn = false; //no second turn after executing cards
                     //Process Chance Card in here
 
@@ -451,10 +455,10 @@ public class Table : MonoBehaviour
                             break;
                     }
                 }
-                else if (slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.CommunityChest)
+                else if (getSlot(slotNumber).supriseSlot.slotType == SupriseSlot_Type.CommunityChest)
                 {
                     //Process Community Chest Card in here
-                    CommunityChestCards communityChestCardsType = slot[slotNumber].GetComponent<Slot>().supriseSlot.communityChestCards;
+                    CommunityChestCards communityChestCardsType = getSlot(slotNumber).supriseSlot.communityChestCards;
                     getCurrentPlayer().hasSecondTurn = false; //no second turn after executing cards
 
                     switch (communityChestCardsType)
@@ -546,26 +550,42 @@ public class Table : MonoBehaviour
                             break;
                     }
                 }
-                else if (slot[slotNumber].GetComponent<Slot>().supriseSlot.slotType == SupriseSlot_Type.Tax)
+                else if (getSlot(slotNumber).supriseSlot.slotType == SupriseSlot_Type.Tax)
                 {
                     //Process Tax Card in here
+                    print("Paid " + getSlot(slotNumber).supriseSlot.taxPrice);
+                    CurrentPlayerPayBank(getSlot(slotNumber).supriseSlot.taxPrice);
                 }
             }
         }
         else //has to paid slot
         {
-            if (slot[slotNumber].GetComponent<Slot>().slotType == Slot_Type.ColorProperty || slot[slotNumber].GetComponent<Slot>().slotType == Slot_Type.SpecialProperty)
+            if ((getSlot(slotNumber).slotType == Slot_Type.ColorProperty || getSlot(slotNumber).slotType == Slot_Type.SpecialProperty) && getSlot(slotNumber).getOwner() != getCurrentPlayer())
             {
-                print("Player " + getCurrentPlayer().playerName + " has to pay" + slot[slotNumber].GetComponent<Slot>().getOwner().playerName + " amount of " + slot[slotNumber].GetComponent<Slot>().getPropertyRent(slot[slotNumber].GetComponent<Slot>().slotType) + "$");
-                CurrentPlayerPayFor(slot[slotNumber].GetComponent<Slot>().getOwner(), slot[slotNumber].GetComponent<Slot>().getPropertyRent(slot[slotNumber].GetComponent<Slot>().slotType));
+                print("Player " + getCurrentPlayer().playerName + " has to pay" + getSlot(slotNumber).getOwner().playerName + " amount of " + getSlot(slotNumber).getPropertyRent() + "$");
+                CurrentPlayerPayFor(getSlot(slotNumber).getOwner(), getSlot(slotNumber).getPropertyRent());
+                _UIManager.ShowRentPaidUI(getCurrentPlayer(), getSlot(slotNumber).getOwner(), getSlot(slotNumber).getPropertyRent());
             }
         }
     }
 
     public void Buy()
     {
-        slot[getCurrentPlayer().currentSlot].GetComponent<Slot>().setOwner(getCurrentPlayer());
-        CurrentPlayerPayBank(slot[getCurrentPlayer().currentSlot].GetComponent<Slot>().getSlotPrice(slot[getCurrentPlayer().currentSlot].GetComponent<Slot>().slotType));
+        slot[getCurrentPlayer().currentSlot].GetComponent<Slot>().setOwner(getCurrentPlayer()); //set owner to slot
+        CurrentPlayerPayBank(slot[getCurrentPlayer().currentSlot].GetComponent<Slot>().getSlotPrice()); //pay bank
+
+        if (getSlot(getCurrentPlayer().currentSlot).slotType == Slot_Type.SpecialProperty)
+        {
+            if (getSlot(getCurrentPlayer().currentSlot).specialProperty.propertyType == SpecialProperty_Type.RailRoad)
+            {
+                getCurrentPlayer().railroadOwned++;
+            }
+            else if (getSlot(getCurrentPlayer().currentSlot).specialProperty.propertyType == SpecialProperty_Type.Utility)
+            {
+                getCurrentPlayer().utilityOwned++;
+            }
+        }
+
         _UIManager.HideInformationCard();
     }
 
@@ -592,6 +612,44 @@ public class Table : MonoBehaviour
         _UIManager.HideInformationCard();
         getCurrentPlayer().rollForJail = true;
     }
+
+    public void Build()
+    {
+
+    }
+
+    public void Sell()
+    {
+
+    }
+
+    public void Mortgage()
+    {
+        for (int i = 0; i < slot.Length; i++)
+        {
+            if (getSlot(i).isOwned)
+            {
+                if (getSlot(i).getOwner() == getCurrentPlayer())
+                {
+
+                }
+                else
+                {
+                    slot[i].GetComponent<SpriteRenderer>().color = new Vector4(0, 0, 0, .3f);
+                }
+            }
+            else
+            {
+                slot[i].GetComponent<SpriteRenderer>().color = new Vector4(0, 0, 0, .3f);
+            }
+        }
+    }
+    
+    public void Redeem()
+    {
+
+    }
+
     #endregion
 
     //After player's move
@@ -643,6 +701,7 @@ public class Table : MonoBehaviour
         player.ReceiveMoney(amount);
         _UIManager.MoneyUpdate();
     }
+
     public void CurrentPlayerPayFor(Player[] player, int amountEach)
     {
         foreach (Player playerItem in player)
@@ -659,6 +718,7 @@ public class Table : MonoBehaviour
         player.PayMoney(amount);
         _UIManager.MoneyUpdate();
     }
+
     public void CurrentPlayerReceiveFrom(Player[] player, int amountEach)
     {
         foreach (Player playerItem in player)
@@ -672,21 +732,25 @@ public class Table : MonoBehaviour
     public void CurrentPlayerPayBank(int amount)
     {
         getCurrentPlayer().PayMoney(amount);
-        _UIManager.MoneyUpdate();
+        //_UIManager.MoneyUpdate();
     }
 
     public void CurrentPlayerReceiveBank(int amount)
     {
         getCurrentPlayer().ReceiveMoney(amount);
+        //_UIManager.MoneyUpdate();
+    }
+
+    public void CurrentPlayerInstantPayBank(int amount)
+    {
+        getCurrentPlayer().PayMoney(amount);
         _UIManager.MoneyUpdate();
     }
-    #endregion
-}
+    public void CurrentPlayerInstantReceiveBank(int amount)
+    {
+        getCurrentPlayer().ReceiveMoney(amount);
+        _UIManager.MoneyUpdate();
+    }
 
-public enum CurrentPlayer
-{
-    player1,
-    player2,
-    player3,
-    player4,
+    #endregion
 }

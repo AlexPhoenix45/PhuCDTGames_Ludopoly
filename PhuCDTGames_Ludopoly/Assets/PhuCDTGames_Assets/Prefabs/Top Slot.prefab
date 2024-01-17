@@ -1448,6 +1448,7 @@ GameObject:
   - component: {fileID: 2006116660479823893}
   - component: {fileID: 6106123462842721237}
   - component: {fileID: 289349734061840781}
+  - component: {fileID: 749489217726104250}
   m_Layer: 0
   m_Name: Top Slot
   m_TagString: Untagged
@@ -1560,6 +1561,32 @@ MonoBehaviour:
   blueTag: {fileID: 9108696598292806879}
   greenTag: {fileID: 3580885692994296522}
   yellowTag: {fileID: 4009067414386509586}
+--- !u!61 &749489217726104250
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5402744289007628498}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1.6}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.6}
+  m_EdgeRadius: 0
 --- !u!1 &5669574401079428950
 GameObject:
   m_ObjectHideFlags: 0

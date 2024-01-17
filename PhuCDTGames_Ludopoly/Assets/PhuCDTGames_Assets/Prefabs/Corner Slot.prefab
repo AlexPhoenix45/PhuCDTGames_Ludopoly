@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1801934443706198381}
   - component: {fileID: 1801934443706198380}
   - component: {fileID: 4470579429223705321}
+  - component: {fileID: 7811502181962728750}
   m_Layer: 0
   m_Name: Corner Slot
   m_TagString: Untagged
@@ -113,6 +114,39 @@ MonoBehaviour:
   supriseSlot_Panel_Price: {fileID: 0}
   supriseSlot_Panel_Image: {fileID: 0}
   cornerSlot_Text: {fileID: 2924782530368949426}
+  isOwned: 0
+  owner: {fileID: 0}
+  ownerTag: {fileID: 0}
+  redTag: {fileID: 0}
+  blueTag: {fileID: 0}
+  greenTag: {fileID: 0}
+  yellowTag: {fileID: 0}
+--- !u!61 &7811502181962728750
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801934443706198382}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.6, y: 1.6}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.6, y: 1.6}
+  m_EdgeRadius: 0
 --- !u!1 &2924782530368949426
 GameObject:
   m_ObjectHideFlags: 0
