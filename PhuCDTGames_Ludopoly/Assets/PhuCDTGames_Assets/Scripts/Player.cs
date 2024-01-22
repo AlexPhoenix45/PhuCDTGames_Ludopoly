@@ -137,8 +137,8 @@ public class Player : MonoBehaviour
                 {
                     if (!isFastMove)
                     {
-                        LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .5f).setEaseInOutCirc();
-                        yield return new WaitForSeconds(.5f);
+                        LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .4f).setEaseInOutCirc();
+                        yield return new WaitForSeconds(.4f);
                     }
                     else
                     {
@@ -161,13 +161,13 @@ public class Player : MonoBehaviour
                     {
                         if (i <= 39)
                         {
-                            LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .5f).setEaseInOutCirc();
-                            yield return new WaitForSeconds(.5f);
+                            LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .4f).setEaseInOutCirc();
+                            yield return new WaitForSeconds(.4f);
                         }
                         else
                         {
-                            LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .5f).setEaseInOutCirc();
-                            yield return new WaitForSeconds(.5f);
+                            LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .4f).setEaseInOutCirc();
+                            yield return new WaitForSeconds(.4f);
                         }
                     }
                     else
@@ -212,7 +212,7 @@ public class Player : MonoBehaviour
 
     public void setIsMyTurn(bool value)
     {
-        this.isMyTurn = value;
+        isMyTurn = value;
 
         if (isMyTurn)
         {

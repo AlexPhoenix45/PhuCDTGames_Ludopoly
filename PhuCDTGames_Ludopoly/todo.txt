@@ -15,3 +15,8 @@ trong quá trình di chuyển vào tù, người chơi vẫn có thể được 
 xúc sắc vẫn hiện mặc dù không ấn được khi người chơi đổ xúc sắc đôi vào ô vào tù
 
 chưa add tiền khi qua vạch xuất phát
+
+---
+double rent when in group
+sang turn sau khi ấn build thì không hiện nhà nữa
+tích is group brown sẽ hiện hết tất cả nhưungx property

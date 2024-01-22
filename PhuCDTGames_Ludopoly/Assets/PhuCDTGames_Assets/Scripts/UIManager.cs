@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -210,6 +211,15 @@ public class UIManager : MonoBehaviour
     public GameObject oc_ut_electricCompany_Image;
     #endregion
 
+    #region Main Actions
+    [Header("Main Actions")]
+    public GameObject mainActionPanel;
+    public GameObject buildPanel;
+    public GameObject sellPanel;
+    public GameObject mortgagePanel;
+    public GameObject redeemPanel;
+    #endregion
+
     private void Start()
     {
         if (Instance == null)
@@ -226,6 +236,7 @@ public class UIManager : MonoBehaviour
         DicesActive(false);
         OptionsActive(false);
         EndTurnActive(false);
+        OnClick_ActionsClose();
         int[] dices = new int[2];
         IEnumerator diceSuffle()
         {
@@ -239,7 +250,7 @@ public class UIManager : MonoBehaviour
                 setDicesFaces(2, diceFace2);
                 timeConsumed += 0.05f;
             }
-            while (timeConsumed < 1.5f);
+            while (timeConsumed < .5f);
             dices = Table.Instance.RollDice();
             setDicesFaces(dices, false);
             if (_Table.getCurrentPlayer().isInJail)
@@ -921,8 +932,56 @@ public class UIManager : MonoBehaviour
     {
         Table.Instance.SwitchPlayer();
         EndTurnActive(false);
+        OnClick_ActionsClose();
     }
 
+    public void OnClick_Build()
+    {
+        OnClick_ActionsClose();
+        mainActionPanel.SetActive(true);
+        buildPanel.SetActive(true);
+        _Table.Build();
+    }
+
+    public void OnClick_Sell()
+    {
+        OnClick_ActionsClose();
+        mainActionPanel.SetActive(true);
+        sellPanel.SetActive(true);
+        _Table.Sell();
+    }
+
+    public void OnClick_Mortgage()
+    {
+        OnClick_ActionsClose();
+        mainActionPanel.SetActive(true);
+        mortgagePanel.SetActive(true);
+        _Table.Mortgage();
+    }
+
+    public void OnClick_Redeem()
+    {
+        OnClick_ActionsClose();
+        mainActionPanel.SetActive(true);
+        redeemPanel.SetActive(true);
+        _Table.Redeem();
+    }
+
+    public void OnClick_ActionsClose()
+    {
+        OnClick_CloseOnClickInformation();
+        mainActionPanel.SetActive(false);
+        buildPanel.SetActive(false);
+        sellPanel.SetActive(false);
+        mortgagePanel.SetActive(false);
+        redeemPanel.SetActive(false);
+        _Table.UnshownSlot();
+    }
+
+    public void OnClick_Trade()
+    {
+
+    }
     #endregion
 
     #region Information Card on Table
@@ -1474,10 +1533,8 @@ public class UIManager : MonoBehaviour
         _Table.JailRollDouble();
     }
 
-    //Hold to see board (Pending)
-    //
-
     //On Click Show Information Card
+    //
     public void OnClick_ShowInformationCard(Slot tempSlot)
     {
         if (tempSlot.slotType == Slot_Type.ColorProperty)
@@ -1687,5 +1744,6 @@ public class UIManager : MonoBehaviour
 
         MoneyUpdate();
     }
+
     #endregion
 }

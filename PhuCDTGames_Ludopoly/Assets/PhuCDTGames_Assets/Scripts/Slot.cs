@@ -50,6 +50,16 @@ public class Slot : MonoBehaviour
     [Header("Houses")]
     public short numberOfHouse = 0;
     public bool inSet = false;
+    public GameObject house1;
+    public GameObject house2;
+    public GameObject house3;
+    public GameObject house4;
+    public GameObject hotel;
+
+    [Header("Actions")]
+    public SlotAction slotAction;
+    public bool isMortgaged = false;
+    public GameObject mortgagedTag;
 
     private void Start()
     {
@@ -209,7 +219,23 @@ public class Slot : MonoBehaviour
         {
             if (specialProperty.propertyType == SpecialProperty_Type.RailRoad)
             {
-                return 50 * getOwner().railroadOwned;
+                if (getOwner().railroadOwned == 1)
+                {
+                    return 25;
+                }
+                else if (getOwner().railroadOwned == 2)
+                {
+                    return 50;
+                }
+                else if (getOwner().railroadOwned == 3)
+                {
+                    return 100;
+                }
+                else if (getOwner().railroadOwned == 4)
+                {
+                    return 200;
+                }
+                else { return 0; }
             }
             else if (specialProperty.propertyType == SpecialProperty_Type.Utility)
             {
@@ -237,7 +263,7 @@ public class Slot : MonoBehaviour
         }
     }
 
-    public int getPropertyRent(int numOfHouse)
+    public int getPropertyRent(int numOfHouse) //This is for UI
     {
         if (slotType == Slot_Type.ColorProperty)
         {
@@ -290,15 +316,39 @@ public class Slot : MonoBehaviour
         {
             return colorProperty.mortgagePrice;
         }
+        else if (slotType == Slot_Type.SpecialProperty)
+        {
+            return specialProperty.mortgagePrice; 
+        }
         else
         {
-            return 0; 
+            return 0;
+        }
+    }
+
+    public int getRedeemPrice()
+    {
+        if (slotType == Slot_Type.ColorProperty)
+        {
+            float price = (colorProperty.mortgagePrice + (((float)colorProperty.mortgagePrice / 100) * 10));
+            return (int)price;
+        }
+        else if (slotType == Slot_Type.SpecialProperty)
+        {
+            float price = specialProperty.mortgagePrice + (((float)specialProperty.mortgagePrice / 100) * 10);
+            return (int)price;
+        }
+        else
+        {
+            return 0;
         }
     }
 
     #endregion
 
-    #region Owner Set Get
+    //Owner Set Get
+    //
+
     public void setOwner(Player player)
     {
         if (!isOwned)
@@ -342,22 +392,121 @@ public class Slot : MonoBehaviour
 
     public Player getOwner() { return owner; }
 
-    #endregion
+    //Card Drawing
+    //
 
-    #region Card Drawing
     public void DrawAChance()
     {
 
     }
 
-    #endregion
+    //Add houses
+    //
 
-    //Click on Slot to show Information
+    public void AddHouse()
+    {
+        if (numberOfHouse == 0)
+        {
+            numberOfHouse++;
+            house1.SetActive(true);
+        }
+        else if (numberOfHouse == 1)
+        {
+            numberOfHouse++;
+            house2.SetActive(true);
+        }
+        else if (numberOfHouse == 2)
+        {
+            numberOfHouse++;
+            house3.SetActive(true);
+        }
+        else if (numberOfHouse == 3)
+        {
+            numberOfHouse++;
+            house4.SetActive(true);
+        }
+        else if (numberOfHouse == 4)
+        {
+            numberOfHouse++;
+            hotel.SetActive(true);
+            house1.SetActive(false);
+            house2.SetActive(false);
+            house3.SetActive(false);
+            house4.SetActive(false);
+        }
+    }
+
+    public void RemoveHouse()
+    {
+        if (numberOfHouse == 5)
+        {
+            numberOfHouse--;
+            hotel.SetActive(false);
+            house1.SetActive(true);
+            house2.SetActive(true);
+            house3.SetActive(true);
+            house4.SetActive(true);
+        }
+        else if (numberOfHouse == 4)
+        {
+            numberOfHouse--;
+            house4.SetActive(false);
+        }
+        else if (numberOfHouse == 3)
+        {
+            numberOfHouse--;
+            house3.SetActive(false);
+        }
+        else if (numberOfHouse == 2)
+        {
+            numberOfHouse--;
+            house2.SetActive(false);
+        }
+        else if (numberOfHouse == 1)
+        {
+            numberOfHouse--;
+            house1.SetActive(false);
+        }
+    }
+
+    //Click on Slot 
+    //
+
     public void OnMouseDown()
     {
-        if (slotType == Slot_Type.ColorProperty || slotType == Slot_Type.SpecialProperty)
+        if (slotAction == SlotAction.Idle)
         {
-            UIManager.Instance.OnClick_ShowInformationCard(this);
+            if (slotType == Slot_Type.ColorProperty || slotType == Slot_Type.SpecialProperty)
+            {
+                UIManager.Instance.OnClick_ShowInformationCard(this);
+            }
+        }
+        else if (slotAction == SlotAction.Build)
+        {
+            AddHouse();
+        }
+        else if (slotAction == SlotAction.Sell)
+        {
+
+        }
+        else if (slotAction == SlotAction.Mortgage)
+        {
+            if (!isMortgaged)
+            {
+                Table.Instance.CurrentPlayerInstantReceiveBank(getMortgagePrice());
+                isMortgaged = true;
+                mortgagedTag.SetActive(true);
+            }
+        }
+        else if (slotAction == SlotAction.Redeem)
+        {
+            if (isMortgaged)
+            {
+                Table.Instance.CurrentPlayerInstantPayBank(getRedeemPrice());
+                isMortgaged = false;
+                mortgagedTag.SetActive(false);
+                gameObject.GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+            }
         }
     }
 }

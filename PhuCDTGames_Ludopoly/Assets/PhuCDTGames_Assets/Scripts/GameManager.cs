@@ -114,3 +114,13 @@ public enum CurrentPlayer
     player3,
     player4,
 }
+
+public enum SlotAction
+{
+    None,
+    Idle,
+    Build,
+    Sell,
+    Mortgage,
+    Redeem
+}
