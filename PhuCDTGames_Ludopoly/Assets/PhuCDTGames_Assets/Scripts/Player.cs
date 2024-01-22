@@ -39,13 +39,15 @@ public class Player : MonoBehaviour
     //
     public int playerMoney = 1000;
     public int oldPlayerMoney = 0;
+    public bool moneyWarning = false;
 
     //House
     //
-    public short houseOwned = 0;
-    public short hotelOwned = 0;
+    public short houseOwned = 0; //use to calculate bankruptcy chance
+    public short hotelOwned = 0; //use to calculate bankruptcy chance
     public short railroadOwned = 0;
     public short utilityOwned = 0;
+    public List<Slot> slotOwned;
 
     public void setPlayerIndex(int index)
     {
@@ -114,7 +116,7 @@ public class Player : MonoBehaviour
         if (lateMoveSet)
         {
             UIManager.Instance.EndTurnActive(false);
-            UIManager.Instance.OptionsActive(false);
+            UIManager.Instance.ActionsActive(false);
             if (isInJail && hasSecondTurn)
             {
                 UIManager.Instance.DicesFacesActive();
@@ -206,9 +208,12 @@ public class Player : MonoBehaviour
         }
         StartCoroutine(move());
     }
-    
+
     //Turn
     //
+
+    [SerializeField]
+    int moneyLeft = 0;
 
     public void setIsMyTurn(bool value)
     {
@@ -220,6 +225,8 @@ public class Player : MonoBehaviour
             {
                 UIManager.Instance.ShowIsInJail();
             }
+
+            CheckBankruptcy();
         }
     }
 
@@ -339,6 +346,34 @@ public class Player : MonoBehaviour
     public void PayMoney(int amount)
     {
         playerMoney -= amount;
+    }
+
+    public void CheckBankruptcy()
+    {
+        if (playerMoney < 0)
+        {
+            UIManager.Instance.ActionsActive(true);
+            UIManager.Instance.DicesActive(false);
+            UIManager.Instance.DicesFacesActive();
+            UIManager.Instance.EndTurnActive(false);
+
+            moneyLeft = 0; //Calculate all the property after sell and mortgage, if it is not enough, player is bankruptcy, left the game
+
+            foreach (Slot slot in slotOwned)
+            {
+                moneyLeft += (slot.numberOfHouse * slot.getSellPrice()) + slot.getMortgagePrice();
+            }
+
+            if (moneyLeft + playerMoney > 0) //survived
+            {
+                UIManager.Instance.ShowBankruptcy(false);
+                moneyWarning = true;
+            }
+            else //bankruptcy
+            {
+                UIManager.Instance.ShowBankruptcy(true);
+            }
+        }
     }
     #endregion
 }

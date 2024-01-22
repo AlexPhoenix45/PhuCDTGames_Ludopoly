@@ -57,7 +57,7 @@ public class Slot : MonoBehaviour
     public GameObject hotel;
 
     [Header("Actions")]
-    public SlotAction slotAction;
+    public SlotAction slotAction = SlotAction.Idle;
     public bool isMortgaged = false;
     public GameObject mortgagedTag;
 
@@ -263,11 +263,15 @@ public class Slot : MonoBehaviour
         }
     }
 
-    public int getPropertyRent(int numOfHouse) //This is for UI
+    public int getPropertyRentUI(int numOfHouse) //This is for UI
     {
         if (slotType == Slot_Type.ColorProperty)
         {
-            if (numOfHouse == 1)
+            if (numOfHouse == 0)
+            {
+                return colorProperty.rentPrice;
+            }
+            else if (numOfHouse == 1)
             {
                 return colorProperty.rentPrice_1House;
             }
@@ -303,6 +307,18 @@ public class Slot : MonoBehaviour
         if (slotType == Slot_Type.ColorProperty)
         {
             return colorProperty.buildPrice;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public int getSellPrice()
+    {
+        if (slotType == Slot_Type.ColorProperty)
+        {
+            return colorProperty.buildPrice / 2;
         }
         else
         {
@@ -355,6 +371,8 @@ public class Slot : MonoBehaviour
         {
             owner = player;
             isOwned = true;
+            Table.Instance.getCurrentPlayer().slotOwned.Add(this);
+
             if (player.playerColor == new Vector4(255, 0, 0, 255)) //red
             {
                 ownerTag.SetActive(true);
@@ -409,21 +427,25 @@ public class Slot : MonoBehaviour
         {
             numberOfHouse++;
             house1.SetActive(true);
+            Table.Instance.getCurrentPlayer().houseOwned++;
         }
         else if (numberOfHouse == 1)
         {
             numberOfHouse++;
             house2.SetActive(true);
+            Table.Instance.getCurrentPlayer().houseOwned++;
         }
         else if (numberOfHouse == 2)
         {
             numberOfHouse++;
             house3.SetActive(true);
+            Table.Instance.getCurrentPlayer().houseOwned++;
         }
         else if (numberOfHouse == 3)
         {
             numberOfHouse++;
             house4.SetActive(true);
+            Table.Instance.getCurrentPlayer().houseOwned++;
         }
         else if (numberOfHouse == 4)
         {
@@ -433,6 +455,8 @@ public class Slot : MonoBehaviour
             house2.SetActive(false);
             house3.SetActive(false);
             house4.SetActive(false);
+            Table.Instance.getCurrentPlayer().houseOwned -= 4;
+            Table.Instance.getCurrentPlayer().hotelOwned++;
         }
     }
 
@@ -481,9 +505,11 @@ public class Slot : MonoBehaviour
                 UIManager.Instance.OnClick_ShowInformationCard(this);
             }
         }
-        else if (slotAction == SlotAction.Build)
+        else if (slotAction == SlotAction.Build) //Build House
         {
             AddHouse();
+            Table.Instance.CurrentPlayerInstantPayBank(getBuildPrice());
+            Table.Instance.Build();
         }
         else if (slotAction == SlotAction.Sell)
         {

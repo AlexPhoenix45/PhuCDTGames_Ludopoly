@@ -55,14 +55,13 @@ public class UIManager : MonoBehaviour
 
     [Header("Slot Information")]
     public GameObject informationPanel;
-    public GameObject actionsCard;
     public GameObject colorPropertyInformationCard;
     public GameObject specialPropertyInformationCard;
     public GameObject supriseInformationCard;
 
     #region Color Property Information Card
 
-    [Header("Card Template")]
+    [Header("Color Property - Card Template")]
     [Header("Color Property Information Card")]
     public GameObject cpi_brownCard;
     public GameObject cpi_blueCard;
@@ -73,7 +72,7 @@ public class UIManager : MonoBehaviour
     public GameObject cpi_redCard;
     public GameObject cpi_yellowCard;
 
-    [Header("Information")]
+    [Header("Color Property - Information")]
     public TextMeshProUGUI cpi_propertyName;
     public TextMeshProUGUI cpi_rentPrice;
     public TextMeshProUGUI cpi_rentDescription;
@@ -85,19 +84,36 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI cpi_buildPrice;
     public TextMeshProUGUI cpi_mortgagePrice;
 
+    [Header("Color Property - Bought")]
+    public GameObject cpi_showButtonPanel;
+    public GameObject cpi_boughtPanel;
+    public GameObject cpi_redPawn;
+    public GameObject cpi_bluePawn;
+    public GameObject cpi_greenPawn;
+    public GameObject cpi_yellowPawn;
+
     #endregion
 
     #region Special Property Information Card
-    [Header("Railroads Information")]
+    [Header("Special Property - Railroads Information")]
     [Header("Special Property Information Card")]
     public GameObject railroad_Panel;
     public TextMeshProUGUI rr_propertyName;
 
-    [Header("Utilities Information")]
+    [Header("Special Property - Utilities Information")]
     public GameObject utilities_Panel;
     public TextMeshProUGUI ut_propertyName;
     public GameObject ut_waterWorks_Image;
     public GameObject ut_electricCompany_Image;
+
+    [Header("Special Property - Bought")]
+    public GameObject ut_showButtonPanel;
+    public GameObject ut_boughtPanel;
+    public GameObject ut_redPawn;
+    public GameObject ut_bluePawn;
+    public GameObject ut_greenPawn;
+    public GameObject ut_yellowPawn;
+
     #endregion
 
     #region Suprise Information Card
@@ -116,6 +132,7 @@ public class UIManager : MonoBehaviour
 
     #region Jail Card
     [Header("Jail Card")]
+    [Header("Jail")]
     public GameObject jailPanel;
     public GameObject inJailPanel;
     public GameObject goToJailPanel;
@@ -123,7 +140,7 @@ public class UIManager : MonoBehaviour
 
     //In Jail
     //
-    [Header("In Jail")]
+    [Header("Jail - In Jail")]
     public Button ij_Pay;
     public Button ij_useCard;
     public Button ij_rollDouble;
@@ -135,7 +152,7 @@ public class UIManager : MonoBehaviour
 
     //Go To Jail
     //
-    [Header("Go To Jail")]
+    [Header("Jail - Go To Jail")]
     public GameObject gtj_redPawn;
     public GameObject gtj_greenPawn;
     public GameObject gtj_bluePawn;
@@ -143,7 +160,7 @@ public class UIManager : MonoBehaviour
 
     //Visiting Jail
     //
-    [Header("Visiting Jail")]
+    [Header("Jail - Visiting Jail")]
     public GameObject vj_redPawn;
     public GameObject vj_greenPawn;
     public GameObject vj_bluePawn;
@@ -152,18 +169,19 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region Money
+    [Header("Money - Information")]
     [Header("Money")]
     public GameObject moneyPanel;
     public GameObject paidRentPanel;
     public TextMeshProUGUI paidAmount;
 
-    [Header("Paid Profile")]
+    [Header("Money - Paid Profile")]
     public GameObject pp_redPawn;
     public GameObject pp_greenPawn;
     public GameObject pp_bluePawn;
     public GameObject pp_yellowPawn;
 
-    [Header("Collect Profile")]
+    [Header("Money - Collect Profile")]
     public GameObject cp_redPawn;
     public GameObject cp_greenPawn;
     public GameObject cp_bluePawn;
@@ -171,13 +189,13 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region On-click Information
-    [Header("On-click Information")]
+    [Header("On-click - Information")]
+    [Header("On-click")]
     public GameObject Onclick_InformationPanel;
     public GameObject Onclick_ColorPropertyInformationCard;
     public GameObject Onclick_SpecialPropertyInformationCard;
 
-    [Header("OC Card Template")]
-    [Header("OC Color Property Information Card")]
+    [Header("On-click - Card Template")]
     public GameObject oc_cpi_brownCard;
     public GameObject oc_cpi_blueCard;
     public GameObject oc_cpi_greenCard;
@@ -187,7 +205,7 @@ public class UIManager : MonoBehaviour
     public GameObject oc_cpi_redCard;
     public GameObject oc_cpi_yellowCard;
 
-    [Header("Information")]
+    [Header("On-click - Color Property Information")]
     public TextMeshProUGUI oc_cpi_propertyName;
     public TextMeshProUGUI oc_cpi_rentPrice;
     public TextMeshProUGUI oc_cpi_rentDescription;
@@ -199,12 +217,11 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI oc_cpi_buildPrice;
     public TextMeshProUGUI oc_cpi_mortgagePrice;
 
-    [Header("OC Railroads Information")]
-    [Header("OC Special Property Information Card")]
+    [Header("On-click - Railroads Information")]
     public GameObject oc_railroad_Panel;
     public TextMeshProUGUI oc_rr_propertyName;
 
-    [Header("Utilities Information")]
+    [Header("On-click - Utilities Information")]
     public GameObject oc_utilities_Panel;
     public TextMeshProUGUI oc_ut_propertyName;
     public GameObject oc_ut_waterWorks_Image;
@@ -218,6 +235,62 @@ public class UIManager : MonoBehaviour
     public GameObject sellPanel;
     public GameObject mortgagePanel;
     public GameObject redeemPanel;
+    #endregion
+
+    #region Bankruptcy
+
+    [Header("Bankruptcy")]
+    public GameObject bankruptcyPanel;
+    public Button payDebt;
+    public Button bankRupt;
+
+    #endregion
+
+    #region Auction
+    [Header("Auction - Information")]
+    [Header("Auction")]
+    public GameObject auctionPanel;
+    public GameObject autionInformationPanel;
+    public TextMeshProUGUI ai_currentPlayerTurn;
+    public TextMeshProUGUI ai_currentPrice;
+    public Button ai_smallBid;
+    public Button ai_bigBid;
+    public Button ai_withdraw;
+
+    [Header("Auction - Card Template")]
+    public GameObject acp_brownCard;
+    public GameObject acp_blueCard;
+    public GameObject acp_greenCard;
+    public GameObject acp_orangeCard;
+    public GameObject acp_pinkCard;
+    public GameObject acp_purpleCard;
+    public GameObject acp_redCard;
+    public GameObject acp_yellowCard;
+
+    [Header("Auction - Information Color Property")]
+    public GameObject acp_colorPropertyPanel;
+    public TextMeshProUGUI acp_propertyName;
+    public TextMeshProUGUI acp_rentPrice;
+    public TextMeshProUGUI acp_rentDescription;
+    public TextMeshProUGUI acp_house1;
+    public TextMeshProUGUI acp_house2;
+    public TextMeshProUGUI acp_house3;
+    public TextMeshProUGUI acp_house4;
+    public TextMeshProUGUI acp_hotel;
+    public TextMeshProUGUI acp_buildPrice;
+    public TextMeshProUGUI acp_mortgagePrice;
+
+    [Header("Auction - Special Property")]
+    public GameObject asp_specialPropertyPanel;
+    public GameObject asp_railroad_Panel;
+    public TextMeshProUGUI asp_rr_propertyName;
+
+    [Header("Auction - Utilities Information")]
+    public GameObject asp_utilities_Panel;
+    public TextMeshProUGUI asp_ut_propertyName;
+    public GameObject asp_ut_waterWorks_Image;
+    public GameObject asp_ut_electricCompany_Image;
+
     #endregion
 
     private void Start()
@@ -234,7 +307,7 @@ public class UIManager : MonoBehaviour
     public void OnClick_RollDice() //This include suffle and roll an actual dices
     {
         DicesActive(false);
-        OptionsActive(false);
+        ActionsActive(false);
         EndTurnActive(false);
         OnClick_ActionsClose();
         int[] dices = new int[2];
@@ -255,7 +328,7 @@ public class UIManager : MonoBehaviour
             setDicesFaces(dices, false);
             if (_Table.getCurrentPlayer().isInJail)
             {
-                OptionsActive(true);
+                ActionsActive(true);
                 DicesActive(false);
                 DicesFacesActive();
             }
@@ -593,7 +666,7 @@ public class UIManager : MonoBehaviour
         }
         if (!isSuffle)
         {
-            OptionsActive(true);
+            ActionsActive(true);
             DicesActive(true);
             DicesFacesActive();
         }
@@ -819,6 +892,34 @@ public class UIManager : MonoBehaviour
         StartCoroutine(p2Update());
         StartCoroutine(p3Update());
         StartCoroutine(p4Update());
+
+        if (p1.playerMoney > 0 && p1.moneyWarning)
+        {
+            p1.moneyWarning = false;
+            DicesActive(true);
+            DicesFacesActive();
+        }
+        
+        if (p2.playerMoney > 0 && p2.moneyWarning)
+        {
+            p2.moneyWarning = false;
+            DicesActive(true);
+            DicesFacesActive();
+        }
+
+        if (p3.playerMoney > 0 & p3.moneyWarning)
+        {
+            p3.moneyWarning = false;
+            DicesActive(true);
+            DicesFacesActive();
+        }
+
+        if (p4.playerMoney > 0 && p4.moneyWarning)
+        {
+            p4.moneyWarning = false;
+            DicesActive(true);
+            DicesFacesActive();
+        }
     }
 
     public void ShowRentPaidUI(Player p_paid, Player p_collect, int amount)
@@ -904,6 +1005,42 @@ public class UIManager : MonoBehaviour
         StartCoroutine(wait());
     }
 
+    //Bankruptcy
+    //
+
+    public void ShowBankruptcy(bool isBankrupt)
+    {
+        if (!isBankrupt)
+        {
+            Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
+            moneyPanel.SetActive(true);
+            bankruptcyPanel.SetActive(true);
+            bankruptcyPanel.transform.position = pos;
+            payDebt.interactable = true;
+            bankRupt.interactable = true;
+        }
+        else
+        {
+            Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
+            moneyPanel.SetActive(true);
+            bankruptcyPanel.SetActive(true);
+            bankruptcyPanel.transform.position = pos;
+            payDebt.interactable = false;
+            bankRupt.interactable = true;
+        }
+    }
+
+    public void OnClick_PayDebt()
+    {
+        moneyPanel.SetActive(false);
+        bankruptcyPanel.SetActive(false);
+    }
+
+    public void OnClick_Bankrupt() 
+    {
+        //End game Checker
+    }
+
     #endregion
 
     #region Actions
@@ -911,7 +1048,7 @@ public class UIManager : MonoBehaviour
     //Active
     //
 
-    public void OptionsActive(bool value)
+    public void ActionsActive(bool value)
     {
         build.interactable = value;
         sell.interactable = value;
@@ -923,6 +1060,149 @@ public class UIManager : MonoBehaviour
     public void EndTurnActive(bool value)
     {
         endTurn.interactable = value;
+    }
+
+    public void ShowAuction(int slotNumber)
+    {
+        auctionPanel.SetActive(true);
+        autionInformationPanel.SetActive(true); 
+        Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
+        autionInformationPanel.transform.position = pos;
+
+        if (_Table.getSlot(slotNumber).slotType == Slot_Type.ColorProperty)
+        {
+            acp_colorPropertyPanel.SetActive(true);
+
+            acp_propertyName.text = _Table.getSlot(slotNumber).getSlotName().ToUpper();
+            acp_rentPrice.text = "RENT $" + _Table.getSlot(slotNumber).getPropertyRentUI(0).ToString();
+            acp_rentDescription.text = "Rent is doubled on owning all unimproved sites in the group.";
+            acp_house1.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(1).ToString();
+            acp_house2.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(2).ToString();
+            acp_house3.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(3).ToString();
+            acp_house4.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(4).ToString();
+            acp_hotel.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(5).ToString();
+            acp_buildPrice.text = "Contruction $" + _Table.getSlot(slotNumber).getBuildPrice().ToString() + " each";
+            acp_mortgagePrice.text = "Mortgage $" + _Table.getSlot(slotNumber).getMortgagePrice().ToString() + " each";
+
+            if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Brown)
+            {
+                acp_brownCard.SetActive(true);
+                acp_blueCard.SetActive(false);
+                acp_greenCard.SetActive(false);
+                acp_orangeCard.SetActive(false);
+                acp_pinkCard.SetActive(false);
+                acp_purpleCard.SetActive(false);
+                acp_redCard.SetActive(false);
+                acp_yellowCard.SetActive(false);
+            }
+            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Blue)
+            {
+                acp_brownCard.SetActive(false);
+                acp_blueCard.SetActive(true);
+                acp_greenCard.SetActive(false);
+                acp_orangeCard.SetActive(false);
+                acp_pinkCard.SetActive(false);
+                acp_purpleCard.SetActive(false);
+                acp_redCard.SetActive(false);
+                acp_yellowCard.SetActive(false);
+            }
+            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Green)
+            {
+                acp_brownCard.SetActive(false);
+                acp_blueCard.SetActive(false);
+                acp_greenCard.SetActive(true);
+                acp_orangeCard.SetActive(false);
+                acp_pinkCard.SetActive(false);
+                acp_purpleCard.SetActive(false);
+                acp_redCard.SetActive(false);
+                acp_yellowCard.SetActive(false);
+            }
+            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Orange)
+            {
+                acp_brownCard.SetActive(false);
+                acp_blueCard.SetActive(false);
+                acp_greenCard.SetActive(false);
+                acp_orangeCard.SetActive(true);
+                acp_pinkCard.SetActive(false);
+                acp_purpleCard.SetActive(false);
+                acp_redCard.SetActive(false);
+                acp_yellowCard.SetActive(false);
+            }
+            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Pink)
+            {
+                acp_brownCard.SetActive(false);
+                acp_blueCard.SetActive(false);
+                acp_greenCard.SetActive(false);
+                acp_orangeCard.SetActive(false);
+                acp_pinkCard.SetActive(true);
+                acp_purpleCard.SetActive(false);
+                acp_redCard.SetActive(false);
+                acp_yellowCard.SetActive(false);
+            }
+            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Purple)
+            {
+                acp_brownCard.SetActive(false);
+                acp_blueCard.SetActive(false);
+                acp_greenCard.SetActive(false);
+                acp_orangeCard.SetActive(false);
+                acp_pinkCard.SetActive(false);
+                acp_purpleCard.SetActive(true);
+                acp_redCard.SetActive(false);
+                acp_yellowCard.SetActive(false);
+            }
+            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Red)
+            {
+                acp_brownCard.SetActive(false);
+                acp_blueCard.SetActive(false);
+                acp_greenCard.SetActive(false);
+                acp_orangeCard.SetActive(false);
+                acp_pinkCard.SetActive(false);
+                acp_purpleCard.SetActive(false);
+                acp_redCard.SetActive(true);
+                acp_yellowCard.SetActive(false);
+            }
+            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Yellow)
+            {
+                acp_brownCard.SetActive(false);
+                acp_blueCard.SetActive(false);
+                acp_greenCard.SetActive(false);
+                acp_orangeCard.SetActive(false);
+                acp_pinkCard.SetActive(false);
+                acp_purpleCard.SetActive(false);
+                acp_redCard.SetActive(false);
+                acp_yellowCard.SetActive(true);
+            }
+        }
+        else if (_Table.getSlot(slotNumber).slotType == Slot_Type.SpecialProperty)
+        {
+            asp_specialPropertyPanel.SetActive(true);
+
+            if (_Table.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.RailRoad)
+            {
+                asp_railroad_Panel.SetActive(true);
+                asp_utilities_Panel.SetActive(false);
+
+                asp_rr_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
+            }
+            else if (_Table.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.Utility)
+            {
+                asp_railroad_Panel.SetActive(false);
+                asp_utilities_Panel.SetActive(true);
+
+                if (_Table.getSlot(slotNumber).specialProperty.utilityType == Utility_Type.WaterRorks)
+                {
+                    asp_ut_waterWorks_Image.SetActive(true);
+                    asp_ut_electricCompany_Image.SetActive(false);
+                    asp_ut_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
+                }
+                else if (_Table.getSlot(slotNumber).specialProperty.utilityType == Utility_Type.ElectricCompany)
+                {
+                    asp_ut_waterWorks_Image.SetActive(false);
+                    asp_ut_electricCompany_Image.SetActive(true);
+                    asp_ut_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
+                }
+            }
+        }
     }
 
     //On_Click
@@ -937,33 +1217,41 @@ public class UIManager : MonoBehaviour
 
     public void OnClick_Build()
     {
+        Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         OnClick_ActionsClose();
         mainActionPanel.SetActive(true);
         buildPanel.SetActive(true);
+        buildPanel.transform.position = pos;
         _Table.Build();
     }
 
     public void OnClick_Sell()
     {
+        Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         OnClick_ActionsClose();
         mainActionPanel.SetActive(true);
         sellPanel.SetActive(true);
+        sellPanel.transform.position = pos;
         _Table.Sell();
     }
 
     public void OnClick_Mortgage()
     {
+        Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         OnClick_ActionsClose();
         mainActionPanel.SetActive(true);
         mortgagePanel.SetActive(true);
+        mortgage.transform.position = pos;
         _Table.Mortgage();
     }
 
     public void OnClick_Redeem()
     {
+        Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         OnClick_ActionsClose();
         mainActionPanel.SetActive(true);
         redeemPanel.SetActive(true);
+        redeemPanel.transform.position = pos;
         _Table.Redeem();
     }
 
@@ -984,7 +1272,7 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
-    #region Information Card on Table
+    #region Information Card on Table 
     public void ShowInformationCard(int slotNumber)
     {
         Slot_Type type;
@@ -1014,16 +1302,18 @@ public class UIManager : MonoBehaviour
         informationPanel.SetActive(true);
         colorPropertyInformationCard.SetActive(true);
         Vector2 pos  = Camera.main.WorldToScreenPoint(_Table.transform.position);
+        cpi_showButtonPanel.SetActive(true);
+        cpi_boughtPanel.SetActive(false);
 
         colorPropertyInformationCard.transform.position = pos;
         cpi_propertyName.text = _Table.getSlot(slotNumber).getSlotName().ToUpper();
-        cpi_rentPrice.text = "RENT $" + _Table.getSlot(slotNumber).getPropertyRent().ToString();
+        cpi_rentPrice.text = "RENT $" + _Table.getSlot(slotNumber).getPropertyRentUI(0).ToString();
         cpi_rentDescription.text = "Rent is doubled on owning all unimproved sites in the group.";
-        cpi_house1.text = "$" + _Table.getSlot(slotNumber).getPropertyRent(1).ToString();
-        cpi_house2.text = "$" + _Table.getSlot(slotNumber).getPropertyRent(2).ToString();
-        cpi_house3.text = "$" + _Table.getSlot(slotNumber).getPropertyRent(3).ToString();
-        cpi_house4.text = "$" + _Table.getSlot(slotNumber).getPropertyRent(4).ToString();
-        cpi_hotel.text = "$" + _Table.getSlot(slotNumber).getPropertyRent(5).ToString();
+        cpi_house1.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(1).ToString();
+        cpi_house2.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(2).ToString();
+        cpi_house3.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(3).ToString();
+        cpi_house4.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(4).ToString();
+        cpi_hotel.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(5).ToString();
         cpi_buildPrice.text = "Contruction $" + _Table.getSlot(slotNumber).getBuildPrice().ToString() + " each";
         cpi_mortgagePrice.text = "Mortgage $" + _Table.getSlot(slotNumber).getMortgagePrice().ToString() + " each";
 
@@ -1116,7 +1406,62 @@ public class UIManager : MonoBehaviour
             cpi_yellowCard.SetActive(true);
         }
     }
-    
+
+    public void ShowColorPropertyBought()
+    {
+        informationPanel.SetActive(true);
+        colorPropertyInformationCard.SetActive(true);
+        Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
+        colorPropertyInformationCard.transform.position = pos;
+
+        cpi_showButtonPanel.SetActive(false);
+        cpi_boughtPanel.SetActive(true);
+
+        if (_Table.getCurrentPlayer() == _Table.player[0])
+        {
+            cpi_redPawn.SetActive(true);
+            cpi_bluePawn.SetActive(false);
+            cpi_greenPawn.SetActive(false);
+            cpi_yellowPawn.SetActive(false);
+        }
+        else if (_Table.getCurrentPlayer() == _Table.player[1])
+        {
+            cpi_redPawn.SetActive(false);
+            cpi_bluePawn.SetActive(true);
+            cpi_greenPawn.SetActive(false);
+            cpi_yellowPawn.SetActive(false);
+        }
+        else if (_Table.getCurrentPlayer() == _Table.player[2])
+        {
+            cpi_redPawn.SetActive(false);
+            cpi_bluePawn.SetActive(false);
+            cpi_greenPawn.SetActive(true);
+            cpi_yellowPawn.SetActive(false);
+        }
+        else if (_Table.getCurrentPlayer() == _Table.player[3])
+        {
+            cpi_redPawn.SetActive(false);
+            cpi_bluePawn.SetActive(false);
+            cpi_greenPawn.SetActive(false);
+            cpi_yellowPawn.SetActive(true);
+        }
+
+        IEnumerator wait()
+        {
+            float timeConsumed = 0f;
+            do
+            {
+                yield return new WaitForSeconds(1.5f);
+                timeConsumed = 1.5f;
+            }
+            while (timeConsumed < 1.5f);
+            specialPropertyInformationCard.SetActive(false);
+            informationPanel.SetActive(false);
+            HideInformationCard();
+        }
+        StartCoroutine(wait());
+    }
+
     //Special Property Information Card
     public void ShowSpecialPropertyCard(int slotNumber)
     {
@@ -1124,6 +1469,8 @@ public class UIManager : MonoBehaviour
         specialPropertyInformationCard.SetActive(true);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         specialPropertyInformationCard.transform.position = pos;
+        ut_showButtonPanel.SetActive(true);
+        ut_boughtPanel.SetActive(false);
 
         if (_Table.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.RailRoad)
         {
@@ -1150,6 +1497,61 @@ public class UIManager : MonoBehaviour
                 ut_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
             }
         }
+    }
+
+    public void ShowSpecialPropertyBought()
+    {
+        informationPanel.SetActive(true);
+        specialPropertyInformationCard.SetActive(true);
+        Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
+        specialPropertyInformationCard.transform.position = pos;
+
+        ut_showButtonPanel.SetActive(false);
+        ut_boughtPanel.SetActive(true);
+
+        if (_Table.getCurrentPlayer() == _Table.player[0])
+        {
+            ut_redPawn.SetActive(true);
+            ut_bluePawn.SetActive(false);
+            ut_greenPawn.SetActive(false);
+            ut_yellowPawn.SetActive(false);
+        }
+        else if (_Table.getCurrentPlayer() == _Table.player[1])
+        {
+            ut_redPawn.SetActive(false);
+            ut_bluePawn.SetActive(true);
+            ut_greenPawn.SetActive(false);
+            ut_yellowPawn.SetActive(false);
+        }
+        else if (_Table.getCurrentPlayer() == _Table.player[2])
+        {
+            ut_redPawn.SetActive(false);
+            ut_bluePawn.SetActive(false);
+            ut_greenPawn.SetActive(true);
+            ut_yellowPawn.SetActive(false);
+        }
+        else if (_Table.getCurrentPlayer() == _Table.player[3])
+        {
+            ut_redPawn.SetActive(false);
+            ut_bluePawn.SetActive(false);
+            ut_greenPawn.SetActive(false);
+            ut_yellowPawn.SetActive(true);
+        }
+
+        IEnumerator wait()
+        {
+            float timeConsumed = 0f;
+            do
+            {
+                yield return new WaitForSeconds(1.5f);
+                timeConsumed = 1.5f;
+            }
+            while (timeConsumed < 1.5f);
+            specialPropertyInformationCard.SetActive(false);
+            informationPanel.SetActive(false);
+            HideInformationCard();
+        }
+        StartCoroutine(wait());
     }
 
     //Suprise Information Card
@@ -1508,7 +1910,7 @@ public class UIManager : MonoBehaviour
 
     public void OnClick_Auction() 
     {
-
+        _Table.Auction();
     }
 
     public void OnClick_Done() //For suprise card
@@ -1535,6 +1937,7 @@ public class UIManager : MonoBehaviour
 
     //On Click Show Information Card
     //
+
     public void OnClick_ShowInformationCard(Slot tempSlot)
     {
         if (tempSlot.slotType == Slot_Type.ColorProperty)
@@ -1557,13 +1960,13 @@ public class UIManager : MonoBehaviour
 
         Onclick_ColorPropertyInformationCard.transform.position = pos;
         oc_cpi_propertyName.text = tempSlot.getSlotName().ToUpper();
-        oc_cpi_rentPrice.text = "RENT $" + tempSlot.getPropertyRent().ToString();
+        oc_cpi_rentPrice.text = "RENT $" + tempSlot.getPropertyRentUI(0).ToString();
         oc_cpi_rentDescription.text = "Rent is doubled on owning all unimproved sites in the group.";
-        oc_cpi_house1.text = "$" + tempSlot.getPropertyRent(1).ToString();
-        oc_cpi_house2.text = "$" + tempSlot.getPropertyRent(2).ToString();
-        oc_cpi_house3.text = "$" + tempSlot.getPropertyRent(3).ToString();
-        oc_cpi_house4.text = "$" + tempSlot.getPropertyRent(4).ToString();
-        oc_cpi_hotel.text = "$" + tempSlot.getPropertyRent(5).ToString();
+        oc_cpi_house1.text = "$" + tempSlot.getPropertyRentUI(1).ToString();
+        oc_cpi_house2.text = "$" + tempSlot.getPropertyRentUI(2).ToString();
+        oc_cpi_house3.text = "$" + tempSlot.getPropertyRentUI(3).ToString();
+        oc_cpi_house4.text = "$" + tempSlot.getPropertyRentUI(4).ToString();
+        oc_cpi_hotel.text = "$" + tempSlot.getPropertyRentUI(5).ToString();
         oc_cpi_buildPrice.text = "Contruction $" + tempSlot.getBuildPrice().ToString() + " each";
         oc_cpi_mortgagePrice.text = "Mortgage $" + tempSlot.getMortgagePrice().ToString() + " each";
 
@@ -1731,18 +2134,26 @@ public class UIManager : MonoBehaviour
 
     public void HideInformationCard()
     {
+        //Stand-on Card
         informationPanel.SetActive(false);
         //actionsCard.SetActive(false);
         colorPropertyInformationCard.SetActive(false);
         specialPropertyInformationCard.SetActive(false);
         supriseInformationCard.SetActive(false);
 
+        //Jail
         jailPanel.SetActive(false);
         inJailPanel.SetActive(false);
         goToJailPanel.SetActive(false);
         visitingJailPanel.SetActive(false);
 
+        //Auction
+        auctionPanel.SetActive(false);
+        acp_colorPropertyPanel.SetActive(false);
+        asp_specialPropertyPanel.SetActive(false);
+
         MoneyUpdate();
+        _Table.getCurrentPlayer().CheckBankruptcy();
     }
 
     #endregion

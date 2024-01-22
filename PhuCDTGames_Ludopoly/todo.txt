@@ -16,7 +16,12 @@ xúc sắc vẫn hiện mặc dù không ấn được khi người chơi đổ 
 
 chưa add tiền khi qua vạch xuất phát
 
----
-double rent when in group
-sang turn sau khi ấn build thì không hiện nhà nữa
-tích is group brown sẽ hiện hết tất cả nhưungx property
+---21/1/2024
+double rent when in group (done)
+sang turn sau khi ấn build thì không hiện nhà nữa (done)
+tích is group brown sẽ hiện hết tất cả nhưungx property (done)
+
+--22/1/2024 (*Note: đang để 2 ô nâu thuộc về player 4)
+ấn vào 1 slot bất kỳ không hiện UI xem trước (done)
+không hiện sáng slot khi người chơi k đủ tiền để xây (done)
+hoàn thành nốt phần Auction (mới xong phần thông tin)
