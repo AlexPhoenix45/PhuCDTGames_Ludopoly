@@ -24,4 +24,16 @@ tích is group brown sẽ hiện hết tất cả nhưungx property (done)
 --22/1/2024 (*Note: đang để 2 ô nâu thuộc về player 4)
 ấn vào 1 slot bất kỳ không hiện UI xem trước (done)
 không hiện sáng slot khi người chơi k đủ tiền để xây (done)
-hoàn thành nốt phần Auction (mới xong phần thông tin)
+hoàn thành nốt phần Auction (done)
+--23/1/2024
+test mọi người đều rời auction (done)
+một người còn lại mới mức cược 0$ (done)
+một người còn lại với mức cược trên 0$ (done)
+
+mọi người đều rời auction (lượt thứ 2), not responding (done)
+
+làm nốt phần người chơi đứng ở Slot
+check xem khi nào currentSlot của player thay đổi, thì cập nhật sang Slot
+khi currentSlot thay đổi thì trừ đi số người ở Slot
+ngược lại cộng vào
+check xem Slot có bao nhiêu người, rồi thay vào dòng 146 trong Player.cs phần position

@@ -49,6 +49,10 @@ public class Player : MonoBehaviour
     public short utilityOwned = 0;
     public List<Slot> slotOwned;
 
+    //Auction
+    //
+    public bool joinAuction = true;
+
     public void setPlayerIndex(int index)
     {
         playerIndex = index;

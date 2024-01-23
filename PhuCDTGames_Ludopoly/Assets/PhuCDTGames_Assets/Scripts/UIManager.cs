@@ -600,25 +600,69 @@ public class UIManager : MonoBehaviour
         {
             yield return new WaitForSeconds(.5f); //Delay for information to load
 
-            //Player 1
-            player1Name.text = Table.Instance.player[0].playerName.ToString();
-            //player1Money.text = Table.Instance.player[0].playerMoney.ToString() + "$";
-            player1Image.color = Table.Instance.player[0].playerColor;
+            if (_Table.numOfPlayers == 2)
+            {
+                player1Panel.SetActive(true);
+                player2Panel.SetActive(true);
+                player3Panel.SetActive(false);
+                player4Panel.SetActive(false);
+                //Player 1
+                player1Name.text = Table.Instance.player[0].playerName.ToString();
+                //player1Money.text = Table.Instance.player[0].playerMoney.ToString() + "$";
+                player1Image.color = Table.Instance.player[0].playerColor;
 
-            //Player 2
-            player2Name.text = Table.Instance.player[1].playerName.ToString();
-            //player2Money.text = Table.Instance.player[1].playerMoney.ToString() + "$";
-            player2Image.color = Table.Instance.player[1].playerColor;
+                //Player 2
+                player2Name.text = Table.Instance.player[1].playerName.ToString();
+                //player2Money.text = Table.Instance.player[1].playerMoney.ToString() + "$";
+                player2Image.color = Table.Instance.player[1].playerColor;
+            }
+            else if (_Table.numOfPlayers == 3)
+            {
+                player1Panel.SetActive(true);
+                player2Panel.SetActive(true);
+                player3Panel.SetActive(true);
+                player4Panel.SetActive(false);
+                //Player 1
+                player1Name.text = Table.Instance.player[0].playerName.ToString();
+                //player1Money.text = Table.Instance.player[0].playerMoney.ToString() + "$";
+                player1Image.color = Table.Instance.player[0].playerColor;
 
-            //Player 3
-            player3Name.text = Table.Instance.player[2].playerName.ToString();
-            //player3Money.text = Table.Instance.player[2].playerMoney.ToString() + "$";
-            player3Image.color = Table.Instance.player[2].playerColor;
+                //Player 2
+                player2Name.text = Table.Instance.player[1].playerName.ToString();
+                //player2Money.text = Table.Instance.player[1].playerMoney.ToString() + "$";
+                player2Image.color = Table.Instance.player[1].playerColor;
 
-            //Player 4
-            player4Name.text = Table.Instance.player[3].playerName.ToString();
-            //player4Money.text = Table.Instance.player[3].playerMoney.ToString() + "$";
-            player4Image.color = Table.Instance.player[3].playerColor;
+                //Player 3
+                player3Name.text = Table.Instance.player[2].playerName.ToString();
+                //player3Money.text = Table.Instance.player[2].playerMoney.ToString() + "$";
+                player3Image.color = Table.Instance.player[2].playerColor;
+            }
+            else if (_Table.numOfPlayers == 4)
+            {
+                player1Panel.SetActive(true);
+                player2Panel.SetActive(true);
+                player3Panel.SetActive(true);
+                player4Panel.SetActive(true);
+                //Player 1
+                player1Name.text = Table.Instance.player[0].playerName.ToString();
+                //player1Money.text = Table.Instance.player[0].playerMoney.ToString() + "$";
+                player1Image.color = Table.Instance.player[0].playerColor;
+
+                //Player 2
+                player2Name.text = Table.Instance.player[1].playerName.ToString();
+                //player2Money.text = Table.Instance.player[1].playerMoney.ToString() + "$";
+                player2Image.color = Table.Instance.player[1].playerColor;
+
+                //Player 3
+                player3Name.text = Table.Instance.player[2].playerName.ToString();
+                //player3Money.text = Table.Instance.player[2].playerMoney.ToString() + "$";
+                player3Image.color = Table.Instance.player[2].playerColor;
+
+                //Player 4
+                player4Name.text = Table.Instance.player[3].playerName.ToString();
+                //player4Money.text = Table.Instance.player[3].playerMoney.ToString() + "$";
+                player4Image.color = Table.Instance.player[3].playerColor;
+            }
 
             MoneyUpdate();
         }
@@ -1062,149 +1106,6 @@ public class UIManager : MonoBehaviour
         endTurn.interactable = value;
     }
 
-    public void ShowAuction(int slotNumber)
-    {
-        auctionPanel.SetActive(true);
-        autionInformationPanel.SetActive(true); 
-        Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
-        autionInformationPanel.transform.position = pos;
-
-        if (_Table.getSlot(slotNumber).slotType == Slot_Type.ColorProperty)
-        {
-            acp_colorPropertyPanel.SetActive(true);
-
-            acp_propertyName.text = _Table.getSlot(slotNumber).getSlotName().ToUpper();
-            acp_rentPrice.text = "RENT $" + _Table.getSlot(slotNumber).getPropertyRentUI(0).ToString();
-            acp_rentDescription.text = "Rent is doubled on owning all unimproved sites in the group.";
-            acp_house1.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(1).ToString();
-            acp_house2.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(2).ToString();
-            acp_house3.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(3).ToString();
-            acp_house4.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(4).ToString();
-            acp_hotel.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(5).ToString();
-            acp_buildPrice.text = "Contruction $" + _Table.getSlot(slotNumber).getBuildPrice().ToString() + " each";
-            acp_mortgagePrice.text = "Mortgage $" + _Table.getSlot(slotNumber).getMortgagePrice().ToString() + " each";
-
-            if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Brown)
-            {
-                acp_brownCard.SetActive(true);
-                acp_blueCard.SetActive(false);
-                acp_greenCard.SetActive(false);
-                acp_orangeCard.SetActive(false);
-                acp_pinkCard.SetActive(false);
-                acp_purpleCard.SetActive(false);
-                acp_redCard.SetActive(false);
-                acp_yellowCard.SetActive(false);
-            }
-            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Blue)
-            {
-                acp_brownCard.SetActive(false);
-                acp_blueCard.SetActive(true);
-                acp_greenCard.SetActive(false);
-                acp_orangeCard.SetActive(false);
-                acp_pinkCard.SetActive(false);
-                acp_purpleCard.SetActive(false);
-                acp_redCard.SetActive(false);
-                acp_yellowCard.SetActive(false);
-            }
-            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Green)
-            {
-                acp_brownCard.SetActive(false);
-                acp_blueCard.SetActive(false);
-                acp_greenCard.SetActive(true);
-                acp_orangeCard.SetActive(false);
-                acp_pinkCard.SetActive(false);
-                acp_purpleCard.SetActive(false);
-                acp_redCard.SetActive(false);
-                acp_yellowCard.SetActive(false);
-            }
-            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Orange)
-            {
-                acp_brownCard.SetActive(false);
-                acp_blueCard.SetActive(false);
-                acp_greenCard.SetActive(false);
-                acp_orangeCard.SetActive(true);
-                acp_pinkCard.SetActive(false);
-                acp_purpleCard.SetActive(false);
-                acp_redCard.SetActive(false);
-                acp_yellowCard.SetActive(false);
-            }
-            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Pink)
-            {
-                acp_brownCard.SetActive(false);
-                acp_blueCard.SetActive(false);
-                acp_greenCard.SetActive(false);
-                acp_orangeCard.SetActive(false);
-                acp_pinkCard.SetActive(true);
-                acp_purpleCard.SetActive(false);
-                acp_redCard.SetActive(false);
-                acp_yellowCard.SetActive(false);
-            }
-            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Purple)
-            {
-                acp_brownCard.SetActive(false);
-                acp_blueCard.SetActive(false);
-                acp_greenCard.SetActive(false);
-                acp_orangeCard.SetActive(false);
-                acp_pinkCard.SetActive(false);
-                acp_purpleCard.SetActive(true);
-                acp_redCard.SetActive(false);
-                acp_yellowCard.SetActive(false);
-            }
-            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Red)
-            {
-                acp_brownCard.SetActive(false);
-                acp_blueCard.SetActive(false);
-                acp_greenCard.SetActive(false);
-                acp_orangeCard.SetActive(false);
-                acp_pinkCard.SetActive(false);
-                acp_purpleCard.SetActive(false);
-                acp_redCard.SetActive(true);
-                acp_yellowCard.SetActive(false);
-            }
-            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Yellow)
-            {
-                acp_brownCard.SetActive(false);
-                acp_blueCard.SetActive(false);
-                acp_greenCard.SetActive(false);
-                acp_orangeCard.SetActive(false);
-                acp_pinkCard.SetActive(false);
-                acp_purpleCard.SetActive(false);
-                acp_redCard.SetActive(false);
-                acp_yellowCard.SetActive(true);
-            }
-        }
-        else if (_Table.getSlot(slotNumber).slotType == Slot_Type.SpecialProperty)
-        {
-            asp_specialPropertyPanel.SetActive(true);
-
-            if (_Table.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.RailRoad)
-            {
-                asp_railroad_Panel.SetActive(true);
-                asp_utilities_Panel.SetActive(false);
-
-                asp_rr_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
-            }
-            else if (_Table.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.Utility)
-            {
-                asp_railroad_Panel.SetActive(false);
-                asp_utilities_Panel.SetActive(true);
-
-                if (_Table.getSlot(slotNumber).specialProperty.utilityType == Utility_Type.WaterRorks)
-                {
-                    asp_ut_waterWorks_Image.SetActive(true);
-                    asp_ut_electricCompany_Image.SetActive(false);
-                    asp_ut_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
-                }
-                else if (_Table.getSlot(slotNumber).specialProperty.utilityType == Utility_Type.ElectricCompany)
-                {
-                    asp_ut_waterWorks_Image.SetActive(false);
-                    asp_ut_electricCompany_Image.SetActive(true);
-                    asp_ut_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
-                }
-            }
-        }
-    }
-
     //On_Click
     //
 
@@ -1241,7 +1142,7 @@ public class UIManager : MonoBehaviour
         OnClick_ActionsClose();
         mainActionPanel.SetActive(true);
         mortgagePanel.SetActive(true);
-        mortgage.transform.position = pos;
+        mortgagePanel.transform.position = pos;
         _Table.Mortgage();
     }
 
@@ -1255,6 +1156,11 @@ public class UIManager : MonoBehaviour
         _Table.Redeem();
     }
 
+    public void OnClick_Trade()
+    {
+        _Table.Trade();
+    }
+
     public void OnClick_ActionsClose()
     {
         OnClick_CloseOnClickInformation();
@@ -1266,10 +1172,6 @@ public class UIManager : MonoBehaviour
         _Table.UnshownSlot();
     }
 
-    public void OnClick_Trade()
-    {
-
-    }
     #endregion
 
     #region Information Card on Table 
@@ -1297,6 +1199,8 @@ public class UIManager : MonoBehaviour
     }
 
     //Color Property Information Card
+    //
+
     public void ShowColorPropertyCard(int slotNumber)
     {
         informationPanel.SetActive(true);
@@ -1463,6 +1367,8 @@ public class UIManager : MonoBehaviour
     }
 
     //Special Property Information Card
+    //
+
     public void ShowSpecialPropertyCard(int slotNumber)
     {
         informationPanel.SetActive(true);
@@ -1555,6 +1461,8 @@ public class UIManager : MonoBehaviour
     }
 
     //Suprise Information Card
+    //
+
     public void ShowSupriseCard(int slotNumber)
     {
         float timeConsumed = 0;
@@ -1903,6 +1811,217 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void ShowAuction(int slotNumber, Player currentPlayer, int currentPrice, Player playerWithHighestBid)
+    {
+        auctionPanel.SetActive(true);
+        autionInformationPanel.SetActive(true);
+        Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
+        autionInformationPanel.transform.position = pos;
+
+        if (_Table.getSlot(slotNumber).slotType == Slot_Type.ColorProperty)
+        {
+            acp_colorPropertyPanel.SetActive(true);
+
+            acp_propertyName.text = _Table.getSlot(slotNumber).getSlotName().ToUpper();
+            acp_rentPrice.text = "RENT $" + _Table.getSlot(slotNumber).getPropertyRentUI(0).ToString();
+            acp_rentDescription.text = "Rent is doubled on owning all unimproved sites in the group.";
+            acp_house1.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(1).ToString();
+            acp_house2.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(2).ToString();
+            acp_house3.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(3).ToString();
+            acp_house4.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(4).ToString();
+            acp_hotel.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(5).ToString();
+            acp_buildPrice.text = "Contruction $" + _Table.getSlot(slotNumber).getBuildPrice().ToString() + " each";
+            acp_mortgagePrice.text = "Mortgage $" + _Table.getSlot(slotNumber).getMortgagePrice().ToString() + " each";
+
+            if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Brown)
+            {
+                acp_brownCard.SetActive(true);
+                acp_blueCard.SetActive(false);
+                acp_greenCard.SetActive(false);
+                acp_orangeCard.SetActive(false);
+                acp_pinkCard.SetActive(false);
+                acp_purpleCard.SetActive(false);
+                acp_redCard.SetActive(false);
+                acp_yellowCard.SetActive(false);
+            }
+            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Blue)
+            {
+                acp_brownCard.SetActive(false);
+                acp_blueCard.SetActive(true);
+                acp_greenCard.SetActive(false);
+                acp_orangeCard.SetActive(false);
+                acp_pinkCard.SetActive(false);
+                acp_purpleCard.SetActive(false);
+                acp_redCard.SetActive(false);
+                acp_yellowCard.SetActive(false);
+            }
+            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Green)
+            {
+                acp_brownCard.SetActive(false);
+                acp_blueCard.SetActive(false);
+                acp_greenCard.SetActive(true);
+                acp_orangeCard.SetActive(false);
+                acp_pinkCard.SetActive(false);
+                acp_purpleCard.SetActive(false);
+                acp_redCard.SetActive(false);
+                acp_yellowCard.SetActive(false);
+            }
+            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Orange)
+            {
+                acp_brownCard.SetActive(false);
+                acp_blueCard.SetActive(false);
+                acp_greenCard.SetActive(false);
+                acp_orangeCard.SetActive(true);
+                acp_pinkCard.SetActive(false);
+                acp_purpleCard.SetActive(false);
+                acp_redCard.SetActive(false);
+                acp_yellowCard.SetActive(false);
+            }
+            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Pink)
+            {
+                acp_brownCard.SetActive(false);
+                acp_blueCard.SetActive(false);
+                acp_greenCard.SetActive(false);
+                acp_orangeCard.SetActive(false);
+                acp_pinkCard.SetActive(true);
+                acp_purpleCard.SetActive(false);
+                acp_redCard.SetActive(false);
+                acp_yellowCard.SetActive(false);
+            }
+            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Purple)
+            {
+                acp_brownCard.SetActive(false);
+                acp_blueCard.SetActive(false);
+                acp_greenCard.SetActive(false);
+                acp_orangeCard.SetActive(false);
+                acp_pinkCard.SetActive(false);
+                acp_purpleCard.SetActive(true);
+                acp_redCard.SetActive(false);
+                acp_yellowCard.SetActive(false);
+            }
+            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Red)
+            {
+                acp_brownCard.SetActive(false);
+                acp_blueCard.SetActive(false);
+                acp_greenCard.SetActive(false);
+                acp_orangeCard.SetActive(false);
+                acp_pinkCard.SetActive(false);
+                acp_purpleCard.SetActive(false);
+                acp_redCard.SetActive(true);
+                acp_yellowCard.SetActive(false);
+            }
+            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Yellow)
+            {
+                acp_brownCard.SetActive(false);
+                acp_blueCard.SetActive(false);
+                acp_greenCard.SetActive(false);
+                acp_orangeCard.SetActive(false);
+                acp_pinkCard.SetActive(false);
+                acp_purpleCard.SetActive(false);
+                acp_redCard.SetActive(false);
+                acp_yellowCard.SetActive(true);
+            }
+        }
+        else if (_Table.getSlot(slotNumber).slotType == Slot_Type.SpecialProperty)
+        {
+            asp_specialPropertyPanel.SetActive(true);
+
+            if (_Table.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.RailRoad)
+            {
+                asp_railroad_Panel.SetActive(true);
+                asp_utilities_Panel.SetActive(false);
+
+                asp_rr_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
+            }
+            else if (_Table.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.Utility)
+            {
+                asp_railroad_Panel.SetActive(false);
+                asp_utilities_Panel.SetActive(true);
+
+                if (_Table.getSlot(slotNumber).specialProperty.utilityType == Utility_Type.WaterRorks)
+                {
+                    asp_ut_waterWorks_Image.SetActive(true);
+                    asp_ut_electricCompany_Image.SetActive(false);
+                    asp_ut_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
+                }
+                else if (_Table.getSlot(slotNumber).specialProperty.utilityType == Utility_Type.ElectricCompany)
+                {
+                    asp_ut_waterWorks_Image.SetActive(false);
+                    asp_ut_electricCompany_Image.SetActive(true);
+                    asp_ut_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
+                }
+            }
+        }
+
+        if (currentPlayer.playerMoney < currentPrice + 10) //just can withdraw
+        {
+            ai_smallBid.interactable = false;
+            ai_bigBid.interactable = false;
+            ai_withdraw.interactable = true;
+        }
+        else if (currentPlayer.playerMoney < currentPrice + 100) //can small bid
+        {
+            ai_smallBid.interactable = true;
+            ai_bigBid.interactable = false;
+            ai_withdraw.interactable = true;
+        }
+        else //can big bid
+        {
+            ai_smallBid.interactable = true;
+            ai_bigBid.interactable = true;
+            ai_withdraw.interactable = true;
+        }
+
+        //update currentPlayer and currentPrice
+        ai_currentPlayerTurn.text = "Current Turn\n" + currentPlayer.playerName;
+        if (playerWithHighestBid == null)
+        {
+            ai_currentPrice.text = "Current Price: " + currentPrice + "$ (None)";
+        }
+        else
+        {
+            ai_currentPrice.text = "Current Price: " + currentPrice + "$ (" + playerWithHighestBid.playerName + ")";
+        }
+    }
+    
+    public void CloseAuction(int slotNumber, Player playerWin, Player playerStart, int currentPrice, bool isWin)
+    {
+        if (isWin)
+        {
+            auctionPanel.SetActive(false);
+            autionInformationPanel.SetActive(false);
+            _Table.SwitchPlayer(playerWin);
+            _Table.Buy(slotNumber, currentPrice);
+            _Table.SwitchPlayer(playerStart);
+        }
+        else
+        {
+            auctionPanel.SetActive(false);
+            autionInformationPanel.SetActive(false);
+            _Table.SwitchPlayer(playerStart);
+            HideInformationCard();
+        }
+
+        foreach (Player p in _Table.player) //reset lai luojt tham gia auction cua nguoi choi
+        {
+            p.joinAuction = true;
+        }
+
+        if (playerStart.hasSecondTurn) //sua loi hien xuc sac khi dau gia xong
+        {
+            DicesActive(true);
+            DicesFacesActive();
+        }
+        else
+        {
+            DicesActive(false);
+            DicesFacesActive();
+        }
+    }
+
+    //On-Click
+    //
+
     public void OnClick_Buy()
     {
         _Table.Buy();
@@ -1910,7 +2029,22 @@ public class UIManager : MonoBehaviour
 
     public void OnClick_Auction() 
     {
-        _Table.Auction();
+        _Table.AuctionStart();
+    }
+
+    public void OnClick_Auction_SmallBid()
+    {
+        _Table.Auction_SmallBid();
+    }
+
+    public void OnClick_Auction_BigBid()
+    {
+        _Table.Auction_BigBid();
+    }
+
+    public void OnClick_Auction_Withdraw()
+    {
+        _Table.Auction_Withdraw();
     }
 
     public void OnClick_Done() //For suprise card

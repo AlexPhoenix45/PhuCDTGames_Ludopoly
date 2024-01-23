@@ -3166,7 +3166,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 122340818}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1801566339}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: OnClick_Auction_BigBid
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &136541410
 GameObject:
   m_ObjectHideFlags: 0
@@ -6340,7 +6352,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 267880694}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1801566339}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: OnClick_Auction_SmallBid
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &267880694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22707,6 +22731,7 @@ MonoBehaviour:
   railroadOwned: 0
   utilityOwned: 0
   slotOwned: []
+  joinAuction: 1
   moneyLeft: 0
 --- !u!1 &1075018310
 GameObject:
@@ -24272,6 +24297,7 @@ MonoBehaviour:
   railroadOwned: 0
   utilityOwned: 0
   slotOwned: []
+  joinAuction: 1
   moneyLeft: 0
 --- !u!1 &1147282024
 GameObject:
@@ -27292,6 +27318,7 @@ MonoBehaviour:
   railroadOwned: 0
   utilityOwned: 0
   slotOwned: []
+  joinAuction: 1
   moneyLeft: 0
 --- !u!1 &1335801888
 GameObject:
@@ -28538,6 +28565,7 @@ MonoBehaviour:
   railroadOwned: 0
   utilityOwned: 0
   slotOwned: []
+  joinAuction: 1
   moneyLeft: 0
 --- !u!1 &1416133778
 GameObject:
@@ -38131,8 +38159,12 @@ MonoBehaviour:
   - {fileID: 1404129430}
   - {fileID: 1146962585}
   - {fileID: 1068305331}
-  numOfPlayers: 4
+  numOfPlayers: 2
   currentPlayer: 0
+  p1Pawn: {fileID: 1330615117}
+  p2Pawn: {fileID: 1404129426}
+  p3Pawn: {fileID: 1146962581}
+  p4Pawn: {fileID: 1068305327}
   test_dice1: 0
   test_dice2: 0
   opentest: 0
@@ -40403,8 +40435,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 397.22}
-  m_SizeDelta: {x: 700, y: 794.44}
+  m_AnchoredPosition: {x: 0, y: 408.33}
+  m_SizeDelta: {x: 0, y: -816.67}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2035862163
 MonoBehaviour:
@@ -40892,7 +40924,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2043849649}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1801566339}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: OnClick_Auction_Withdraw
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &2047159295
 PrefabInstance:
   m_ObjectHideFlags: 0

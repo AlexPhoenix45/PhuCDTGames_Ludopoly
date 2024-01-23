@@ -17,13 +17,61 @@ public class Table : MonoBehaviour
     //[HideInInspector]
     public CurrentPlayer currentPlayer;
 
+    //Auction Parameter
+    //
+
+    int auc_currentPrice;
+    Player auc_currentPlayer;
+    Player auc_startingPlayer;
+    Player auc_playerWithHighestBid;
+    int auc_playerInAuction;
+    int auc_slotNumber;
+
+    //Pawns
+    //
+    public GameObject p1Pawn;
+    public GameObject p2Pawn;
+    public GameObject p3Pawn;
+    public GameObject p4Pawn;
+
+    [Header("Dice Tester")]
+    public int test_dice1;
+    public int test_dice2;
+    public bool opentest = false;
     private void Start()
     {
         if (Instance == null)
             Instance = this;
+        SetPawn();
     }
 
     //Starting
+    //
+    public void SetPawn()
+    {
+        if (numOfPlayers == 2)
+        {
+            p1Pawn.SetActive(true);
+            p2Pawn.SetActive(true);
+            p3Pawn.SetActive(false);
+            p4Pawn.SetActive(false);
+        }
+        else if (numOfPlayers == 3)
+        {
+            p1Pawn.SetActive(true);
+            p2Pawn.SetActive(true);
+            p3Pawn.SetActive(true);
+            p4Pawn.SetActive(false);
+        }
+        else if (numOfPlayers == 4)
+        {
+            p1Pawn.SetActive(true);
+            p2Pawn.SetActive(true);
+            p3Pawn.SetActive(true);
+            p4Pawn.SetActive(true);
+        }
+    }
+
     public void ChooseStartingPlayer()
     {
         IEnumerator chooseStarter()
@@ -41,10 +89,6 @@ public class Table : MonoBehaviour
         }
         StartCoroutine(chooseStarter());
     }
-    [SerializeField]
-    int test_dice1, test_dice2;
-    [SerializeField]
-    bool opentest = false;
 
     //Roll
     //
@@ -122,33 +166,77 @@ public class Table : MonoBehaviour
     #region Player Switching and Getter
     public void SwitchPlayer() //Switch to next player
     {
-        if (currentPlayer == CurrentPlayer.player1)
+        if (numOfPlayers == 2)
         {
-            currentPlayer = CurrentPlayer.player2;
-            player[0].setIsMyTurn(false);
-            player[1].setIsMyTurn(true);
-            UIManager.Instance.setTurn(player[1].playerIndex, false);
+            if (currentPlayer == CurrentPlayer.player1)
+            {
+                currentPlayer = CurrentPlayer.player2;
+                player[0].setIsMyTurn(false);
+                player[1].setIsMyTurn(true);
+                _UIManager.setTurn(player[1].playerIndex, false);
+            }
+            else if (currentPlayer == CurrentPlayer.player2)
+            {
+                currentPlayer = CurrentPlayer.player1;
+                player[1].setIsMyTurn(false);
+                player[0].setIsMyTurn(true);
+                _UIManager.setTurn(player[0].playerIndex, false);
+            }
         }
-        else if (currentPlayer == CurrentPlayer.player2)
+        else if (numOfPlayers == 3)
         {
-            currentPlayer = CurrentPlayer.player3;
-            player[1].setIsMyTurn(false);
-            player[2].setIsMyTurn(true);
-            UIManager.Instance.setTurn(player[2].playerIndex, false);
+            if (currentPlayer == CurrentPlayer.player1)
+            {
+                currentPlayer = CurrentPlayer.player2;
+                player[0].setIsMyTurn(false);
+                player[1].setIsMyTurn(true);
+                _UIManager.setTurn(player[1].playerIndex, false);
+            }
+            else if (currentPlayer == CurrentPlayer.player2)
+            {
+                currentPlayer = CurrentPlayer.player3;
+                player[1].setIsMyTurn(false);
+                player[2].setIsMyTurn(true);
+                _UIManager.setTurn(player[2].playerIndex, false);
+            }
+            else if (currentPlayer == CurrentPlayer.player3)
+            {
+                currentPlayer = CurrentPlayer.player1;
+                player[2].setIsMyTurn(false);
+                player[0].setIsMyTurn(true);
+                _UIManager.setTurn(player[0].playerIndex, false);
+            }
         }
-        else if (currentPlayer == CurrentPlayer.player3)
+        else if (numOfPlayers == 4)
         {
-            currentPlayer = CurrentPlayer.player4;
-            player[2].setIsMyTurn(false);
-            player[3].setIsMyTurn(true);
-            UIManager.Instance.setTurn(player[3].playerIndex, false);
-        }
-        else if (currentPlayer == CurrentPlayer.player4)
-        {
-            currentPlayer = CurrentPlayer.player1;
-            player[3].setIsMyTurn(false);
-            player[0].setIsMyTurn(true);
-            UIManager.Instance.setTurn(player[0].playerIndex, false);
+            if (currentPlayer == CurrentPlayer.player1)
+            {
+                currentPlayer = CurrentPlayer.player2;
+                player[0].setIsMyTurn(false);
+                player[1].setIsMyTurn(true);
+                _UIManager.setTurn(player[1].playerIndex, false);
+            }
+            else if (currentPlayer == CurrentPlayer.player2)
+            {
+                currentPlayer = CurrentPlayer.player3;
+                player[1].setIsMyTurn(false);
+                player[2].setIsMyTurn(true);
+                _UIManager.setTurn(player[2].playerIndex, false);
+            }
+            else if (currentPlayer == CurrentPlayer.player3)
+            {
+                currentPlayer = CurrentPlayer.player4;
+                player[2].setIsMyTurn(false);
+                player[3].setIsMyTurn(true);
+                _UIManager.setTurn(player[3].playerIndex, false);
+            }
+            else if (currentPlayer == CurrentPlayer.player4)
+            {
+                currentPlayer = CurrentPlayer.player1;
+                player[3].setIsMyTurn(false);
+                player[0].setIsMyTurn(true);
+                _UIManager.setTurn(player[0].playerIndex, false);
+            }
         }
     }
 
@@ -156,33 +244,77 @@ public class Table : MonoBehaviour
     {
         if (isSuffle)
         {
-            if (currentPlayer == CurrentPlayer.player1)
+            if (numOfPlayers == 2)
             {
-                currentPlayer = CurrentPlayer.player2;
-                player[0].setIsMyTurn(false);
-                player[1].setIsMyTurn(true);
-                UIManager.Instance.setTurn(player[1].playerIndex, true);
+                if (currentPlayer == CurrentPlayer.player1)
+                {
+                    currentPlayer = CurrentPlayer.player2;
+                    player[0].setIsMyTurn(false);
+                    player[1].setIsMyTurn(true);
+                    UIManager.Instance.setTurn(player[1].playerIndex, true);
+                }
+                else if (currentPlayer == CurrentPlayer.player2)
+                {
+                    currentPlayer = CurrentPlayer.player1;
+                    player[1].setIsMyTurn(false);
+                    player[0].setIsMyTurn(true);
+                    UIManager.Instance.setTurn(player[0].playerIndex, true);
+                }
             }
-            else if (currentPlayer == CurrentPlayer.player2)
+            else if (numOfPlayers == 3)
             {
-                currentPlayer = CurrentPlayer.player3;
-                player[1].setIsMyTurn(false);
-                player[2].setIsMyTurn(true);
-                UIManager.Instance.setTurn(player[2].playerIndex, true);
+                if(currentPlayer == CurrentPlayer.player1)
+                {
+                    currentPlayer = CurrentPlayer.player2;
+                    player[0].setIsMyTurn(false);
+                    player[1].setIsMyTurn(true);
+                    UIManager.Instance.setTurn(player[1].playerIndex, true);
+                }
+                else if (currentPlayer == CurrentPlayer.player2)
+                {
+                    currentPlayer = CurrentPlayer.player3;
+                    player[1].setIsMyTurn(false);
+                    player[2].setIsMyTurn(true);
+                    UIManager.Instance.setTurn(player[2].playerIndex, true);
+                }
+                else if (currentPlayer == CurrentPlayer.player3)
+                {
+                    currentPlayer = CurrentPlayer.player1;
+                    player[2].setIsMyTurn(false);
+                    player[0].setIsMyTurn(true);
+                    UIManager.Instance.setTurn(player[0].playerIndex, true);
+                }
             }
-            else if (currentPlayer == CurrentPlayer.player3)
+            else if (numOfPlayers == 4)
             {
-                currentPlayer = CurrentPlayer.player4;
-                player[2].setIsMyTurn(false);
-                player[3].setIsMyTurn(true);
-                UIManager.Instance.setTurn(player[3].playerIndex, true);
-            }
-            else if (currentPlayer == CurrentPlayer.player4)
-            {
-                currentPlayer = CurrentPlayer.player1;
-                player[3].setIsMyTurn(false);
-                player[0].setIsMyTurn(true);
-                UIManager.Instance.setTurn(player[0].playerIndex, true);
+                if (currentPlayer == CurrentPlayer.player1)
+                {
+                    currentPlayer = CurrentPlayer.player2;
+                    player[0].setIsMyTurn(false);
+                    player[1].setIsMyTurn(true);
+                    UIManager.Instance.setTurn(player[1].playerIndex, true);
+                }
+                else if (currentPlayer == CurrentPlayer.player2)
+                {
+                    currentPlayer = CurrentPlayer.player3;
+                    player[1].setIsMyTurn(false);
+                    player[2].setIsMyTurn(true);
+                    UIManager.Instance.setTurn(player[2].playerIndex, true);
+                }
+                else if (currentPlayer == CurrentPlayer.player3)
+                {
+                    currentPlayer = CurrentPlayer.player4;
+                    player[2].setIsMyTurn(false);
+                    player[3].setIsMyTurn(true);
+                    UIManager.Instance.setTurn(player[3].playerIndex, true);
+                }
+                else if (currentPlayer == CurrentPlayer.player4)
+                {
+                    currentPlayer = CurrentPlayer.player1;
+                    player[3].setIsMyTurn(false);
+                    player[0].setIsMyTurn(true);
+                    UIManager.Instance.setTurn(player[0].playerIndex, true);
+                }
             }
         }
         else
@@ -255,21 +387,62 @@ public class Table : MonoBehaviour
 
     public Player[] getRemainingPlayer()
     {
-        if (getCurrentPlayer() == player[0])
+        if (numOfPlayers == 2)
         {
-            return new Player[] { player[1], player[2], player[3] };
+            if (getCurrentPlayer() == player[0])
+            {
+                return new Player[] { player[1] };
+            }
+            else if (getCurrentPlayer() == player[1])
+            {
+                return new Player[] { player[0] };
+            }
+            else
+            {
+                return null;
+            }
         }
-        else if (getCurrentPlayer() == player[1])
+        else if (numOfPlayers == 3)
         {
-            return new Player[] { player[0], player[2], player[3] };
+            if (getCurrentPlayer() == player[0])
+            {
+                return new Player[] { player[1], player[2] };
+            }
+            else if (getCurrentPlayer() == player[1])
+            {
+                return new Player[] { player[0], player[2] };
+            }
+            else if (getCurrentPlayer() == player[2])
+            {
+                return new Player[] { player[0], player[1] };
+            }
+            else
+            {
+                return null;
+            }
         }
-        else if (getCurrentPlayer() == player[2])
+        else if (numOfPlayers == 4)
         {
-            return new Player[] { player[0], player[1], player[3] };
-        }
-        else if (getCurrentPlayer() == player[3])
-        {
-            return new Player[] { player[0], player[1], player[2] };
+            if (getCurrentPlayer() == player[0])
+            {
+                return new Player[] { player[1], player[2], player[3] };
+            }
+            else if (getCurrentPlayer() == player[1])
+            {
+                return new Player[] { player[0], player[2], player[3] };
+            }
+            else if (getCurrentPlayer() == player[2])
+            {
+                return new Player[] { player[0], player[1], player[3] };
+            }
+            else if (getCurrentPlayer() == player[3])
+            {
+                return new Player[] { player[0], player[1], player[2] };
+            }
+            else
+            {
+                return null;
+            }
         }
         else
         {
@@ -839,11 +1012,362 @@ public class Table : MonoBehaviour
         }
     }
 
-    public void Auction()
+    public void Buy(int slotNumber, int slotPrice)
+    {
+        getSlot(slotNumber).setOwner(getCurrentPlayer()); //set owner to slot
+        CurrentPlayerPayBank(slotPrice); //pay bank
+
+        if (getSlot(slotNumber).slotType == Slot_Type.ColorProperty)
+        {
+            bool isGroup_Brown = true;
+            bool isGroup_Blue = true;
+            bool isGroup_Pink = true;
+            bool isGroup_Orange = true;
+            bool isGroup_Red = true;
+            bool isGroup_Yellow = true;
+            bool isGroup_Green = true;
+            bool isGroup_Purple = true;
+
+            bool skipBrown = false;
+            bool skipBlue = false;
+            bool skipPink = false;
+            bool skipOrange = false;
+            bool skipRed = false;
+            bool skipYellow = false;
+            bool skipGreen = false;
+            bool skipPurple = false;
+
+            for (int i = 0; i < slot.Length; i++)
+            {
+                if (getSlot(i).slotType == Slot_Type.ColorProperty)
+                {
+                    if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Brown && !skipBrown)
+                    {
+                        if (getSlot(i).getOwner() == getCurrentPlayer())
+                        {
+                            isGroup_Brown = true;
+                        }
+                        else
+                        {
+                            isGroup_Brown = false;
+                            skipBrown = true;
+                        }
+                    }
+                    else if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Blue && !skipBlue)
+                    {
+                        if (getSlot(i).getOwner() == getCurrentPlayer())
+                        {
+                            isGroup_Blue = true;
+                        }
+                        else
+                        {
+                            isGroup_Blue = false;
+                            skipBlue = true;
+                        }
+                    }
+                    else if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Pink && !skipPink)
+                    {
+                        if (getSlot(i).getOwner() == getCurrentPlayer())
+                        {
+                            isGroup_Pink = true;
+                        }
+                        else
+                        {
+                            isGroup_Pink = false;
+                            skipPink = true;
+                        }
+                    }
+                    else if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Orange && !skipOrange)
+                    {
+                        if (getSlot(i).getOwner() == getCurrentPlayer())
+                        {
+                            isGroup_Orange = true;
+                        }
+                        else
+                        {
+                            isGroup_Orange = false;
+                            skipOrange = true;
+                        }
+                    }
+                    else if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Red && !skipRed)
+                    {
+                        if (getSlot(i).getOwner() == getCurrentPlayer())
+                        {
+                            isGroup_Red = true;
+                        }
+                        else
+                        {
+                            isGroup_Red = false;
+                            skipRed = true;
+                        }
+                    }
+                    else if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Yellow && !skipYellow)
+                    {
+                        if (getSlot(i).getOwner() == getCurrentPlayer())
+                        {
+                            isGroup_Yellow = true;
+                        }
+                        else
+                        {
+                            isGroup_Yellow = false;
+                            skipYellow = true;
+                        }
+                    }
+                    else if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Green && !skipGreen)
+                    {
+                        if (getSlot(i).getOwner() == getCurrentPlayer())
+                        {
+                            isGroup_Green = true;
+                        }
+                        else
+                        {
+                            isGroup_Green = false;
+                            skipGreen = true;
+                        }
+                    }
+                    else if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Purple && !skipPurple)
+                    {
+                        if (getSlot(i).getOwner() == getCurrentPlayer())
+                        {
+                            isGroup_Purple = true;
+                        }
+                        else
+                        {
+                            isGroup_Purple = false;
+                            skipPurple = true;
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < slot.Length; i++)
+            {
+                if (getSlot(i).slotType == Slot_Type.ColorProperty)
+                {
+                    if (isGroup_Brown)
+                    {
+                        if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Brown)
+                        {
+                            getSlot(i).inSet = true;
+                            continue;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (isGroup_Blue)
+                    {
+                        if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Blue)
+                        {
+                            getSlot(i).inSet = true;
+                            continue;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (isGroup_Pink)
+                    {
+                        if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Pink)
+                        {
+                            getSlot(i).inSet = true;
+                            continue;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (isGroup_Orange)
+                    {
+                        if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Orange)
+                        {
+                            getSlot(i).inSet = true;
+                            continue;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (isGroup_Red)
+                    {
+                        if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Red)
+                        {
+                            getSlot(i).inSet = true;
+                            continue;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (isGroup_Yellow)
+                    {
+                        if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Yellow)
+                        {
+                            getSlot(i).inSet = true;
+                            continue;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (isGroup_Green)
+                    {
+                        if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Green)
+                        {
+                            getSlot(i).inSet = true;
+                            continue;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (isGroup_Purple)
+                    {
+                        if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Purple)
+                        {
+                            getSlot(i).inSet = true;
+                            continue;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                }
+            }
+
+            _UIManager.ShowColorPropertyBought();
+        }
+        else if (getSlot(slotNumber).slotType == Slot_Type.SpecialProperty)
+        {
+            if (getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.RailRoad)
+            {
+                getCurrentPlayer().railroadOwned++;
+            }
+            else if (getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.Utility)
+            {
+                getCurrentPlayer().utilityOwned++;
+            }
+
+            _UIManager.ShowSpecialPropertyBought();
+        }
+    }
+    
+    public void AuctionStart()
+    {
+        auc_currentPrice = 0;
+        auc_currentPlayer = getCurrentPlayer();
+        auc_startingPlayer = getCurrentPlayer();
+        auc_playerInAuction = numOfPlayers;
+        auc_slotNumber = getCurrentPlayer().currentSlot;
+
+        _UIManager.ShowAuction(auc_slotNumber, auc_currentPlayer, auc_currentPrice, auc_playerWithHighestBid);
+    }
+
+    public void AuctionExecute()
     {
         //Show UI
-        _UIManager.ShowAuction(getCurrentPlayer().currentSlot); //them currentPlayer, currentPrice thanh parameter
+        //them currentPlayer, currentPrice thanh parameter
         //Xu ly cac nut khi truyen vao nguoi choi (xem co du tien de bet khong)
+
+        if (auc_playerInAuction == 1 && auc_currentPrice != 0)
+        {
+            _UIManager.CloseAuction(auc_slotNumber, getCurrentPlayer(), auc_startingPlayer, auc_currentPrice, true);
+        }
+        else
+        {
+            _UIManager.ShowAuction(auc_slotNumber, auc_currentPlayer, auc_currentPrice, auc_playerWithHighestBid);
+        }
+    }
+
+    public void Auction_SmallBid()
+    {
+        auc_currentPrice += 10;
+        auc_playerWithHighestBid = getCurrentPlayer();
+
+        if (auc_playerInAuction == 0) //no one left, all player has withdraw
+        {
+            _UIManager.CloseAuction(auc_slotNumber, getCurrentPlayer(), auc_startingPlayer, auc_currentPrice, false);
+        }
+        else if (auc_playerInAuction == 1) //only one left, and he/she click on bid
+        {
+            _UIManager.CloseAuction(auc_slotNumber, getCurrentPlayer(), auc_startingPlayer, auc_currentPrice, true);
+        }
+        else
+        {
+            do
+            {
+                SwitchPlayer(true);
+            }
+            while (getCurrentPlayer().joinAuction == false);
+
+            auc_currentPlayer = getCurrentPlayer();
+            AuctionExecute();
+        }
+    }
+
+    public void Auction_BigBid()
+    {
+        auc_currentPrice += 100;
+        auc_playerWithHighestBid = getCurrentPlayer();
+
+        if (auc_playerInAuction == 0) //no one left, all player has withdraw
+        {
+            _UIManager.CloseAuction(auc_slotNumber, getCurrentPlayer(), auc_startingPlayer, auc_currentPrice, false);
+        }
+        else if (auc_playerInAuction == 1) //only one left, and he/she click on bid
+        {
+            _UIManager.CloseAuction(auc_slotNumber, getCurrentPlayer(), auc_startingPlayer, auc_currentPrice, true);
+        }
+        else
+        { 
+            do
+            {
+                SwitchPlayer(true);
+            }
+            while (getCurrentPlayer().joinAuction == false);
+
+            auc_currentPlayer = getCurrentPlayer();
+            AuctionExecute();
+        }
+    }
+
+    public void Auction_Withdraw()
+    {
+        getCurrentPlayer().joinAuction = false;
+        auc_playerInAuction--;
+
+
+        if (auc_playerInAuction == 0) //when everyone leave auction
+        {
+            _UIManager.CloseAuction(auc_slotNumber, getCurrentPlayer(), auc_startingPlayer, auc_currentPrice, false);
+            print("auction closed");
+        }
+        else
+        {
+            do
+            {
+                SwitchPlayer(true);
+            }
+            while (getCurrentPlayer().joinAuction == false);
+
+            auc_currentPlayer = getCurrentPlayer();
+            AuctionExecute();
+        }
     }
 
     public void JailPay()
@@ -1291,7 +1815,382 @@ public class Table : MonoBehaviour
 
     public void Sell()
     {
+        TurnPlayerApperance(false);
+        bool isGroup_Brown = true;
+        bool isGroup_Blue = true;
+        bool isGroup_Pink = true;
+        bool isGroup_Orange = true;
+        bool isGroup_Red = true;
+        bool isGroup_Yellow = true;
+        bool isGroup_Green = true;
+        bool isGroup_Purple = true;
+        bool skipBrown = false;
+        bool skipBlue = false;
+        bool skipPink = false;
+        bool skipOrange = false;
+        bool skipRed = false;
+        bool skipYellow = false;
+        bool skipGreen = false;
+        bool skipPurple = false;
 
+        int highestHouse_Brown = -1;
+        int highestHouse_Blue = -1;
+        int highestHouse_Pink = -1;
+        int highestHouse_Orange = -1;
+        int highestHouse_Red = -1;
+        int highestHouse_Yellow = -1;
+        int highestHouse_Green = -1;
+        int highestHouse_Purple = -1;
+
+
+        for (int i = 0; i < slot.Length; i++)
+        {
+            if (getSlot(i).slotType == Slot_Type.ColorProperty)
+            {
+                if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Brown && !skipBrown)
+                {
+                    if (getSlot(i).getOwner() == getCurrentPlayer())
+                    {
+                        isGroup_Brown = true;
+                    }
+                    else
+                    {
+                        isGroup_Brown = false;
+                        skipBrown = true;
+                    }
+                }
+
+                if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Blue && !skipBlue)
+                {
+                    if (getSlot(i).getOwner() == getCurrentPlayer())
+                    {
+                        isGroup_Blue = true;
+                    }
+                    else
+                    {
+                        isGroup_Blue = false;
+                        skipBlue = true;
+                    }
+                }
+
+                if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Pink && !skipPink)
+                {
+                    if (getSlot(i).getOwner() == getCurrentPlayer())
+                    {
+                        isGroup_Pink = true;
+                    }
+                    else
+                    {
+                        isGroup_Pink = false;
+                        skipPink = true;
+                    }
+                }
+
+                if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Orange && !skipOrange)
+                {
+                    if (getSlot(i).getOwner() == getCurrentPlayer())
+                    {
+                        isGroup_Orange = true;
+                    }
+                    else
+                    {
+                        isGroup_Orange = false;
+                        skipOrange = true;
+                    }
+                }
+
+                if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Red && !skipRed)
+                {
+                    if (getSlot(i).getOwner() == getCurrentPlayer())
+                    {
+                        isGroup_Red = true;
+                    }
+                    else
+                    {
+                        isGroup_Red = false;
+                        skipRed = true;
+                    }
+                }
+
+                if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Yellow && !skipYellow)
+                {
+                    if (getSlot(i).getOwner() == getCurrentPlayer())
+                    {
+                        isGroup_Yellow = true;
+                    }
+                    else
+                    {
+                        isGroup_Yellow = false;
+                        skipYellow = true;
+                    }
+                }
+
+                if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Green && !skipGreen)
+                {
+                    if (getSlot(i).getOwner() == getCurrentPlayer())
+                    {
+                        isGroup_Green = true;
+                    }
+                    else
+                    {
+                        isGroup_Green = false;
+                        skipGreen = true;
+                    }
+                }
+
+                if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Purple && !skipPurple)
+                {
+                    if (getSlot(i).getOwner() == getCurrentPlayer())
+                    {
+                        isGroup_Purple = true;
+                    }
+                    else
+                    {
+                        isGroup_Purple = false;
+                        skipPurple = true;
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < slot.Length; i++)
+        {
+            slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+            getSlot(i).slotAction = SlotAction.None;
+
+            if (getSlot(i).slotType == Slot_Type.ColorProperty)
+            {
+                if (isGroup_Brown)
+                {
+                    if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Brown)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        getSlot(i).slotAction = SlotAction.Sell;
+
+                        if (getSlot(i).numberOfHouse > highestHouse_Brown)
+                        {
+                            highestHouse_Brown = getSlot(i).numberOfHouse;
+                        }
+                    }
+                }
+
+                if (isGroup_Blue)
+                {
+                    if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Blue)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        getSlot(i).slotAction = SlotAction.Sell;
+
+                        if (getSlot(i).numberOfHouse > highestHouse_Blue)
+                        {
+                            highestHouse_Blue = getSlot(i).numberOfHouse;
+                        }
+                    }
+                }
+
+                if (isGroup_Pink)
+                {
+                    if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Pink)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        getSlot(i).slotAction = SlotAction.Sell;
+
+                        if (getSlot(i).numberOfHouse > highestHouse_Pink)
+                        {
+                            highestHouse_Pink = getSlot(i).numberOfHouse;
+                        }
+                    }
+                }
+
+                if (isGroup_Orange)
+                {
+                    if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Orange)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        getSlot(i).slotAction = SlotAction.Sell;
+
+                        if (getSlot(i).numberOfHouse > highestHouse_Orange)
+                        {
+                            highestHouse_Orange = getSlot(i).numberOfHouse;
+                        }
+                    }
+                }
+
+                if (isGroup_Red)
+                {
+                    if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Red)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        getSlot(i).slotAction = SlotAction.Sell;
+
+                        if (getSlot(i).numberOfHouse > highestHouse_Red)
+                        {
+                            highestHouse_Red = getSlot(i).numberOfHouse;
+                        }
+                    }
+                }
+
+                if (isGroup_Yellow)
+                {
+                    if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Yellow)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        getSlot(i).slotAction = SlotAction.Sell;
+
+                        if (getSlot(i).numberOfHouse > highestHouse_Yellow)
+                        {
+                            highestHouse_Yellow = getSlot(i).numberOfHouse;
+                        }
+                    }
+                }
+
+                if (isGroup_Green)
+                {
+                    if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Green)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        getSlot(i).slotAction = SlotAction.Sell;
+
+                        if (getSlot(i).numberOfHouse > highestHouse_Green)
+                        {
+                            highestHouse_Green = getSlot(i).numberOfHouse;
+                        }
+                    }
+                }
+
+                if (isGroup_Purple)
+                {
+                    if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Purple)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        getSlot(i).slotAction = SlotAction.Sell;
+
+                        if (getSlot(i).numberOfHouse > highestHouse_Purple)
+                        {
+                            highestHouse_Purple = getSlot(i).numberOfHouse;
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < slot.Length; i++)
+        {
+            if (getSlot(i).slotType == Slot_Type.ColorProperty)
+            {
+                if (isGroup_Brown)
+                {
+                    if (getSlot(i).numberOfHouse < highestHouse_Brown) //Help to buyild house symmetrically
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        getSlot(i).slotAction = SlotAction.None;
+                    }
+                    else if (getSlot(i).numberOfHouse == 0) //Not showing when reach 0 house
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        getSlot(i).slotAction = SlotAction.None;
+                    }
+                }
+
+                if (isGroup_Blue)
+                {
+                    if (getSlot(i).numberOfHouse < highestHouse_Blue)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        getSlot(i).slotAction = SlotAction.None;
+                    }
+                    else if (getSlot(i).numberOfHouse == 0)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        getSlot(i).slotAction = SlotAction.None;
+                    }
+                }
+
+                if (isGroup_Pink)
+                {
+                    if (getSlot(i).numberOfHouse < highestHouse_Pink)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        getSlot(i).slotAction = SlotAction.None;
+                    }
+                    else if (getSlot(i).numberOfHouse == 0)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        getSlot(i).slotAction = SlotAction.None;
+                    }
+                }
+
+                if (isGroup_Orange)
+                {
+                    if (getSlot(i).numberOfHouse < highestHouse_Orange)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        getSlot(i).slotAction = SlotAction.None;
+                    }
+                    else if (getSlot(i).numberOfHouse == 0)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        getSlot(i).slotAction = SlotAction.None;
+                    }
+                }
+
+                if (isGroup_Red)
+                {
+                    if (getSlot(i).numberOfHouse < highestHouse_Red)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        getSlot(i).slotAction = SlotAction.None;
+                    }
+                    else if (getSlot(i).numberOfHouse == 0)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        getSlot(i).slotAction = SlotAction.None;
+                    }
+                }
+
+                if (isGroup_Yellow)
+                {
+                    if (getSlot(i).numberOfHouse < highestHouse_Yellow)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        getSlot(i).slotAction = SlotAction.None;
+                    }
+                    else if (getSlot(i).numberOfHouse == 0)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        getSlot(i).slotAction = SlotAction.None;
+                    }
+                }
+
+                if (isGroup_Green)
+                {
+                    if (getSlot(i).numberOfHouse < highestHouse_Green)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        getSlot(i).slotAction = SlotAction.None;
+                    }
+                    else if (getSlot(i).numberOfHouse == 0)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        getSlot(i).slotAction = SlotAction.None;
+                    }
+                }
+
+                if (isGroup_Purple)
+                {
+                    if (getSlot(i).numberOfHouse < highestHouse_Purple)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        getSlot(i).slotAction = SlotAction.None;
+                    }
+                    else if (getSlot(i).numberOfHouse == 0)
+                    {
+                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        getSlot(i).slotAction = SlotAction.None;
+                    }
+                }
+            }
+        }
     }
 
     public void Mortgage()
@@ -1349,6 +2248,24 @@ public class Table : MonoBehaviour
         }
     }
 
+    public void Trade()
+    {
+        for (int i = 0; i < numOfPlayers; i++)
+        {
+            print(player[i].name);
+            print("Money: " + player[i].playerMoney + "$");
+            print("Jail Free Card: " + player[i].numberJailFreeCard.ToString());
+            print("Property Without House:\n");
+            for (int j = 0; j < player[i].slotOwned.Count; j++)
+            {
+                if (getSlot(j).numberOfHouse == 0)
+                {
+                    print(getSlot(j).getSlotName());
+                }
+            }
+        }
+    }
+
     public void UnshownSlot()
     {
         TurnPlayerApperance(true);
@@ -1361,9 +2278,26 @@ public class Table : MonoBehaviour
 
     public void TurnPlayerApperance(bool value)
     {
-        foreach (Player p in player)
+        if (numOfPlayers == 2)
         {
-            p.gameObject.SetActive(value);
+            player[0].gameObject.SetActive(value);
+            player[1].gameObject.SetActive(value);
+            player[2].gameObject.SetActive(false);
+            player[3].gameObject.SetActive(false);
+        }
+        else if (numOfPlayers == 3)
+        {
+            player[0].gameObject.SetActive(value);
+            player[1].gameObject.SetActive(value);
+            player[2].gameObject.SetActive(value);
+            player[3].gameObject.SetActive(false);
+        }
+        else if (numOfPlayers == 4)
+        {
+            player[0].gameObject.SetActive(value);
+            player[1].gameObject.SetActive(value);
+            player[2].gameObject.SetActive(value);
+            player[3].gameObject.SetActive(value);
         }
     }
 

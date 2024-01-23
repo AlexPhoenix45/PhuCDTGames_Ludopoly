@@ -61,6 +61,9 @@ public class Slot : MonoBehaviour
     public bool isMortgaged = false;
     public GameObject mortgagedTag;
 
+    [Header("Slot Position")]
+    public int numOfPlayerInSlot = 0;
+
     private void Start()
     {
         DisplaySlot();
@@ -513,7 +516,9 @@ public class Slot : MonoBehaviour
         }
         else if (slotAction == SlotAction.Sell)
         {
-
+            RemoveHouse();
+            Table.Instance.CurrentPlayerInstantReceiveBank(getSellPrice());
+            Table.Instance.Sell();
         }
         else if (slotAction == SlotAction.Mortgage)
         {
