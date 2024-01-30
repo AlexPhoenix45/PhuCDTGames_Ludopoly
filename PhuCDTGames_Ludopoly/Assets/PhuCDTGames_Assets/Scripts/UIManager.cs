@@ -83,6 +83,8 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI cpi_hotel;
     public TextMeshProUGUI cpi_buildPrice;
     public TextMeshProUGUI cpi_mortgagePrice;
+    public Button cpi_buyButton;
+    public Button cpi_auctionButton;
 
     [Header("Color Property - Bought")]
     public GameObject cpi_showButtonPanel;
@@ -95,8 +97,11 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region Special Property Information Card
-    [Header("Special Property - Railroads Information")]
     [Header("Special Property Information Card")]
+    public Button sp_buyButton;
+    public Button sp_auctionButton;
+
+    [Header("Special Property - Railroads Information")]
     public GameObject railroad_Panel;
     public TextMeshProUGUI rr_propertyName;
 
@@ -940,29 +945,57 @@ public class UIManager : MonoBehaviour
         if (p1.playerMoney > 0 && p1.moneyWarning)
         {
             p1.moneyWarning = false;
-            DicesActive(true);
-            DicesFacesActive();
+            if (p1.hasSecondTurn)
+            {
+                DicesActive(true);
+                DicesFacesActive();
+            }
+            else
+            {
+                EndTurnActive(true);
+            }
         }
         
         if (p2.playerMoney > 0 && p2.moneyWarning)
         {
             p2.moneyWarning = false;
-            DicesActive(true);
-            DicesFacesActive();
+            if (p2.hasSecondTurn)
+            {
+                DicesActive(true);
+                DicesFacesActive();
+            }
+            else
+            {
+                EndTurnActive(true);
+            }
         }
 
         if (p3.playerMoney > 0 & p3.moneyWarning)
         {
             p3.moneyWarning = false;
-            DicesActive(true);
-            DicesFacesActive();
+            if (p3.hasSecondTurn)
+            {
+                DicesActive(true);
+                DicesFacesActive();
+            }
+            else
+            {
+                EndTurnActive(true);
+            }
         }
 
         if (p4.playerMoney > 0 && p4.moneyWarning)
         {
             p4.moneyWarning = false;
-            DicesActive(true);
-            DicesFacesActive();
+            if (p4.hasSecondTurn)
+            {
+                DicesActive(true);
+                DicesFacesActive();
+            }
+            else
+            {
+                EndTurnActive(true);
+            }
         }
     }
 
@@ -1209,6 +1242,17 @@ public class UIManager : MonoBehaviour
         cpi_showButtonPanel.SetActive(true);
         cpi_boughtPanel.SetActive(false);
 
+        if (_Table.getCurrentPlayer().playerMoney < _Table.getSlot(_Table.getCurrentPlayer().currentSlot).getSlotPrice()) //can't afford
+        {
+            cpi_buyButton.interactable = false;
+            cpi_auctionButton.interactable = true;
+        }
+        else
+        {
+            cpi_buyButton.interactable = true;
+            cpi_auctionButton.interactable = true;
+        }
+
         colorPropertyInformationCard.transform.position = pos;
         cpi_propertyName.text = _Table.getSlot(slotNumber).getSlotName().ToUpper();
         cpi_rentPrice.text = "RENT $" + _Table.getSlot(slotNumber).getPropertyRentUI(0).ToString();
@@ -1377,6 +1421,17 @@ public class UIManager : MonoBehaviour
         specialPropertyInformationCard.transform.position = pos;
         ut_showButtonPanel.SetActive(true);
         ut_boughtPanel.SetActive(false);
+
+        if (_Table.getCurrentPlayer().playerMoney < _Table.getSlot(_Table.getCurrentPlayer().currentSlot).getSlotPrice()) //can't afford
+        {
+            sp_buyButton.interactable = false;
+            sp_auctionButton.interactable = true;
+        }
+        else
+        {
+            sp_buyButton.interactable = true;
+            sp_auctionButton.interactable = true;
+        }
 
         if (_Table.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.RailRoad)
         {

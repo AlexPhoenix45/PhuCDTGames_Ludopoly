@@ -20,7 +20,6 @@ chưa add tiền khi qua vạch xuất phát
 double rent when in group (done)
 sang turn sau khi ấn build thì không hiện nhà nữa (done)
 tích is group brown sẽ hiện hết tất cả nhưungx property (done)
-
 --22/1/2024 (*Note: đang để 2 ô nâu thuộc về player 4)
 ấn vào 1 slot bất kỳ không hiện UI xem trước (done)
 không hiện sáng slot khi người chơi k đủ tiền để xây (done)
@@ -36,4 +35,13 @@ làm nốt phần người chơi đứng ở Slot
 check xem khi nào currentSlot của player thay đổi, thì cập nhật sang Slot
 khi currentSlot thay đổi thì trừ đi số người ở Slot
 ngược lại cộng vào
-check xem Slot có bao nhiêu người, rồi thay vào dòng 146 trong Player.cs phần position
+check xem Slot có bao nhiêu người, rồi thay vào dòng 146 trong Player.cs phần position (done)
+
+---30/1/2024
+khi người chơi hết tiền, xuất hiện panel cảnh báo người chơi. Sau khi người chơi thế chấp đất để không bị âm tiền 
+(người chơi tiếp tục được nhận lượt chơi mặc dù đã hết lượt - không được xúc sắc đôi) (done)
+
+đi qua ô GO bị lỗi dừng trước 1 ô (done)
+không đủ tiền tự động auction (done)
+
+lam not phan trade

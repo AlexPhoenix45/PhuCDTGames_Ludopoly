@@ -53,6 +53,13 @@ public class Player : MonoBehaviour
     //
     public bool joinAuction = true;
 
+    //Set curent Slot
+    //
+    public void setCurrentSlot(int currentSlot)
+    {
+        this.currentSlot = currentSlot;
+    }
+
     public void setPlayerIndex(int index)
     {
         playerIndex = index;
@@ -65,14 +72,17 @@ public class Player : MonoBehaviour
     {
         bool passGo;
         prvSlot = currentSlot;
+        Table.Instance.SetPlayLeaveSlot(this);
         if (currentSlot + distance >= 40)
         {
-            currentSlot = (currentSlot + distance) - 40;
+            int tempCurrentSlot = (currentSlot + distance) - 40;
+            setCurrentSlot(tempCurrentSlot);
             passGo = true;
         }
         else
         {
-            currentSlot += distance;
+            int tempCurrentSlot = currentSlot + distance;
+            setCurrentSlot(tempCurrentSlot);
             passGo = false;
         }
 
@@ -143,13 +153,41 @@ public class Player : MonoBehaviour
                 {
                     if (!isFastMove)
                     {
-                        LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .4f).setEaseInOutCirc();
-                        yield return new WaitForSeconds(.4f);
+                        if (i != currentSlot - 1 && i != currentSlot)
+                        {
+                            LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .4f).setEaseInOutCirc();
+                            yield return new WaitForSeconds(.4f);
+                        }
+                        else if (i == currentSlot - 1)
+                        {
+                            LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .4f).setEaseInOutCirc();
+                            yield return new WaitForSeconds(.4f);
+                            Table.Instance.SetPlayerOnSLot(i+1);
+                        }
+                        else
+                        {
+                            yield return new WaitForSeconds(.4f);
+                            continue;
+                        }
                     }
                     else
                     {
-                        LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
-                        yield return new WaitForSeconds(.15f);
+                        if (i != currentSlot - 1 && i != currentSlot)
+                        {
+                            LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
+                            yield return new WaitForSeconds(.15f);
+                        }
+                        else if (i == currentSlot - 1)
+                        {
+                            LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
+                            yield return new WaitForSeconds(.15f);
+                            Table.Instance.SetPlayerOnSLot(i+1);
+                        }
+                        else
+                        {
+                            yield return new WaitForSeconds(.15f);
+                            continue;
+                        }
                     }
                 }
             }
@@ -167,26 +205,82 @@ public class Player : MonoBehaviour
                     {
                         if (i <= 39)
                         {
-                            LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .4f).setEaseInOutCirc();
-                            yield return new WaitForSeconds(.4f);
+                            if (i != currentSlot + 40 - 1 && i != currentSlot + 40)
+                            {
+                                LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .4f).setEaseInOutCirc();
+                                yield return new WaitForSeconds(.4f);
+                            }
+                            else if (i == currentSlot + 40 - 1)
+                            { 
+                                LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .4f).setEaseInOutCirc();
+                                yield return new WaitForSeconds(.4f);
+                                Table.Instance.SetPlayerOnSLot(i + 1);
+                            }
+                            else
+                            {
+                                yield return new WaitForSeconds(.4f);
+                                continue;
+                            }
                         }
                         else
                         {
-                            LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .4f).setEaseInOutCirc();
-                            yield return new WaitForSeconds(.4f);
+                            if (i != currentSlot + 40 - 1 && i != currentSlot + 40)
+                            {
+                                LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .4f).setEaseInOutCirc();
+                                yield return new WaitForSeconds(.4f);
+                            }
+                            else if (i == currentSlot + 40 - 1)
+                            { 
+                                LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .4f).setEaseInOutCirc();
+                                yield return new WaitForSeconds(.4f);
+                                Table.Instance.SetPlayerOnSLot(i - 40 + 1);
+                            }
+                            else
+                            {
+                                yield return new WaitForSeconds(.4f);
+                                continue;
+                            }
                         }
                     }
                     else
                     {
                         if (i <= 39)
                         {
-                            LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
-                            yield return new WaitForSeconds(.15f);
+                            if (i != currentSlot + 40 - 1 && i != currentSlot + 40)
+                            {
+                                LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
+                                yield return new WaitForSeconds(.15f);
+                            }
+                            else /*if (i != currentSlot + 40 - 1)*/
+                            { 
+                                LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
+                                yield return new WaitForSeconds(.15f);
+                                Table.Instance.SetPlayerOnSLot(i + 1);
+                            }
+                            //else
+                            //{
+                            //    yield return new WaitForSeconds(.15f);
+                            //    continue;
+                            //}
                         }
                         else
                         {
-                            LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .15f);
-                            yield return new WaitForSeconds(.15f);
+                            if (i != currentSlot + 40 - 1 && i != currentSlot + 40)
+                            {
+                                LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .15f);
+                                yield return new WaitForSeconds(.15f);
+                            }
+                            else /*if (i != currentSlot + 40 - 1)*/
+                            {
+                                LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .15f);
+                                yield return new WaitForSeconds(.15f);
+                                Table.Instance.SetPlayerOnSLot(i - 40 + 1);
+                            }
+                            //else
+                            //{
+                            //    yield return new WaitForSeconds(.15f);
+                            //    continue;
+                            //}
                         }
                     }
                 }
@@ -207,10 +301,11 @@ public class Player : MonoBehaviour
                 yield return new WaitForSeconds(.15f);
             }
 
-            currentSlot = destinationNumber;
+            setCurrentSlot(destinationNumber);
             Table.Instance.AfterPlayerMove(this);
         }
         StartCoroutine(move());
+        Table.Instance.SetPlayLeaveSlot(this);
     }
 
     //Turn
@@ -288,7 +383,7 @@ public class Player : MonoBehaviour
                 else if (timesNotGetDoubles >= 2)
                 {
                     print("pay 100$");
-                    Table.Instance.CurrentPlayerPayBank(100);
+                    Table.Instance.CurrentPlayerInstantPayBank(100);
                     isInJail = false;
                     timesNotGetDoubles = 0;
                 }

@@ -43,6 +43,7 @@ public class Table : MonoBehaviour
         if (Instance == null)
             Instance = this;
         SetPawn();
+        SetPlayerOnSLot(0);
     }
 
     //Starting
@@ -1392,7 +1393,6 @@ public class Table : MonoBehaviour
     //5 main actions
     //
 
-
     public void Build()
     {
         TurnPlayerApperance(false);
@@ -2258,9 +2258,9 @@ public class Table : MonoBehaviour
             print("Property Without House:\n");
             for (int j = 0; j < player[i].slotOwned.Count; j++)
             {
-                if (getSlot(j).numberOfHouse == 0)
+                if (player[i].slotOwned[j].numberOfHouse == 0)
                 {
-                    print(getSlot(j).getSlotName());
+                    print(player[i].slotOwned[j].getSlotName());
                 }
             }
         }
@@ -2343,6 +2343,34 @@ public class Table : MonoBehaviour
                 StandOnThisSlot(player.currentSlot); 
             }
         }
+    }
+
+    public void SetPlayerOnSLot(int currentSlot)
+    {
+        getSlot(currentSlot).numOfPlayerInSlot = 0;
+        List<Player> playerOnSlot = new List<Player>();
+
+        for (int i = 0; i < numOfPlayers; i++)
+        {
+            if (player[i].currentSlot == currentSlot)
+            {
+                getSlot(currentSlot).numOfPlayerInSlot++;
+                playerOnSlot.Add(player[i]);
+                print("add " + currentSlot + player[i].playerName);
+            }
+        }
+
+        if (getSlot(currentSlot).numOfPlayerInSlot != 0)
+        {
+            getSlot(currentSlot).setPlayerPos(playerOnSlot);
+        }
+    }
+
+    public void SetPlayLeaveSlot(Player p)
+    {
+        getSlot(p.currentSlot).numOfPlayerInSlot--;
+        getSlot(p.currentSlot).temp_playerOnSlot.Remove(p);
+        getSlot(p.currentSlot).setPlayerLeave(getSlot(p.currentSlot).temp_playerOnSlot);
     }
 
     #region Money
