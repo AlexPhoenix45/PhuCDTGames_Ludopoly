@@ -413,14 +413,6 @@ public class Slot : MonoBehaviour
 
     public Player getOwner() { return owner; }
 
-    //Card Drawing
-    //
-
-    public void DrawAChance()
-    {
-
-    }
-
     //Add houses
     //
 

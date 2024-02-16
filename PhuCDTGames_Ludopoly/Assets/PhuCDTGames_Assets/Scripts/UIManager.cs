@@ -296,6 +296,17 @@ public class UIManager : MonoBehaviour
     public GameObject asp_ut_waterWorks_Image;
     public GameObject asp_ut_electricCompany_Image;
 
+    [Header("Trade")]
+    public TextMeshProUGUI trade_title;
+    public TextMeshProUGUI trade_selectedPlayer;
+    public GameObject trade_myPlayerContent;
+    public GameObject trade_opponentContent;
+    public TMP_InputField trade_myPlayerMoney;
+    public TMP_InputField trade_opponentMoney;
+    public Button trade_offer;
+    public Button trade_showBoard;
+    public Button trade_cancel;
+
     #endregion
 
     private void Start()

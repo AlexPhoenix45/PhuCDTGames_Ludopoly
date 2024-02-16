@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -360,6 +361,21 @@ public class Table : MonoBehaviour
         }
         UIManager.Instance.setTurn(p.playerIndex, false);
     }
+
+    //public Player SwitchWithoutPlayer(Player currentOpponent, Player currentMyPlayer)
+    //{
+    //    for (int i = 0; i < player.Length; i++)
+    //    {
+    //        if (player[i] == currentOpponent && i+1 < player.Length) //next player is not myPlayer, next player 
+    //        {
+    //            if (player[i + 1] != currentMyPlayer)
+    //            {
+    //                return player[i+1];
+    //            }
+    //        }
+    //        else if ()
+    //    }
+    //}
 
     //Get Current Player
     public Player getCurrentPlayer()
@@ -2264,6 +2280,16 @@ public class Table : MonoBehaviour
                 }
             }
         }
+
+        //Select first player to trade
+        Player currentPlayer;
+        foreach (Player p in player)
+        {
+            if (p != getCurrentPlayer())
+            {
+                currentPlayer = p;
+            }
+        }
     }
 
     public void UnshownSlot()
@@ -2347,6 +2373,11 @@ public class Table : MonoBehaviour
 
     public void SetPlayerOnSLot(int currentSlot)
     {
+        if (currentSlot >= 40)
+        {
+            currentSlot -= 40;
+        }
+
         getSlot(currentSlot).numOfPlayerInSlot = 0;
         List<Player> playerOnSlot = new List<Player>();
 

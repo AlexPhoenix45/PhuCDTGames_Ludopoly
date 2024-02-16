@@ -475,4 +475,29 @@ public class Player : MonoBehaviour
         }
     }
     #endregion
+
+    #region Trade
+
+    public int getPlayerMoney()
+    {
+        return playerMoney;
+    }
+
+    public List<Slot> getPlayerSlot()
+    {
+        List<Slot> slots = new List<Slot>();
+
+        foreach (Slot slot in slotOwned)
+        {
+            slots.Add(slot);
+        }
+        return slots;
+    }
+
+    public int getPlayerJailFreeCard()
+    {
+        return numberJailFreeCard;
+    }
+
+    #endregion
 }
