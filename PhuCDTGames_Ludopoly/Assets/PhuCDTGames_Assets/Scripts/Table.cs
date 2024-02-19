@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
@@ -362,20 +363,263 @@ public class Table : MonoBehaviour
         UIManager.Instance.setTurn(p.playerIndex, false);
     }
 
-    //public Player SwitchWithoutPlayer(Player currentOpponent, Player currentMyPlayer)
-    //{
-    //    for (int i = 0; i < player.Length; i++)
-    //    {
-    //        if (player[i] == currentOpponent && i+1 < player.Length) //next player is not myPlayer, next player 
-    //        {
-    //            if (player[i + 1] != currentMyPlayer)
-    //            {
-    //                return player[i+1];
-    //            }
-    //        }
-    //        else if ()
-    //    }
-    //}
+    public Player SwitchWithoutPlayer(Player currentOpponent, Player currentMyPlayer, bool isNext)
+    {
+        if (isNext)
+        {
+            if (numOfPlayers == 4)
+            {
+                if (currentOpponent == player[0])
+                {
+                    if (currentMyPlayer == player[1])
+                    {
+                        return player[2];
+                    }
+                    else
+                    {
+                        return player[1];
+                    }
+                }
+                else if (currentOpponent == player[1])
+                {
+                    if (currentMyPlayer == player[2])
+                    {
+                        return player[3];
+                    }
+                    else
+                    {
+                        return player[2];
+                    }
+                }
+                else if (currentOpponent == player[2])
+                {
+                    if (currentMyPlayer == player[3])
+                    {
+                        return player[0];
+                    }
+                    else
+                    {
+                        return player[3];
+                    }
+                }
+                else if (currentOpponent == player[3])
+                {
+                    if (currentMyPlayer == player[0])
+                    {
+                        return player[1];
+                    }
+                    else
+                    {
+                        return player[0];
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else if (numOfPlayers == 3)
+            {
+                if (currentOpponent == player[0])
+                {
+                    if (currentMyPlayer == player[1])
+                    {
+                        return player[2];
+                    }
+                    else
+                    {
+                        return player[1];
+                    }
+                }
+                else if (currentOpponent == player[1])
+                {
+                    if (currentMyPlayer == player[2])
+                    {
+                        return player[0];
+                    }
+                    else
+                    {
+                        return player[2];
+                    }
+                }
+                else if (currentOpponent == player[2])
+                {
+                    if (currentMyPlayer == player[0])
+                    {
+                        return player[1];
+                    }
+                    else
+                    {
+                        return player[0];
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else if (numOfPlayers == 2)
+            {
+                if (currentOpponent == player[0])
+                {
+                    if (currentMyPlayer == player[1])
+                    {
+                        return player[0];
+                    }
+                    else
+                    {
+                        return player[1];
+                    }
+                }
+                else if (currentOpponent == player[1])
+                {
+                    if (currentMyPlayer == player[0])
+                    {
+                        return player[1];
+                    }
+                    else
+                    {
+                        return player[0];
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+        else
+        {
+            if (numOfPlayers == 4)
+            {
+                if (currentOpponent == player[0])
+                {
+                    if (currentMyPlayer == player[3])
+                    {
+                        return player[2];
+                    }
+                    else
+                    {
+                        return player[3];
+                    }
+                }
+                else if (currentOpponent == player[1])
+                {
+                    if (currentMyPlayer == player[0])
+                    {
+                        return player[3];
+                    }
+                    else
+                    {
+                        return player[0];
+                    }
+                }
+                else if (currentOpponent == player[2])
+                {
+                    if (currentMyPlayer == player[1])
+                    {
+                        return player[0];
+                    }
+                    else
+                    {
+                        return player[1];
+                    }
+                }
+                else if (currentOpponent == player[3])
+                {
+                    if (currentMyPlayer == player[2])
+                    {
+                        return player[1];
+                    }
+                    else
+                    {
+                        return player[2];
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else if (numOfPlayers == 3)
+            {
+                if (currentOpponent == player[0])
+                {
+                    if (currentMyPlayer == player[2])
+                    {
+                        return player[1];
+                    }
+                    else
+                    {
+                        return player[2];
+                    }
+                }
+                else if (currentOpponent == player[1])
+                {
+                    if (currentMyPlayer == player[0])
+                    {
+                        return player[2];
+                    }
+                    else
+                    {
+                        return player[0];
+                    }
+                }
+                else if (currentOpponent == player[2])
+                {
+                    if (currentMyPlayer == player[1])
+                    {
+                        return player[0];
+                    }
+                    else
+                    {
+                        return player[1];
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else if (numOfPlayers == 2)
+            {
+                if (currentOpponent == player[0])
+                {
+                    if (currentMyPlayer == player[1])
+                    {
+                        return player[0];
+                    }
+                    else
+                    {
+                        return player[1];
+                    }
+                }
+                else if (currentOpponent == player[1])
+                {
+                    if (currentMyPlayer == player[0])
+                    {
+                        return player[1];
+                    }
+                    else
+                    {
+                        return player[0];
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
 
     //Get Current Player
     public Player getCurrentPlayer()
@@ -2264,31 +2508,25 @@ public class Table : MonoBehaviour
         }
     }
 
-    public void Trade()
+    public void ShowTradeItem(Player player, Transform content, GameObject colorProperty, GameObject specialProperty, GameObject jailFree)
     {
-        for (int i = 0; i < numOfPlayers; i++)
+        foreach (Slot slot in player.slotOwned)
         {
-            print(player[i].name);
-            print("Money: " + player[i].playerMoney + "$");
-            print("Jail Free Card: " + player[i].numberJailFreeCard.ToString());
-            print("Property Without House:\n");
-            for (int j = 0; j < player[i].slotOwned.Count; j++)
+            if (slot.slotType == Slot_Type.ColorProperty)
             {
-                if (player[i].slotOwned[j].numberOfHouse == 0)
-                {
-                    print(player[i].slotOwned[j].getSlotName());
-                }
+                GameObject tempProperty = Instantiate(colorProperty, content);
+                tempProperty.GetComponent<ColorPropertyCard>().ShowCard(slot.slotIndex);
+            }
+            else if (slot.slotType == Slot_Type.SpecialProperty)
+            {
+                GameObject tempProperty = Instantiate(specialProperty, content);
+                tempProperty.GetComponent<SpecialPropertyCard>().ShowCard(slot.slotIndex);
             }
         }
 
-        //Select first player to trade
-        Player currentPlayer;
-        foreach (Player p in player)
+        for (int i = 0; i < player.getPlayerJailFreeCard(); i++)
         {
-            if (p != getCurrentPlayer())
-            {
-                currentPlayer = p;
-            }
+            Instantiate(jailFree, content);
         }
     }
 

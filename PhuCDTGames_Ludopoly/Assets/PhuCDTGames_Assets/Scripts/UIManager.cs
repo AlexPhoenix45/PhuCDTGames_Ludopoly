@@ -297,15 +297,20 @@ public class UIManager : MonoBehaviour
     public GameObject asp_ut_electricCompany_Image;
 
     [Header("Trade")]
+    public GameObject trade_Panel;
     public TextMeshProUGUI trade_title;
     public TextMeshProUGUI trade_selectedPlayer;
-    public GameObject trade_myPlayerContent;
-    public GameObject trade_opponentContent;
+    public Transform trade_myPlayerContent;
+    public Transform trade_opponentContent;
     public TMP_InputField trade_myPlayerMoney;
     public TMP_InputField trade_opponentMoney;
     public Button trade_offer;
     public Button trade_showBoard;
     public Button trade_cancel;
+    public GameObject trade_colorProperty;
+    public GameObject trade_specialProperty;
+    public GameObject trade_jailFree;
+    Player trade_currentOpppnent;
 
     #endregion
 
@@ -1202,7 +1207,51 @@ public class UIManager : MonoBehaviour
 
     public void OnClick_Trade()
     {
-        _Table.Trade();
+        trade_Panel.SetActive(true);
+        //Select trade player
+        trade_title.text = _Table.getCurrentPlayer().playerName + " Offer";
+
+        //Select first player to trade
+        trade_currentOpppnent = _Table.SwitchWithoutPlayer(_Table.getCurrentPlayer(), _Table.getCurrentPlayer(), true); //Select player to trade
+        trade_selectedPlayer.text = trade_currentOpppnent.playerName;
+
+        for (int i = 0; i < trade_myPlayerContent.childCount; i++)
+        {
+            Destroy(trade_myPlayerContent.GetChild(i).gameObject);
+        }
+
+        for (int i = 0; i < trade_opponentContent.childCount; i++)
+        {
+            Destroy(trade_opponentContent.GetChild(i).gameObject);
+        }
+
+        _Table.ShowTradeItem(_Table.getCurrentPlayer(), trade_myPlayerContent, trade_colorProperty, trade_specialProperty, trade_jailFree);
+        _Table.ShowTradeItem(trade_currentOpppnent, trade_opponentContent, trade_colorProperty, trade_specialProperty, trade_jailFree);
+    }
+
+    public void Trade_PrevPlayer()
+    {
+        for (int i = 0; i < trade_opponentContent.childCount; i++)
+        {
+            Destroy(trade_opponentContent.GetChild(i).gameObject);
+        }
+
+        trade_currentOpppnent = _Table.SwitchWithoutPlayer(trade_currentOpppnent, _Table.getCurrentPlayer(), false);
+        trade_selectedPlayer.text = trade_currentOpppnent.playerName;
+        _Table.ShowTradeItem(trade_currentOpppnent, trade_opponentContent, trade_colorProperty, trade_specialProperty, trade_jailFree);
+    }
+
+    public void Trade_NextPlayer()
+    {
+        for (int i = 0; i < trade_opponentContent.childCount; i++)
+        {
+            Destroy(trade_opponentContent.GetChild(i).gameObject);
+        }
+
+        trade_currentOpppnent = _Table.SwitchWithoutPlayer(trade_currentOpppnent, _Table.getCurrentPlayer(), true);
+        trade_selectedPlayer.text = trade_currentOpppnent.playerName;
+        _Table.ShowTradeItem(trade_currentOpppnent, trade_opponentContent, trade_colorProperty, trade_specialProperty, trade_jailFree);
+
     }
 
     public void OnClick_ActionsClose()

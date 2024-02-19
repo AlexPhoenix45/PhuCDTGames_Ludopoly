@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public int currentSlot = 0;
     public int prvSlot = 0;
     public int playerIndex;
+    public int tradePlayerIndex;
     public string playerName;
     public Vector4 playerColor;
     public bool isMyTurn = false;
@@ -58,11 +59,6 @@ public class Player : MonoBehaviour
     public void setCurrentSlot(int currentSlot)
     {
         this.currentSlot = currentSlot;
-    }
-
-    public void setPlayerIndex(int index)
-    {
-        playerIndex = index;
     }
 
     //Move with distance

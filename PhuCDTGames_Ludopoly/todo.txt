@@ -44,4 +44,7 @@ khi người chơi hết tiền, xuất hiện panel cảnh báo người chơi.
 đi qua ô GO bị lỗi dừng trước 1 ô (done)
 không đủ tiền tự động auction (done)
 
+19/2/2024
+UnassignedReferenceException: The variable railroad_Panel of SpecialPropertyCard has not been assigned.
 lam not phan trade
+

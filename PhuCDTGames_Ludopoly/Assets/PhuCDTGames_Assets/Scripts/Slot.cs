@@ -7,7 +7,8 @@ using System.Runtime.InteropServices.WindowsRuntime;
 
 public class Slot : MonoBehaviour
 {
-    
+    public int slotIndex;
+
     [Header("Slot Type")]
     public Slot_Type slotType;
 
