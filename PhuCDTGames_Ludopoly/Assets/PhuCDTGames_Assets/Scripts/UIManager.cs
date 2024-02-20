@@ -1233,6 +1233,8 @@ public class UIManager : MonoBehaviour
         //Reset InputField
         ResetInputField();
 
+        //Reset selection
+
         for (int i = 0; i < tradeoffer_myPlayerContent.childCount; i++)
         {
             Destroy(tradeoffer_myPlayerContent.GetChild(i).gameObject);
