@@ -124,3 +124,10 @@ public enum SlotAction
     Mortgage,
     Redeem
 }
+
+public enum PropertyType
+{
+    ColorProperty,
+    SpecialProperty,
+    JailFree
+}

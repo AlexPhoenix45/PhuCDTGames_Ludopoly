@@ -26,8 +26,7 @@ public class ColorPropertyCard : MonoBehaviour
     public TextMeshProUGUI hotel;
     public TextMeshProUGUI buildPrice;
     public TextMeshProUGUI mortgagePrice;
-
-    public void ShowCard(int slotNumber)
+    public void TradeShowCard(int slotNumber)
     {
         propertyName.text = Table.Instance.getSlot(slotNumber).getSlotName().ToUpper();
         rentPrice.text = "RENT $" + Table.Instance.getSlot(slotNumber).getPropertyRentUI(0).ToString();

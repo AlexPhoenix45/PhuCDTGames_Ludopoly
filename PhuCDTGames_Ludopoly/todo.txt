@@ -45,6 +45,10 @@ khi người chơi hết tiền, xuất hiện panel cảnh báo người chơi.
 không đủ tiền tự động auction (done)
 
 19/2/2024
-UnassignedReferenceException: The variable railroad_Panel of SpecialPropertyCard has not been assigned.
+UnassignedReferenceException: The variable railroad_Panel of SpecialPropertyCard has not been assigned. (done)
+
+20/2/2024
 lam not phan trade
+trong offer bị hiện 2 lần 1 item khi chọn đi chọn lại property đấy để offẻ
+
 

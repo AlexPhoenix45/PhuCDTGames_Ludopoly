@@ -163,6 +163,7 @@ public class Table : MonoBehaviour
 
     public Slot getSlot(int slotNumber)
     {
+        //print(slotNumber);
         return slot[slotNumber].GetComponent<Slot>();
     }
 
@@ -997,7 +998,7 @@ public class Table : MonoBehaviour
                 else if (getSlot(slotNumber).supriseSlot.slotType == SupriseSlot_Type.Tax)
                 {
                     //Process Tax Card in here
-                    print("Paid " + getSlot(slotNumber).supriseSlot.taxPrice);
+                    //print("Paid " + getSlot(slotNumber).supriseSlot.taxPrice);
                     CurrentPlayerPayBank(getSlot(slotNumber).supriseSlot.taxPrice);
                 }
             }
@@ -1012,7 +1013,7 @@ public class Table : MonoBehaviour
     {
         if ((getSlot(slotNumber).slotType == Slot_Type.ColorProperty || getSlot(slotNumber).slotType == Slot_Type.SpecialProperty) && getSlot(slotNumber).getOwner() != getCurrentPlayer() && !getSlot(slotNumber).isMortgaged)
         {
-            print("Player " + getCurrentPlayer().playerName + " has to pay" + getSlot(slotNumber).getOwner().playerName + " amount of " + getSlot(slotNumber).getPropertyRent() + "$");
+            //print("Player " + getCurrentPlayer().playerName + " has to pay" + getSlot(slotNumber).getOwner().playerName + " amount of " + getSlot(slotNumber).getPropertyRent() + "$");
             CurrentPlayerPayFor(getSlot(slotNumber).getOwner(), getSlot(slotNumber).getPropertyRent());
             _UIManager.ShowRentPaidUI(getCurrentPlayer(), getSlot(slotNumber).getOwner(), getSlot(slotNumber).getPropertyRent());
         }
@@ -2508,25 +2509,20 @@ public class Table : MonoBehaviour
         }
     }
 
-    public void ShowTradeItem(Player player, Transform content, GameObject colorProperty, GameObject specialProperty, GameObject jailFree)
+    public void ShowTradeItem(Player player, Transform content, GameObject property)
     {
         foreach (Slot slot in player.slotOwned)
         {
-            if (slot.slotType == Slot_Type.ColorProperty)
-            {
-                GameObject tempProperty = Instantiate(colorProperty, content);
-                tempProperty.GetComponent<ColorPropertyCard>().ShowCard(slot.slotIndex);
-            }
-            else if (slot.slotType == Slot_Type.SpecialProperty)
-            {
-                GameObject tempProperty = Instantiate(specialProperty, content);
-                tempProperty.GetComponent<SpecialPropertyCard>().ShowCard(slot.slotIndex);
-            }
+            GameObject tempProperty = Instantiate(property, content);
+            tempProperty.GetComponent<PropertyCard>().TradeShowCard(slot.slotIndex);
+            tempProperty.GetComponent<PropertyCard>().isSelected = false;
         }
 
         for (int i = 0; i < player.getPlayerJailFreeCard(); i++)
         {
-            Instantiate(jailFree, content);
+            GameObject tempProperty = Instantiate(property, content);
+            tempProperty.GetComponent<PropertyCard>().TradeShowCard(-1);
+            tempProperty.GetComponent<PropertyCard>().isSelected = false;
         }
     }
 
@@ -2573,7 +2569,7 @@ public class Table : MonoBehaviour
     {
         if (getCurrentPlayer().isInJail) //in jail: dice off, options on, endturn on
         {
-            print("in jail: dice off, options on, endturn on");
+            //print("in jail: dice off, options on, endturn on");
             _UIManager.DicesActive(false);
             _UIManager.DicesFacesActive();
 
@@ -2586,7 +2582,7 @@ public class Table : MonoBehaviour
         {
             if (getCurrentPlayer().hasSecondTurn) //second turn on: dice on, options on, endturn off
             {
-                print("second turn on: dice on, options on, endturn off");
+                //print("second turn on: dice on, options on, endturn off");
                 _UIManager.DicesActive(true);
                 _UIManager.DicesFacesActive();
 
@@ -2597,7 +2593,7 @@ public class Table : MonoBehaviour
             }
             else if (!getCurrentPlayer().hasSecondTurn) //second turn off: dice off, options on, endturn on
             {
-                print("second turn off: dice off, options on, endturn on");
+                //print("second turn off: dice off, options on, endturn on");
                 _UIManager.DicesActive(false);
                 _UIManager.DicesFacesActive();
 
@@ -2625,7 +2621,7 @@ public class Table : MonoBehaviour
             {
                 getSlot(currentSlot).numOfPlayerInSlot++;
                 playerOnSlot.Add(player[i]);
-                print("add " + currentSlot + player[i].playerName);
+                //print("add " + currentSlot + player[i].playerName);
             }
         }
 

@@ -297,20 +297,29 @@ public class UIManager : MonoBehaviour
     public GameObject asp_ut_electricCompany_Image;
 
     [Header("Trade")]
-    public GameObject trade_Panel;
-    public TextMeshProUGUI trade_title;
-    public TextMeshProUGUI trade_selectedPlayer;
-    public Transform trade_myPlayerContent;
-    public Transform trade_opponentContent;
-    public TMP_InputField trade_myPlayerMoney;
-    public TMP_InputField trade_opponentMoney;
-    public Button trade_offer;
-    public Button trade_showBoard;
-    public Button trade_cancel;
-    public GameObject trade_colorProperty;
-    public GameObject trade_specialProperty;
-    public GameObject trade_jailFree;
+    public GameObject tradePanel;
+    public GameObject trade_offerPanel;
+    public GameObject trade_receivePanel;
+    public GameObject trade_illegalPanel;
+
+    [Header("Trade - Offer Panel")]
+    public TextMeshProUGUI tradeoffer_title;
+    public TextMeshProUGUI tradeoffer_selectedPlayer;
+    public Transform tradeoffer_myPlayerContent;
+    public Transform tradeoffer_opponentContent;
+    public TextMeshProUGUI tradeoffer_myPlayerMoney;
+    public TextMeshProUGUI tradeoffer_opponentMoney;
+    public TMP_InputField tradeoffer_myPlayerMoneyValue;
+    public TMP_InputField tradeoffer_opponentMoneyValue;
+    public GameObject trade_property;
     Player trade_currentOpppnent;
+
+    [Header("Trade - Receive Panel")]
+    public TextMeshProUGUI tradereceive_title;
+    public Transform tradereceive_myPlayerContent;
+    public Transform tradereceive_opponentContent;
+    public TextMeshProUGUI tradereceive_myPlayerMoney;
+    public TextMeshProUGUI tradereceive_opponentMoney;
 
     #endregion
 
@@ -696,7 +705,7 @@ public class UIManager : MonoBehaviour
         //{
         //    //yield return new WaitForSeconds(.5f);
         //    yield return null;
-            
+
         //}
         //StartCoroutine(setTurn());
 
@@ -753,7 +762,7 @@ public class UIManager : MonoBehaviour
             int newValue = p1.playerMoney;
             int previousValue = p1.oldPlayerMoney;
             int stepAmount;
-            print("p1 update: \nold: " + previousValue.ToString() + " new: " + newValue.ToString());
+            //print("p1 update: \nold: " + previousValue.ToString() + " new: " + newValue.ToString());
 
             if (newValue - previousValue < 0)
             {
@@ -773,7 +782,7 @@ public class UIManager : MonoBehaviour
                     {
                         previousValue = newValue;
                     }
-                    
+
                     player1Money.text = previousValue.ToString("N0") + "$";
 
                     yield return Wait;
@@ -788,7 +797,7 @@ public class UIManager : MonoBehaviour
                     {
                         previousValue = newValue;
                     }
-                    
+
                     player1Money.text = previousValue.ToString("N0") + "$";
 
                     yield return Wait;
@@ -805,7 +814,7 @@ public class UIManager : MonoBehaviour
             int newValue = p2.playerMoney;
             int previousValue = p2.oldPlayerMoney;
             int stepAmount;
-            print("p2 update: \nold: " + previousValue.ToString() + " new: " + newValue.ToString());
+            //print("p2 update: \nold: " + previousValue.ToString() + " new: " + newValue.ToString());
 
             if (newValue - previousValue < 0)
             {
@@ -857,7 +866,7 @@ public class UIManager : MonoBehaviour
             int newValue = p3.playerMoney;
             int previousValue = p3.oldPlayerMoney;
             int stepAmount;
-            print("p3 update: \nold: " + previousValue.ToString() + " new: " + newValue.ToString());
+            //print("p3 update: \nold: " + previousValue.ToString() + " new: " + newValue.ToString());
 
             if (newValue - previousValue < 0)
             {
@@ -909,7 +918,7 @@ public class UIManager : MonoBehaviour
             int newValue = p4.playerMoney;
             int previousValue = p4.oldPlayerMoney;
             int stepAmount;
-            print("p4 update: \nold: " + previousValue.ToString() + " new: " + newValue.ToString());
+            //print("p4 update: \nold: " + previousValue.ToString() + " new: " + newValue.ToString());
 
             if (newValue - previousValue < 0)
             {
@@ -971,7 +980,7 @@ public class UIManager : MonoBehaviour
                 EndTurnActive(true);
             }
         }
-        
+
         if (p2.playerMoney > 0 && p2.moneyWarning)
         {
             p2.moneyWarning = false;
@@ -1129,12 +1138,12 @@ public class UIManager : MonoBehaviour
         bankruptcyPanel.SetActive(false);
     }
 
-    public void OnClick_Bankrupt() 
+    public void OnClick_Bankrupt()
     {
         //End game Checker
     }
 
-    #endregion
+    #endregion 
 
     #region Actions
 
@@ -1207,51 +1216,97 @@ public class UIManager : MonoBehaviour
 
     public void OnClick_Trade()
     {
-        trade_Panel.SetActive(true);
+        OnClick_ActionsClose();
+        tradePanel.SetActive(true);
+        trade_offerPanel.SetActive(true);
+        trade_receivePanel.SetActive(false);
+        trade_illegalPanel.SetActive(false);
         //Select trade player
-        trade_title.text = _Table.getCurrentPlayer().playerName + " Offer";
+        tradeoffer_title.text = _Table.getCurrentPlayer().playerName + "'s Offer";
 
         //Select first player to trade
         trade_currentOpppnent = _Table.SwitchWithoutPlayer(_Table.getCurrentPlayer(), _Table.getCurrentPlayer(), true); //Select player to trade
-        trade_selectedPlayer.text = trade_currentOpppnent.playerName;
+        tradeoffer_selectedPlayer.text = trade_currentOpppnent.playerName;
+        tradeoffer_myPlayerMoney.text = "Send Money (Maximum: " + _Table.getCurrentPlayer().playerMoney + "$)";
+        tradeoffer_opponentMoney.text = "Ask Money (Maximum: " + trade_currentOpppnent.playerMoney + "$)";
 
-        for (int i = 0; i < trade_myPlayerContent.childCount; i++)
+        //Reset InputField
+        ResetInputField();
+
+        for (int i = 0; i < tradeoffer_myPlayerContent.childCount; i++)
         {
-            Destroy(trade_myPlayerContent.GetChild(i).gameObject);
+            Destroy(tradeoffer_myPlayerContent.GetChild(i).gameObject);
         }
 
-        for (int i = 0; i < trade_opponentContent.childCount; i++)
+        for (int i = 0; i < tradeoffer_opponentContent.childCount; i++)
         {
-            Destroy(trade_opponentContent.GetChild(i).gameObject);
+            Destroy(tradeoffer_opponentContent.GetChild(i).gameObject);
         }
 
-        _Table.ShowTradeItem(_Table.getCurrentPlayer(), trade_myPlayerContent, trade_colorProperty, trade_specialProperty, trade_jailFree);
-        _Table.ShowTradeItem(trade_currentOpppnent, trade_opponentContent, trade_colorProperty, trade_specialProperty, trade_jailFree);
+        _Table.ShowTradeItem(_Table.getCurrentPlayer(), tradeoffer_myPlayerContent, trade_property);
+        _Table.ShowTradeItem(trade_currentOpppnent, tradeoffer_opponentContent, trade_property);
     }
 
-    public void Trade_PrevPlayer()
+    public void OnClick_Trade_PrevPlayer()
     {
-        for (int i = 0; i < trade_opponentContent.childCount; i++)
+        for (int i = 0; i < tradeoffer_opponentContent.childCount; i++)
         {
-            Destroy(trade_opponentContent.GetChild(i).gameObject);
+            Destroy(tradeoffer_opponentContent.GetChild(i).gameObject);
         }
 
         trade_currentOpppnent = _Table.SwitchWithoutPlayer(trade_currentOpppnent, _Table.getCurrentPlayer(), false);
-        trade_selectedPlayer.text = trade_currentOpppnent.playerName;
-        _Table.ShowTradeItem(trade_currentOpppnent, trade_opponentContent, trade_colorProperty, trade_specialProperty, trade_jailFree);
+        tradeoffer_selectedPlayer.text = trade_currentOpppnent.playerName;
+        tradeoffer_opponentMoney.text = "Ask Money (Maximum: " + trade_currentOpppnent.playerMoney + "$)";
+        _Table.ShowTradeItem(trade_currentOpppnent, tradeoffer_opponentContent, trade_property);
+        AutoCorrect_OpponentInputField();
+        AutoCorrect_MyPlayerInputField();
     }
 
-    public void Trade_NextPlayer()
+    public void OnClick_Trade_NextPlayer()
     {
-        for (int i = 0; i < trade_opponentContent.childCount; i++)
+        for (int i = 0; i < tradeoffer_opponentContent.childCount; i++)
         {
-            Destroy(trade_opponentContent.GetChild(i).gameObject);
+            Destroy(tradeoffer_opponentContent.GetChild(i).gameObject);
         }
 
         trade_currentOpppnent = _Table.SwitchWithoutPlayer(trade_currentOpppnent, _Table.getCurrentPlayer(), true);
-        trade_selectedPlayer.text = trade_currentOpppnent.playerName;
-        _Table.ShowTradeItem(trade_currentOpppnent, trade_opponentContent, trade_colorProperty, trade_specialProperty, trade_jailFree);
+        tradeoffer_selectedPlayer.text = trade_currentOpppnent.playerName;
+        tradeoffer_opponentMoney.text = "Ask Money (Maximum: " + trade_currentOpppnent.playerMoney + "$)";
+        _Table.ShowTradeItem(trade_currentOpppnent, tradeoffer_opponentContent, trade_property);
+        AutoCorrect_OpponentInputField();
+        AutoCorrect_MyPlayerInputField();
+    }
 
+    public void OnClick_Trade_Offer()
+    {
+        int myPlayerProp = 0;
+        foreach (PropertyCard card in GetTradeOffer(true))
+        {
+            myPlayerProp++;
+        }
+
+        int opponentProp = 0;
+        foreach (PropertyCard card in GetTradeOffer(false))
+        {
+            opponentProp++;
+        }
+
+        if (tradeoffer_myPlayerMoneyValue.text != "" || tradeoffer_opponentMoneyValue.text != "")
+        {
+            if (myPlayerProp != 0 || int.Parse(tradeoffer_myPlayerMoneyValue.text) != 0)
+            {
+                if (opponentProp != 0 || int.Parse(tradeoffer_opponentMoneyValue.text) != 0)
+                {
+                    ShowTradeReceive();
+                    return;
+                }
+            }
+        }
+
+        //print(myPlayerProp + int.Parse(tradeoffer_myPlayerMoneyValue.text) + "myplayer");
+        //print(opponentProp + int.Parse(tradeoffer_opponentMoneyValue.text) + "opponent");
+
+        ShowIllegalTrade();
     }
 
     public void OnClick_ActionsClose()
@@ -1261,8 +1316,180 @@ public class UIManager : MonoBehaviour
         buildPanel.SetActive(false);
         sellPanel.SetActive(false);
         mortgagePanel.SetActive(false);
+        tradePanel.SetActive(false);
         redeemPanel.SetActive(false);
         _Table.UnshownSlot();
+    }
+
+    //Other Methods
+    //
+    public PropertyCard[] GetTradeOffer(bool isMyPlayer)
+    {
+        if (isMyPlayer)
+        {
+            List<PropertyCard> myPlayerProperty = new List<PropertyCard>();
+
+            for (int i = 0; i < tradeoffer_myPlayerContent.childCount; i++)
+            {
+                if (tradeoffer_myPlayerContent.GetChild(i).GetComponent<PropertyCard>().isSelected)
+                {
+                    if (tradeoffer_myPlayerContent.GetChild(i).GetComponent<PropertyCard>().propertyType == PropertyType.ColorProperty)
+                    {
+                        myPlayerProperty.Add(tradeoffer_myPlayerContent.GetChild(i).GetComponent<PropertyCard>());
+                        print("color props");
+                    }
+                    else if (tradeoffer_myPlayerContent.GetChild(i).GetComponent<PropertyCard>().propertyType == PropertyType.SpecialProperty)
+                    {
+                        myPlayerProperty.Add(tradeoffer_myPlayerContent.GetChild(i).GetComponent<PropertyCard>());
+                        print("special props");
+                    }
+                    else if (tradeoffer_myPlayerContent.GetChild(i).GetComponent<PropertyCard>().propertyType == PropertyType.JailFree)
+                    {
+                        myPlayerProperty.Add(tradeoffer_myPlayerContent.GetChild(i).GetComponent<PropertyCard>());
+                        print("jail free");
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+            }
+
+            return myPlayerProperty.ToArray();
+        }
+
+        else
+        {
+            List<PropertyCard> opponentProperty = new List<PropertyCard>();
+
+            for (int i = 0; i < tradeoffer_opponentContent.childCount; i++)
+            {
+                if (tradeoffer_opponentContent.GetChild(i).GetComponent<PropertyCard>().isSelected)
+                {
+                    if (tradeoffer_opponentContent.GetChild(i).GetComponent<PropertyCard>().propertyType == PropertyType.ColorProperty)
+                    {
+                        opponentProperty.Add(tradeoffer_opponentContent.GetChild(i).GetComponent<PropertyCard>());
+                        print("color props");
+                    }
+                    else if (tradeoffer_opponentContent.GetChild(i).GetComponent<PropertyCard>().propertyType == PropertyType.SpecialProperty)
+                    {
+                        opponentProperty.Add(tradeoffer_opponentContent.GetChild(i).GetComponent<PropertyCard>());
+                        print("special props");
+                    }
+                    else if (tradeoffer_opponentContent.GetChild(i).GetComponent<PropertyCard>().propertyType == PropertyType.JailFree)
+                    {
+                        opponentProperty.Add(tradeoffer_opponentContent.GetChild(i).GetComponent<PropertyCard>());
+                        print("jail free");
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+            }
+
+            return opponentProperty.ToArray();
+        }
+    }
+
+    public void ShowIllegalTrade()
+    {
+        trade_illegalPanel.SetActive(true);
+        trade_offerPanel.SetActive(false);
+        trade_receivePanel.SetActive(false);
+    }
+
+    public void ShowTradeReceive()
+    {
+        trade_offerPanel.SetActive(false);
+        trade_receivePanel.SetActive(true);
+        trade_illegalPanel.SetActive(false);
+
+        tradereceive_title.text = _Table.getCurrentPlayer().playerName + "'s Offer";
+
+        //Destroy old item
+        for (int i = 0; i < tradeoffer_myPlayerContent.childCount; i++)
+        {
+            Destroy(tradeoffer_myPlayerContent.GetChild(i).gameObject);
+        }
+
+        for (int i = 0; i < tradeoffer_opponentContent.childCount; i++)
+        {
+            Destroy(tradeoffer_opponentContent.GetChild(i).gameObject);
+        }
+
+        //Generate new item
+        foreach (PropertyCard card in GetTradeOffer(true))
+        {
+            GameObject temp = Instantiate(card.gameObject, tradereceive_myPlayerContent);
+            temp.GetComponent<PropertyCard>().isTrade = false;
+            temp.GetComponent<PropertyCard>().selectedMask.SetActive(false);
+        }
+
+        foreach (PropertyCard card in GetTradeOffer(false))
+        {
+            GameObject temp = Instantiate(card.gameObject, tradereceive_opponentContent);
+            temp.GetComponent<PropertyCard>().isTrade = false;
+            temp.GetComponent<PropertyCard>().selectedMask.SetActive(false);
+        }
+
+        //Money part
+        if (tradeoffer_myPlayerMoneyValue.text == "" || tradeoffer_myPlayerMoneyValue.text == "0")
+        {
+            tradereceive_myPlayerMoney.text = "0$";
+        }
+        else
+        {
+            tradereceive_myPlayerMoney.text = tradeoffer_myPlayerMoneyValue.text + "$";
+        }
+
+        if (tradeoffer_opponentMoneyValue.text == "" || tradeoffer_opponentMoneyValue.text == "0")
+        {
+            tradereceive_opponentMoney.text = "0$";
+        }
+        else
+        {
+            tradereceive_opponentMoney.text = tradeoffer_opponentMoneyValue.text + "$";
+        }
+    }
+
+    public void AutoCorrect_MyPlayerInputField()
+    {
+        if (tradeoffer_myPlayerMoneyValue.text == "")
+        {
+            tradeoffer_myPlayerMoneyValue.text = "0";
+        }
+        else if (int.Parse(tradeoffer_myPlayerMoneyValue.text) == 0)
+        {
+            tradeoffer_myPlayerMoneyValue.text = "0";
+        }
+        else if (int.Parse(tradeoffer_myPlayerMoneyValue.text) > _Table.getCurrentPlayer().playerMoney)
+        {
+            tradeoffer_myPlayerMoneyValue.text = _Table.getCurrentPlayer().playerMoney.ToString();
+        }
+    }
+
+    public void AutoCorrect_OpponentInputField()
+    {
+        if (tradeoffer_opponentMoneyValue.text == "")
+        {
+            tradeoffer_opponentMoneyValue.text = "0";
+        }
+        else if (int.Parse(tradeoffer_opponentMoneyValue.text) == 0)
+        {
+            tradeoffer_opponentMoneyValue.text = "0";
+        }
+        else if (int.Parse(tradeoffer_opponentMoneyValue.text) > trade_currentOpppnent.playerMoney)
+        {
+            tradeoffer_opponentMoneyValue.text = trade_currentOpppnent.playerMoney.ToString();
+        }
+        print(int.Parse(tradeoffer_opponentMoneyValue.text));
+    }
+
+    public void ResetInputField()
+    {
+        tradeoffer_myPlayerMoneyValue.text = "";
+        tradeoffer_opponentMoneyValue.text = "";
     }
 
     #endregion

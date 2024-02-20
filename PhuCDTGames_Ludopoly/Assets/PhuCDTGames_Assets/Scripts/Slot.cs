@@ -131,7 +131,7 @@ public class Slot : MonoBehaviour
             return colorProperty.propertyName;
         }
         else if (slotType == Slot_Type.SpecialProperty)
-        { 
+        {
             return specialProperty.propertyName;
         }
         else if (slotType == Slot_Type.SupriseSlot)
@@ -338,7 +338,7 @@ public class Slot : MonoBehaviour
         }
         else if (slotType == Slot_Type.SpecialProperty)
         {
-            return specialProperty.mortgagePrice; 
+            return specialProperty.mortgagePrice;
         }
         else
         {
@@ -552,42 +552,45 @@ public class Slot : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (slotAction == SlotAction.Idle)
+        if (!UIManager.Instance.Onclick_InformationPanel.activeSelf || !UIManager.Instance.informationPanel.activeSelf || !UIManager.Instance.jailPanel.activeSelf || !UIManager.Instance.moneyPanel.activeSelf || !UIManager.Instance.mainActionPanel.activeSelf || !UIManager.Instance.auctionPanel.activeSelf || !UIManager.Instance.tradePanel.activeSelf)
         {
-            if (slotType == Slot_Type.ColorProperty || slotType == Slot_Type.SpecialProperty)
+            if (slotAction == SlotAction.Idle)
             {
-                UIManager.Instance.OnClick_ShowInformationCard(this);
+                if (slotType == Slot_Type.ColorProperty || slotType == Slot_Type.SpecialProperty)
+                {
+                    UIManager.Instance.OnClick_ShowInformationCard(this);
+                }
             }
-        }
-        else if (slotAction == SlotAction.Build) //Build House
-        {
-            AddHouse();
-            Table.Instance.CurrentPlayerInstantPayBank(getBuildPrice());
-            Table.Instance.Build();
-        }
-        else if (slotAction == SlotAction.Sell)
-        {
-            RemoveHouse();
-            Table.Instance.CurrentPlayerInstantReceiveBank(getSellPrice());
-            Table.Instance.Sell();
-        }
-        else if (slotAction == SlotAction.Mortgage)
-        {
-            if (!isMortgaged)
+            else if (slotAction == SlotAction.Build) //Build House
             {
-                Table.Instance.CurrentPlayerInstantReceiveBank(getMortgagePrice());
-                isMortgaged = true;
-                mortgagedTag.SetActive(true);
+                AddHouse();
+                Table.Instance.CurrentPlayerInstantPayBank(getBuildPrice());
+                Table.Instance.Build();
             }
-        }
-        else if (slotAction == SlotAction.Redeem)
-        {
-            if (isMortgaged)
+            else if (slotAction == SlotAction.Sell)
             {
-                Table.Instance.CurrentPlayerInstantPayBank(getRedeemPrice());
-                isMortgaged = false;
-                mortgagedTag.SetActive(false);
-                gameObject.GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                RemoveHouse();
+                Table.Instance.CurrentPlayerInstantReceiveBank(getSellPrice());
+                Table.Instance.Sell();
+            }
+            else if (slotAction == SlotAction.Mortgage)
+            {
+                if (!isMortgaged)
+                {
+                    Table.Instance.CurrentPlayerInstantReceiveBank(getMortgagePrice());
+                    isMortgaged = true;
+                    mortgagedTag.SetActive(true);
+                }
+            }
+            else if (slotAction == SlotAction.Redeem)
+            {
+                if (isMortgaged)
+                {
+                    Table.Instance.CurrentPlayerInstantPayBank(getRedeemPrice());
+                    isMortgaged = false;
+                    mortgagedTag.SetActive(false);
+                    gameObject.GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                }
             }
         }
     }

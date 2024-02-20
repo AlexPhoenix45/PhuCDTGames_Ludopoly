@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpecialPropertyCard : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class SpecialPropertyCard : MonoBehaviour
     public GameObject ut_waterWorks_Image;
     public GameObject ut_electricCompany_Image;
 
-    public void ShowCard(int slotNumber)
+    public void TradeShowCard(int slotNumber)
     {
         if (Table.Instance.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.RailRoad)
         {
