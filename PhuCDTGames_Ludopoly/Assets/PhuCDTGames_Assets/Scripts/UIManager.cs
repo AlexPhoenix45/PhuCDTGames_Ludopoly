@@ -301,6 +301,7 @@ public class UIManager : MonoBehaviour
     public GameObject trade_offerPanel;
     public GameObject trade_receivePanel;
     public GameObject trade_illegalPanel;
+    public CanvasGroup trade_canvasGroup;
 
     [Header("Trade - Offer Panel")]
     public TextMeshProUGUI tradeoffer_title;
@@ -1181,6 +1182,20 @@ public class UIManager : MonoBehaviour
         mainActionPanel.SetActive(true);
         buildPanel.SetActive(true);
         buildPanel.transform.position = pos;
+
+        if (_Table.GetScreenRatio() >= 0.46f && _Table.GetScreenRatio() < 0.48f)
+        {
+            buildPanel.GetComponent<RectTransform>().localScale = new Vector2(.94f, .94f);
+        }
+        else if (_Table.GetScreenRatio() >= 0.48f && _Table.GetScreenRatio() < 0.5f)
+        {
+            buildPanel.GetComponent<RectTransform>().localScale = new Vector2(.88f, .88f);
+        }
+        else if (_Table.GetScreenRatio() >= 0.5f)
+        { 
+            buildPanel.GetComponent<RectTransform>().localScale = new Vector2(.75f, .75f);
+        }
+
         _Table.Build();
     }
 
@@ -1191,6 +1206,16 @@ public class UIManager : MonoBehaviour
         mainActionPanel.SetActive(true);
         sellPanel.SetActive(true);
         sellPanel.transform.position = pos;
+
+        if (_Table.GetScreenRatio() > .5f) //fncking shit
+        {
+            sellPanel.GetComponent<RectTransform>().localScale = new Vector2(.75f, .75f);
+        }
+        else
+        {
+            sellPanel.GetComponent<RectTransform>().localScale = new Vector2(.88f, .88f);
+        }
+
         _Table.Sell();
     }
 
@@ -1201,6 +1226,16 @@ public class UIManager : MonoBehaviour
         mainActionPanel.SetActive(true);
         mortgagePanel.SetActive(true);
         mortgagePanel.transform.position = pos;
+
+        if (_Table.GetScreenRatio() > .5f) //fncking shit
+        {
+            mortgagePanel.GetComponent<RectTransform>().localScale = new Vector2(.75f, .75f);
+        }
+        else
+        {
+            mortgagePanel.GetComponent<RectTransform>().localScale = new Vector2(.88f, .88f);
+        }
+
         _Table.Mortgage();
     }
 
@@ -1211,6 +1246,16 @@ public class UIManager : MonoBehaviour
         mainActionPanel.SetActive(true);
         redeemPanel.SetActive(true);
         redeemPanel.transform.position = pos;
+
+        if (_Table.GetScreenRatio() > .5f) //fncking shit
+        {
+            redeemPanel.GetComponent<RectTransform>().localScale = new Vector2(.75f, .75f);
+        }
+        else
+        {
+            redeemPanel.GetComponent<RectTransform>().localScale = new Vector2(.88f, .88f);
+        }
+
         _Table.Redeem();
     }
 
@@ -1221,6 +1266,8 @@ public class UIManager : MonoBehaviour
         trade_offerPanel.SetActive(true);
         trade_receivePanel.SetActive(false);
         trade_illegalPanel.SetActive(false);
+
+
         //Select trade player
         tradeoffer_title.text = _Table.getCurrentPlayer().playerName + "'s Offer";
 
@@ -1231,7 +1278,8 @@ public class UIManager : MonoBehaviour
         tradeoffer_opponentMoney.text = "Ask Money (Maximum: " + trade_currentOpppnent.playerMoney + "$)";
 
         //Reset InputField
-        ResetInputField();
+        Reset_InputField();
+        AutoCorrect_InputField();
 
         //Reset selection
 
@@ -1260,12 +1308,12 @@ public class UIManager : MonoBehaviour
         tradeoffer_selectedPlayer.text = trade_currentOpppnent.playerName;
         tradeoffer_opponentMoney.text = "Ask Money (Maximum: " + trade_currentOpppnent.playerMoney + "$)";
         _Table.ShowTradeItem(trade_currentOpppnent, tradeoffer_opponentContent, trade_property);
-        AutoCorrect_OpponentInputField();
-        AutoCorrect_MyPlayerInputField();
+        AutoCorrect_InputField();
     }
 
     public void OnClick_Trade_NextPlayer()
     {
+
         for (int i = 0; i < tradeoffer_opponentContent.childCount; i++)
         {
             Destroy(tradeoffer_opponentContent.GetChild(i).gameObject);
@@ -1275,8 +1323,7 @@ public class UIManager : MonoBehaviour
         tradeoffer_selectedPlayer.text = trade_currentOpppnent.playerName;
         tradeoffer_opponentMoney.text = "Ask Money (Maximum: " + trade_currentOpppnent.playerMoney + "$)";
         _Table.ShowTradeItem(trade_currentOpppnent, tradeoffer_opponentContent, trade_property);
-        AutoCorrect_OpponentInputField();
-        AutoCorrect_MyPlayerInputField();
+        AutoCorrect_InputField();
     }
 
     public void OnClick_Trade_Offer()
@@ -1286,7 +1333,6 @@ public class UIManager : MonoBehaviour
         {
             myPlayerProp++;
         }
-
         int opponentProp = 0;
         foreach (PropertyCard card in GetTradeOffer(false))
         {
@@ -1309,6 +1355,47 @@ public class UIManager : MonoBehaviour
         //print(opponentProp + int.Parse(tradeoffer_opponentMoneyValue.text) + "opponent");
 
         ShowIllegalTrade();
+    }
+
+    public void OnClick_Trade_Accept()
+    {
+        for (int i = 0; i < tradereceive_myPlayerContent.childCount; i++)
+        {
+            if (tradereceive_myPlayerContent.GetChild(i).GetComponent<PropertyCard>().propCardIndex == -1) //-1 equals jailFree card
+            {
+                _Table.getCurrentPlayer().RemoveJailFreeCard();
+                trade_currentOpppnent.AddJailFreeCard();
+            }
+            else
+            {
+                Slot tempSlot = _Table.getSlot(tradereceive_myPlayerContent.GetChild(i).GetComponent<PropertyCard>().propCardIndex);
+                _Table.getCurrentPlayer().slotOwned.Remove(tempSlot);
+                trade_currentOpppnent.slotOwned.Add(tempSlot);
+                tempSlot.forcedSetOwner(trade_currentOpppnent);
+            }
+        }
+
+        _Table.PlayerPayForPlayer(_Table.getCurrentPlayer(), trade_currentOpppnent, int.Parse(tradeoffer_myPlayerMoneyValue.text));
+
+        for (int i = 0; i < tradereceive_opponentContent.childCount; i++)
+        {
+            if (tradereceive_opponentContent.GetChild(i).GetComponent<PropertyCard>().propCardIndex == -1) //-1 equals jailFree card
+            {
+                _Table.getCurrentPlayer().AddJailFreeCard();
+                trade_currentOpppnent.RemoveJailFreeCard();
+            }
+            else
+            {
+                Slot tempSlot = _Table.getSlot(tradereceive_opponentContent.GetChild(i).GetComponent<PropertyCard>().propCardIndex);
+                _Table.getCurrentPlayer().slotOwned.Add(tempSlot);
+                trade_currentOpppnent.slotOwned.Remove(tempSlot);
+                tempSlot.forcedSetOwner(_Table.getCurrentPlayer());
+            }
+        }
+
+        _Table.PlayerPayForPlayer(trade_currentOpppnent, _Table.getCurrentPlayer(), int.Parse(tradeoffer_opponentMoneyValue.text));
+
+        OnClick_ActionsClose();
     }
 
     public void OnClick_ActionsClose()
@@ -1410,14 +1497,14 @@ public class UIManager : MonoBehaviour
         tradereceive_title.text = _Table.getCurrentPlayer().playerName + "'s Offer";
 
         //Destroy old item
-        for (int i = 0; i < tradeoffer_myPlayerContent.childCount; i++)
+        for (int i = 0; i < tradereceive_myPlayerContent.childCount; i++)
         {
-            Destroy(tradeoffer_myPlayerContent.GetChild(i).gameObject);
+            Destroy(tradereceive_myPlayerContent.GetChild(i).gameObject);
         }
 
-        for (int i = 0; i < tradeoffer_opponentContent.childCount; i++)
+        for (int i = 0; i < tradereceive_opponentContent.childCount; i++)
         {
-            Destroy(tradeoffer_opponentContent.GetChild(i).gameObject);
+            Destroy(tradereceive_opponentContent.GetChild(i).gameObject);
         }
 
         //Generate new item
@@ -1455,13 +1542,9 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void AutoCorrect_MyPlayerInputField()
+    public void AutoCorrect_InputField()
     {
         if (tradeoffer_myPlayerMoneyValue.text == "")
-        {
-            tradeoffer_myPlayerMoneyValue.text = "0";
-        }
-        else if (int.Parse(tradeoffer_myPlayerMoneyValue.text) == 0)
         {
             tradeoffer_myPlayerMoneyValue.text = "0";
         }
@@ -1469,15 +1552,9 @@ public class UIManager : MonoBehaviour
         {
             tradeoffer_myPlayerMoneyValue.text = _Table.getCurrentPlayer().playerMoney.ToString();
         }
-    }
+        //print(int.Parse(tradeoffer_myPlayerMoneyValue.text + "myplayermoney"));
 
-    public void AutoCorrect_OpponentInputField()
-    {
         if (tradeoffer_opponentMoneyValue.text == "")
-        {
-            tradeoffer_opponentMoneyValue.text = "0";
-        }
-        else if (int.Parse(tradeoffer_opponentMoneyValue.text) == 0)
         {
             tradeoffer_opponentMoneyValue.text = "0";
         }
@@ -1485,10 +1562,10 @@ public class UIManager : MonoBehaviour
         {
             tradeoffer_opponentMoneyValue.text = trade_currentOpppnent.playerMoney.ToString();
         }
-        print(int.Parse(tradeoffer_opponentMoneyValue.text));
+        //print(int.Parse(tradeoffer_opponentMoneyValue.text + "opponent"));
     }
 
-    public void ResetInputField()
+    public void Reset_InputField()
     {
         tradeoffer_myPlayerMoneyValue.text = "";
         tradeoffer_opponentMoneyValue.text = "";
@@ -2027,9 +2104,9 @@ public class UIManager : MonoBehaviour
                     yield return new WaitForSeconds(.2f);
                     timeConsumed += .2f;
                 }
-                while (timeConsumed < 3);
+                while (timeConsumed < 1.5f);
 
-                if (timeConsumed > 3)
+                if (timeConsumed > 1.5f)
                 {
                     OnClick_Done();
                 }
@@ -2086,9 +2163,9 @@ public class UIManager : MonoBehaviour
                     yield return new WaitForSeconds(.2f);
                     timeConsumed += .2f;
                 }
-                while (timeConsumed < 3);
+                while (timeConsumed < 1.5f);
 
-                if (timeConsumed > 3)
+                if (timeConsumed > 1.5f)
                 {
                     OnClick_Done();
                 }
@@ -2632,7 +2709,39 @@ public class UIManager : MonoBehaviour
 
         MoneyUpdate();
         _Table.getCurrentPlayer().CheckBankruptcy();
+        //StopAllCoroutines();
     }
 
     #endregion
+
+    //Show Board
+    //
+    public void PointerDown_ShowBoard_Trade()
+    {
+        StopAllCoroutines();
+        IEnumerator start()
+        {
+            for (float f = 0; f <= .2f; f += Time.deltaTime)
+            {
+                trade_canvasGroup.alpha = Mathf.Lerp(1f, 0f, f / .15f);
+                yield return null;
+            }
+        }
+        StartCoroutine(start());
+    }
+
+    public void PointerUp_ShowBoard_Trade()
+    {
+        StopAllCoroutines();
+        IEnumerator start()
+        {
+            for (float f = 0; f <= .2f; f += Time.deltaTime)
+            {
+                trade_canvasGroup.alpha = Mathf.Lerp(0f, 1f, f / .15f);
+                yield return null;
+            }
+        }
+        StartCoroutine(start());
+
+    }
 }

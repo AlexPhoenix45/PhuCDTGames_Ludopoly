@@ -412,6 +412,45 @@ public class Slot : MonoBehaviour
         }
     }
 
+    public void forcedSetOwner(Player player)
+    {
+        owner = player;
+        isOwned = true;
+
+        if (player.playerColor == new Vector4(255, 0, 0, 255)) //red
+        {
+            ownerTag.SetActive(true);
+            redTag.SetActive(true);
+            blueTag.SetActive(false);
+            greenTag.SetActive(false);
+            yellowTag.SetActive(false);
+        }
+        else if (player.playerColor == new Vector4(0, 0, 255, 255)) //blue
+        {
+            ownerTag.SetActive(true);
+            redTag.SetActive(false);
+            blueTag.SetActive(true);
+            greenTag.SetActive(false);
+            yellowTag.SetActive(false);
+        }
+        else if (player.playerColor == new Vector4(0, 255, 0, 255)) //green
+        {
+            ownerTag.SetActive(true);
+            redTag.SetActive(false);
+            blueTag.SetActive(false);
+            greenTag.SetActive(true);
+            yellowTag.SetActive(false);
+        }
+        else if (player.playerColor == new Vector4(255, 255, 0, 255)) //yellow
+        {
+            ownerTag.SetActive(true);
+            redTag.SetActive(false);
+            blueTag.SetActive(false);
+            greenTag.SetActive(false);
+            yellowTag.SetActive(true);
+        }
+    }
+
     public Player getOwner() { return owner; }
 
     //Add houses

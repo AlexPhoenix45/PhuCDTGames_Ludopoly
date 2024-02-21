@@ -1,8 +1,8 @@
 using JetBrains.Annotations;
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -2524,7 +2524,7 @@ public class Table : MonoBehaviour
             tempProperty.GetComponent<PropertyCard>().TradeShowCard(-1);
             tempProperty.GetComponent<PropertyCard>().isSelected = false;
         }
-    }
+    } 
 
     public void UnshownSlot()
     {
@@ -2697,5 +2697,22 @@ public class Table : MonoBehaviour
         _UIManager.MoneyUpdate();
     }
 
+    public void PlayerPayForPlayer(Player payP, Player receiveP, int amount)
+    {
+        payP.PayMoney(amount);
+        receiveP.ReceiveMoney(amount);
+        _UIManager.MoneyUpdate();
+    }
+
     #endregion
+
+    public float GetScreenRatio()
+    {
+        int width = Screen.currentResolution.width;
+        int height = Screen.currentResolution.height;
+        float dpi = (float) width / height;
+        print("W: " + width + "; H: " + height);
+        print(dpi);
+        return dpi;
+    }
 }

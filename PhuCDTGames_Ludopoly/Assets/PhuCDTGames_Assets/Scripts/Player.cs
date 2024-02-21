@@ -432,6 +432,11 @@ public class Player : MonoBehaviour
         numberJailFreeCard++;
     }
 
+    public void RemoveJailFreeCard()
+    {
+        numberJailFreeCard--;
+    }
+
     #region Money
     public void ReceiveMoney(int amount)
     {

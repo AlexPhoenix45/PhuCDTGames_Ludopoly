@@ -8,6 +8,7 @@ public class PropertyCard : MonoBehaviour
     public GameObject colorPropertyPanel;
     public GameObject specialPropertyPanel;
     public GameObject jailFreePanel;
+    public int propCardIndex;
 
     public PropertyType propertyType;
 
@@ -51,6 +52,7 @@ public class PropertyCard : MonoBehaviour
 
     public void TradeShowCard(int slotNumber)
     {
+        propCardIndex = slotNumber;
         if (slotNumber != -1 && Table.Instance.getSlot(slotNumber).slotType == Slot_Type.ColorProperty) 
         {
             colorPropertyPanel.SetActive(true);
