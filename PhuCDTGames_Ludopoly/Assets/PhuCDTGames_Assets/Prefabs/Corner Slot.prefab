@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3da68eddd997dab48b2acba5d5816388, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d119a46074150194d95af4cfb3b74334, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0fe3000d296609499c94bb97205aba6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotIndex: 0
   slotType: 0
   colorProperty: {fileID: 0}
   specialProperty: {fileID: 0}
@@ -121,6 +122,18 @@ MonoBehaviour:
   blueTag: {fileID: 0}
   greenTag: {fileID: 0}
   yellowTag: {fileID: 0}
+  numberOfHouse: 0
+  inSet: 0
+  house1: {fileID: 0}
+  house2: {fileID: 0}
+  house3: {fileID: 0}
+  house4: {fileID: 0}
+  hotel: {fileID: 0}
+  slotAction: 1
+  isMortgaged: 0
+  mortgagedTag: {fileID: 0}
+  numOfPlayerInSlot: 0
+  temp_playerOnSlot: []
 --- !u!61 &7811502181962728750
 BoxCollider2D:
   m_ObjectHideFlags: 0

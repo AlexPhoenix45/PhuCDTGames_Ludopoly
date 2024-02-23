@@ -31,30 +31,27 @@ public class UIManager : MonoBehaviour
     [Header("Player 1")]
     [Header("Players")]
     public GameObject player1Panel;
-    public TextMeshProUGUI player1Name;
-    public TextMeshProUGUI player1Money;
-    public Image player1Image;
+    public Text player1Name;
+    public Text player1Money;
 
     [Header("Player 2")]
     public GameObject player2Panel;
-    public TextMeshProUGUI player2Name;
-    public TextMeshProUGUI player2Money;
-    public Image player2Image;
+    public Text player2Name;
+    public Text player2Money;
 
     [Header("Player 3")]
     public GameObject player3Panel;
-    public TextMeshProUGUI player3Name;
-    public TextMeshProUGUI player3Money;
-    public Image player3Image;
+    public Text player3Name;
+    public Text player3Money;
 
     [Header("Player 4")]
     public GameObject player4Panel;
-    public TextMeshProUGUI player4Name;
-    public TextMeshProUGUI player4Money;
-    public Image player4Image;
+    public Text player4Name;
+    public Text player4Money;
 
     [Header("Slot Information")]
-    public GameObject informationPanel;
+    public GameObject standOnInformationPanel;
+    public CanvasGroup standOnInformationCasvasGroup;
     public GameObject colorPropertyInformationCard;
     public GameObject specialPropertyInformationCard;
     public GameObject supriseInformationCard;
@@ -255,7 +252,8 @@ public class UIManager : MonoBehaviour
     [Header("Auction - Information")]
     [Header("Auction")]
     public GameObject auctionPanel;
-    public GameObject autionInformationPanel;
+    public CanvasGroup auctionCanvasGroup;
+    public GameObject auctionInformationPanel;
     public TextMeshProUGUI ai_currentPlayerTurn;
     public TextMeshProUGUI ai_currentPrice;
     public Button ai_smallBid;
@@ -638,14 +636,12 @@ public class UIManager : MonoBehaviour
                 player3Panel.SetActive(false);
                 player4Panel.SetActive(false);
                 //Player 1
-                player1Name.text = Table.Instance.player[0].playerName.ToString();
+                player1Name.text = Table.Instance.player[0].playerName.ToString().ToUpper();
                 //player1Money.text = Table.Instance.player[0].playerMoney.ToString() + "$";
-                player1Image.color = Table.Instance.player[0].playerColor;
 
                 //Player 2
-                player2Name.text = Table.Instance.player[1].playerName.ToString();
+                player2Name.text = Table.Instance.player[1].playerName.ToString().ToUpper();
                 //player2Money.text = Table.Instance.player[1].playerMoney.ToString() + "$";
-                player2Image.color = Table.Instance.player[1].playerColor;
             }
             else if (_Table.numOfPlayers == 3)
             {
@@ -654,19 +650,16 @@ public class UIManager : MonoBehaviour
                 player3Panel.SetActive(true);
                 player4Panel.SetActive(false);
                 //Player 1
-                player1Name.text = Table.Instance.player[0].playerName.ToString();
+                player1Name.text = Table.Instance.player[0].playerName.ToString().ToUpper();
                 //player1Money.text = Table.Instance.player[0].playerMoney.ToString() + "$";
-                player1Image.color = Table.Instance.player[0].playerColor;
 
                 //Player 2
-                player2Name.text = Table.Instance.player[1].playerName.ToString();
+                player2Name.text = Table.Instance.player[1].playerName.ToString().ToUpper();
                 //player2Money.text = Table.Instance.player[1].playerMoney.ToString() + "$";
-                player2Image.color = Table.Instance.player[1].playerColor;
 
                 //Player 3
-                player3Name.text = Table.Instance.player[2].playerName.ToString();
+                player3Name.text = Table.Instance.player[2].playerName.ToString().ToUpper();
                 //player3Money.text = Table.Instance.player[2].playerMoney.ToString() + "$";
-                player3Image.color = Table.Instance.player[2].playerColor;
             }
             else if (_Table.numOfPlayers == 4)
             {
@@ -675,24 +668,20 @@ public class UIManager : MonoBehaviour
                 player3Panel.SetActive(true);
                 player4Panel.SetActive(true);
                 //Player 1
-                player1Name.text = Table.Instance.player[0].playerName.ToString();
+                player1Name.text = Table.Instance.player[0].playerName.ToString().ToUpper();
                 //player1Money.text = Table.Instance.player[0].playerMoney.ToString() + "$";
-                player1Image.color = Table.Instance.player[0].playerColor;
 
                 //Player 2
-                player2Name.text = Table.Instance.player[1].playerName.ToString();
+                player2Name.text = Table.Instance.player[1].playerName.ToString().ToUpper();
                 //player2Money.text = Table.Instance.player[1].playerMoney.ToString() + "$";
-                player2Image.color = Table.Instance.player[1].playerColor;
 
                 //Player 3
-                player3Name.text = Table.Instance.player[2].playerName.ToString();
+                player3Name.text = Table.Instance.player[2].playerName.ToString().ToUpper();
                 //player3Money.text = Table.Instance.player[2].playerMoney.ToString() + "$";
-                player3Image.color = Table.Instance.player[2].playerColor;
 
                 //Player 4
-                player4Name.text = Table.Instance.player[3].playerName.ToString();
+                player4Name.text = Table.Instance.player[3].playerName.ToString().ToUpper();
                 //player4Money.text = Table.Instance.player[3].playerMoney.ToString() + "$";
-                player4Image.color = Table.Instance.player[3].playerColor;
             }
 
             MoneyUpdate();
@@ -784,7 +773,7 @@ public class UIManager : MonoBehaviour
                         previousValue = newValue;
                     }
 
-                    player1Money.text = previousValue.ToString("N0") + "$";
+                    player1Money.text = previousValue.ToString("N0");
 
                     yield return Wait;
                 }
@@ -799,7 +788,7 @@ public class UIManager : MonoBehaviour
                         previousValue = newValue;
                     }
 
-                    player1Money.text = previousValue.ToString("N0") + "$";
+                    player1Money.text = previousValue.ToString("N0");
 
                     yield return Wait;
                 }
@@ -836,7 +825,7 @@ public class UIManager : MonoBehaviour
                         previousValue = newValue;
                     }
 
-                    player2Money.text = previousValue.ToString("N0") + "$";
+                    player2Money.text = previousValue.ToString("N0");
 
                     yield return Wait;
                 }
@@ -851,7 +840,7 @@ public class UIManager : MonoBehaviour
                         previousValue = newValue;
                     }
 
-                    player2Money.text = previousValue.ToString("N0") + "$";
+                    player2Money.text = previousValue.ToString("N0");
 
                     yield return Wait;
                 }
@@ -888,7 +877,7 @@ public class UIManager : MonoBehaviour
                         previousValue = newValue;
                     }
 
-                    player3Money.text = previousValue.ToString("N0") + "$";
+                    player3Money.text = previousValue.ToString("N0");
 
                     yield return Wait;
                 }
@@ -903,7 +892,7 @@ public class UIManager : MonoBehaviour
                         previousValue = newValue;
                     }
 
-                    player3Money.text = previousValue.ToString("N0") + "$";
+                    player3Money.text = previousValue.ToString("N0");
 
                     yield return Wait;
                 }
@@ -940,7 +929,7 @@ public class UIManager : MonoBehaviour
                         previousValue = newValue;
                     }
 
-                    player4Money.text = previousValue.ToString("N0") + "$";
+                    player4Money.text = previousValue.ToString("N0");
 
                     yield return Wait;
                 }
@@ -955,7 +944,7 @@ public class UIManager : MonoBehaviour
                         previousValue = newValue;
                     }
 
-                    player4Money.text = previousValue.ToString("N0") + "$";
+                    player4Money.text = previousValue.ToString("N0");
 
                     yield return Wait;
                 }
@@ -1197,6 +1186,8 @@ public class UIManager : MonoBehaviour
         sellPanel.transform.position = pos;
 
         ScaleMainActionsPanel(sellPanel);
+
+
 
         _Table.Sell();
     }
@@ -1570,7 +1561,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowColorPropertyCard(int slotNumber)
     {
-        informationPanel.SetActive(true);
+        standOnInformationPanel.SetActive(true);
         colorPropertyInformationCard.SetActive(true);
         Vector2 pos  = Camera.main.WorldToScreenPoint(_Table.transform.position);
         cpi_showButtonPanel.SetActive(true);
@@ -1693,7 +1684,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowColorPropertyBought()
     {
-        informationPanel.SetActive(true);
+        standOnInformationPanel.SetActive(true);
         colorPropertyInformationCard.SetActive(true);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         colorPropertyInformationCard.transform.position = pos;
@@ -1742,7 +1733,7 @@ public class UIManager : MonoBehaviour
             }
             while (timeConsumed < 1.5f);
             specialPropertyInformationCard.SetActive(false);
-            informationPanel.SetActive(false);
+            standOnInformationPanel.SetActive(false);
             HideInformationCard();
         }
         StartCoroutine(wait());
@@ -1753,7 +1744,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowSpecialPropertyCard(int slotNumber)
     {
-        informationPanel.SetActive(true);
+        standOnInformationPanel.SetActive(true);
         specialPropertyInformationCard.SetActive(true);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         specialPropertyInformationCard.transform.position = pos;
@@ -1802,7 +1793,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowSpecialPropertyBought()
     {
-        informationPanel.SetActive(true);
+        standOnInformationPanel.SetActive(true);
         specialPropertyInformationCard.SetActive(true);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         specialPropertyInformationCard.transform.position = pos;
@@ -1851,7 +1842,7 @@ public class UIManager : MonoBehaviour
             }
             while (timeConsumed < 1.5f);
             specialPropertyInformationCard.SetActive(false);
-            informationPanel.SetActive(false);
+            standOnInformationPanel.SetActive(false);
             HideInformationCard();
         }
         StartCoroutine(wait());
@@ -1865,7 +1856,7 @@ public class UIManager : MonoBehaviour
         float timeConsumed = 0;
         int chanceCardNumber = _Table.getSlot(slotNumber).supriseSlot.DrawChance();
         int communityChestNumber = _Table.getSlot(slotNumber).supriseSlot.DrawCommunityChest();
-        informationPanel.SetActive(true);
+        standOnInformationPanel.SetActive(true);
         supriseInformationCard.SetActive(true);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         supriseInformationCard.transform.position = pos;
@@ -2219,9 +2210,24 @@ public class UIManager : MonoBehaviour
     public void ShowAuction(int slotNumber, Player currentPlayer, int currentPrice, Player playerWithHighestBid)
     {
         auctionPanel.SetActive(true);
-        autionInformationPanel.SetActive(true);
+        auctionInformationPanel.SetActive(true);
+
+        //Scaling
+        if (_Table.GetScreenRatio() >= 0.46f && _Table.GetScreenRatio() < 0.48f)
+        {
+            auctionPanel.GetComponent<RectTransform>().localScale = new Vector2(1.5f, 1.5f);
+        }
+        else if (_Table.GetScreenRatio() >= 0.48f && _Table.GetScreenRatio() < 0.5f)
+        {
+            auctionPanel.GetComponent<RectTransform>().localScale = new Vector2(1.45f, 1.45f);
+        }
+        else if (_Table.GetScreenRatio() >= 0.5f)
+        {
+            auctionPanel.GetComponent<RectTransform>().localScale = new Vector2(1.25f, 1.25f);
+        }
+
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
-        autionInformationPanel.transform.position = pos;
+        auctionInformationPanel.transform.position = pos;
 
         if (_Table.getSlot(slotNumber).slotType == Slot_Type.ColorProperty)
         {
@@ -2394,7 +2400,7 @@ public class UIManager : MonoBehaviour
         if (isWin)
         {
             auctionPanel.SetActive(false);
-            autionInformationPanel.SetActive(false);
+            auctionInformationPanel.SetActive(false);
             _Table.SwitchPlayer(playerWin);
             _Table.Buy(slotNumber, currentPrice);
             _Table.SwitchPlayer(playerStart);
@@ -2402,7 +2408,7 @@ public class UIManager : MonoBehaviour
         else
         {
             auctionPanel.SetActive(false);
-            autionInformationPanel.SetActive(false);
+            auctionInformationPanel.SetActive(false);
             _Table.SwitchPlayer(playerStart);
             HideInformationCard();
         }
@@ -2642,39 +2648,10 @@ public class UIManager : MonoBehaviour
         Onclick_InformationPanel.SetActive(false);
     }
 
-    public void PointerDown_ShowBoard(bool _down)
-    {
-        if (_down)
-        {
-            StartCoroutine(showColor());
-            IEnumerator showColor()
-            {
-                Color shown = new Color(0f, 0f, 0f, 0.3529412f);
-                Color unshown = new Color(0f, 0f, 0f, 0f);
-                informationPanel.GetComponent<Image>().color = Color.Lerp(shown, unshown, Mathf.PingPong(Time.time, .2f));
-                yield return new WaitForSeconds(.2f);
-            }
-            print("down");
-        }
-        else
-        {
-
-            StartCoroutine(showColor());
-            IEnumerator showColor()
-            {
-                Color shown = new Color(0f, 0f, 0f, 0.3529412f);
-                Color unshown = new Color(0f, 0f, 0f, 0f);
-                informationPanel.GetComponent<Image>().color = Color.Lerp(unshown, shown, Mathf.PingPong(Time.time, .2f));
-                yield return new WaitForSeconds(.2f);
-            }
-            print("up");
-        }
-    }
-
     public void HideInformationCard()
     {
         //Stand-on Card
-        informationPanel.SetActive(false);
+        standOnInformationPanel.SetActive(false);
         //actionsCard.SetActive(false);
         colorPropertyInformationCard.SetActive(false);
         specialPropertyInformationCard.SetActive(false);
@@ -2729,6 +2706,37 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void PointerDown_ShowBoard_Auction()
+    {
+        StopAllCoroutines();
+        IEnumerator start()
+        {
+            for (float f = 0; f <= .2f; f += Time.deltaTime)
+            {
+                auctionCanvasGroup.alpha = Mathf.Lerp(1f, 0f, f / .15f);
+                standOnInformationCasvasGroup.alpha = Mathf.Lerp(1f, 0f, f / .15f);
+                yield return null;
+            }
+        }
+        StartCoroutine(start());
+    }
+
+    public void PointerUp_ShowBoard_Auction()
+    {
+        StopAllCoroutines();
+        IEnumerator start()
+        {
+            for (float f = 0; f <= .2f; f += Time.deltaTime)
+            {
+                auctionCanvasGroup.alpha = Mathf.Lerp(0f, 1f, f / .15f);
+                standOnInformationCasvasGroup.alpha = Mathf.Lerp(0f, 1f, f / .15f);
+                yield return null;
+            }
+        }
+        StartCoroutine(start());
+
+    }
+
     //Scale panel
     //
 
@@ -2748,19 +2756,19 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void ScaleMainActionsPanel(GameObject panel)
+    public void ScaleMainActionsPanel(GameObject abc)
     {
         if (_Table.GetScreenRatio() >= 0.46f && _Table.GetScreenRatio() < 0.48f)
         {
-            buildPanel.GetComponent<RectTransform>().localScale = new Vector2(.94f, .94f);
+            abc.GetComponent<RectTransform>().localScale = new Vector2(.94f, .94f);
         }
         else if (_Table.GetScreenRatio() >= 0.48f && _Table.GetScreenRatio() < 0.5f)
         {
-            buildPanel.GetComponent<RectTransform>().localScale = new Vector2(.88f, .88f);
+            abc.GetComponent<RectTransform>().localScale = new Vector2(.88f, .88f);
         }
         else if (_Table.GetScreenRatio() >= 0.5f)
         {
-            buildPanel.GetComponent<RectTransform>().localScale = new Vector2(.75f, .75f);
+            abc.GetComponent<RectTransform>().localScale = new Vector2(.76f, .76f);
         }
     }
 }

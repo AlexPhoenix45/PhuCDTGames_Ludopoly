@@ -591,7 +591,7 @@ public class Slot : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (!UIManager.Instance.Onclick_InformationPanel.activeSelf || !UIManager.Instance.informationPanel.activeSelf || !UIManager.Instance.jailPanel.activeSelf || !UIManager.Instance.moneyPanel.activeSelf || !UIManager.Instance.mainActionPanel.activeSelf || !UIManager.Instance.auctionPanel.activeSelf || !UIManager.Instance.tradePanel.activeSelf)
+        if (!UIManager.Instance.Onclick_InformationPanel.activeSelf || !UIManager.Instance.standOnInformationPanel.activeSelf || !UIManager.Instance.jailPanel.activeSelf || !UIManager.Instance.moneyPanel.activeSelf || !UIManager.Instance.mainActionPanel.activeSelf || !UIManager.Instance.auctionPanel.activeSelf || !UIManager.Instance.tradePanel.activeSelf)
         {
             if (slotAction == SlotAction.Idle)
             {

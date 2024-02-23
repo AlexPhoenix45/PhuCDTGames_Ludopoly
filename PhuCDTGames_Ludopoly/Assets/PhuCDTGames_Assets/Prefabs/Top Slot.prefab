@@ -1809,7 +1809,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b4497eef13229b448b73cc5e14b6ef3f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b69dd39a7b135de4fa632ec39854aa4e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1832,6 +1832,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0fe3000d296609499c94bb97205aba6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotIndex: 0
   slotType: 0
   colorProperty: {fileID: 0}
   specialProperty: {fileID: 0}
@@ -1866,6 +1867,8 @@ MonoBehaviour:
   slotAction: 0
   isMortgaged: 0
   mortgagedTag: {fileID: 6385993870845302714}
+  numOfPlayerInSlot: 0
+  temp_playerOnSlot: []
 --- !u!61 &749489217726104250
 BoxCollider2D:
   m_ObjectHideFlags: 0

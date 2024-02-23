@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 14
   m_EditorClassIdentifier: 
   propertyColor: 5
-  propertyImage: {fileID: 21300000, guid: 3bc1aac2f6006cf41bcd1dcc198f32df, type: 3}
+  propertyImage: {fileID: 21300000, guid: ee9701e1edd071049a59f3550c8aafd1, type: 3}
   propertyName: Virginia Avenue
   propertyPrice: 160
   rentPrice: 12

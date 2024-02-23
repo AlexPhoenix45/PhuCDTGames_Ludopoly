@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: 5
   m_EditorClassIdentifier: 
   propertyName: Reading RR
-  propertyImage: {fileID: 21300000, guid: fe5fe8a0a6989544fa69e4ec2d17560d, type: 3}
+  propertyImage: {fileID: 21300000, guid: 2f9fedbb4fe63804693a88666d9dc51f, type: 3}
   propertyPrice: 200
   mortgagePrice: 100
-  rentPrice: 0
   propertyType: 1
   utilityType: 2

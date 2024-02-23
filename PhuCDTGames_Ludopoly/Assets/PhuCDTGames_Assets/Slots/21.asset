@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 21
   m_EditorClassIdentifier: 
   propertyColor: 6
-  propertyImage: {fileID: 21300000, guid: 7bc018f10dc8b3449ba5795c8b3039ab, type: 3}
+  propertyImage: {fileID: 21300000, guid: acef5611dd342fe4882ee0a5d37467b8, type: 3}
   propertyName: Kentucky Avenue
   propertyPrice: 220
   rentPrice: 18

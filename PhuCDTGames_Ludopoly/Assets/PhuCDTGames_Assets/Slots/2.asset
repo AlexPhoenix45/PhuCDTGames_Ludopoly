@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: 2
   m_EditorClassIdentifier: 
   slotName: Community Chest
-  slotImage: {fileID: 21300000, guid: dbcf74e485bcbc6429ce85360114f7dd, type: 3}
+  slotImage: {fileID: 21300000, guid: 49490f4b0fe25cd4eaa40b3f333d8cef, type: 3}
+  communityChestCards: 0
+  chanceCards: 0
   slotType: 1
   taxPrice: 0

@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: 38
   m_EditorClassIdentifier: 
   slotName: Luxury Tax
-  slotImage: {fileID: 21300000, guid: 49748e0752c76dc44a538f8db86c6e7a, type: 3}
+  slotImage: {fileID: 21300000, guid: 0f364497c33d81c45a291d5405607bb4, type: 3}
+  communityChestCards: 0
+  chanceCards: 0
   slotType: 2
   taxPrice: 100
