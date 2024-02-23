@@ -1183,18 +1183,7 @@ public class UIManager : MonoBehaviour
         buildPanel.SetActive(true);
         buildPanel.transform.position = pos;
 
-        if (_Table.GetScreenRatio() >= 0.46f && _Table.GetScreenRatio() < 0.48f)
-        {
-            buildPanel.GetComponent<RectTransform>().localScale = new Vector2(.94f, .94f);
-        }
-        else if (_Table.GetScreenRatio() >= 0.48f && _Table.GetScreenRatio() < 0.5f)
-        {
-            buildPanel.GetComponent<RectTransform>().localScale = new Vector2(.88f, .88f);
-        }
-        else if (_Table.GetScreenRatio() >= 0.5f)
-        { 
-            buildPanel.GetComponent<RectTransform>().localScale = new Vector2(.75f, .75f);
-        }
+        ScaleMainActionsPanel(buildPanel);
 
         _Table.Build();
     }
@@ -1207,14 +1196,7 @@ public class UIManager : MonoBehaviour
         sellPanel.SetActive(true);
         sellPanel.transform.position = pos;
 
-        if (_Table.GetScreenRatio() > .5f) //fncking shit
-        {
-            sellPanel.GetComponent<RectTransform>().localScale = new Vector2(.75f, .75f);
-        }
-        else
-        {
-            sellPanel.GetComponent<RectTransform>().localScale = new Vector2(.88f, .88f);
-        }
+        ScaleMainActionsPanel(sellPanel);
 
         _Table.Sell();
     }
@@ -1227,14 +1209,7 @@ public class UIManager : MonoBehaviour
         mortgagePanel.SetActive(true);
         mortgagePanel.transform.position = pos;
 
-        if (_Table.GetScreenRatio() > .5f) //fncking shit
-        {
-            mortgagePanel.GetComponent<RectTransform>().localScale = new Vector2(.75f, .75f);
-        }
-        else
-        {
-            mortgagePanel.GetComponent<RectTransform>().localScale = new Vector2(.88f, .88f);
-        }
+        ScaleMainActionsPanel(mortgagePanel);
 
         _Table.Mortgage();
     }
@@ -1247,14 +1222,7 @@ public class UIManager : MonoBehaviour
         redeemPanel.SetActive(true);
         redeemPanel.transform.position = pos;
 
-        if (_Table.GetScreenRatio() > .5f) //fncking shit
-        {
-            redeemPanel.GetComponent<RectTransform>().localScale = new Vector2(.75f, .75f);
-        }
-        else
-        {
-            redeemPanel.GetComponent<RectTransform>().localScale = new Vector2(.88f, .88f);
-        }
+        ScaleMainActionsPanel(redeemPanel);
 
         _Table.Redeem();
     }
@@ -1608,6 +1576,8 @@ public class UIManager : MonoBehaviour
         cpi_showButtonPanel.SetActive(true);
         cpi_boughtPanel.SetActive(false);
 
+        ScaleInformationPanel(colorPropertyInformationCard);
+
         if (_Table.getCurrentPlayer().playerMoney < _Table.getSlot(_Table.getCurrentPlayer().currentSlot).getSlotPrice()) //can't afford
         {
             cpi_buyButton.interactable = false;
@@ -1728,6 +1698,8 @@ public class UIManager : MonoBehaviour
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         colorPropertyInformationCard.transform.position = pos;
 
+        ScaleInformationPanel(colorPropertyInformationCard);
+
         cpi_showButtonPanel.SetActive(false);
         cpi_boughtPanel.SetActive(true);
 
@@ -1788,6 +1760,8 @@ public class UIManager : MonoBehaviour
         ut_showButtonPanel.SetActive(true);
         ut_boughtPanel.SetActive(false);
 
+        ScaleInformationPanel(specialPropertyInformationCard);
+
         if (_Table.getCurrentPlayer().playerMoney < _Table.getSlot(_Table.getCurrentPlayer().currentSlot).getSlotPrice()) //can't afford
         {
             sp_buyButton.interactable = false;
@@ -1835,6 +1809,8 @@ public class UIManager : MonoBehaviour
 
         ut_showButtonPanel.SetActive(false);
         ut_boughtPanel.SetActive(true);
+
+        ScaleInformationPanel(specialPropertyInformationCard);
 
         if (_Table.getCurrentPlayer() == _Table.player[0])
         {
@@ -1893,6 +1869,8 @@ public class UIManager : MonoBehaviour
         supriseInformationCard.SetActive(true);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         supriseInformationCard.transform.position = pos;
+
+        ScaleInformationPanel(supriseInformationCard);
 
         StartCoroutine(actions());
 
@@ -2066,6 +2044,8 @@ public class UIManager : MonoBehaviour
             Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
             goToJailPanel.transform.position = pos;
 
+            ScaleInformationPanel(goToJailPanel);
+
             if (_Table.getCurrentPlayer().playerColor == new Vector4(255, 0, 0, 255)) //red
             {
                 gtj_redPawn.SetActive(true);
@@ -2126,6 +2106,8 @@ public class UIManager : MonoBehaviour
                 Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
                 visitingJailPanel.transform.position = pos;
 
+                ScaleInformationPanel(visitingJailPanel);
+
                 if (_Table.getCurrentPlayer().playerColor == new Vector4(255, 0, 0, 255)) //red
                 {
                     vj_redPawn.SetActive(true);
@@ -2181,6 +2163,8 @@ public class UIManager : MonoBehaviour
         inJailPanel.SetActive(true);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         inJailPanel.transform.position = pos;
+
+        ScaleInformationPanel(inJailPanel);
 
         if (_Table.getCurrentPlayer().playerColor == new Vector4(255, 0, 0, 255)) //red
         {
@@ -2743,5 +2727,40 @@ public class UIManager : MonoBehaviour
         }
         StartCoroutine(start());
 
+    }
+
+    //Scale panel
+    //
+
+    public void ScaleInformationPanel(GameObject panel)
+    {
+        if (_Table.GetScreenRatio() >= 0.46f && _Table.GetScreenRatio() < 0.48f)
+        {
+            panel.GetComponent<RectTransform>().localScale = new Vector2(1.04f, 1.04f);
+        }
+        else if (_Table.GetScreenRatio() >= 0.48f && _Table.GetScreenRatio() < 0.5f)
+        {
+            panel.GetComponent<RectTransform>().localScale = new Vector2(0.98f, 0.98f);
+        }
+        else if (_Table.GetScreenRatio() >= 0.5f)
+        {
+            panel.GetComponent<RectTransform>().localScale = new Vector2(.85f, .85f);
+        }
+    }
+
+    public void ScaleMainActionsPanel(GameObject panel)
+    {
+        if (_Table.GetScreenRatio() >= 0.46f && _Table.GetScreenRatio() < 0.48f)
+        {
+            buildPanel.GetComponent<RectTransform>().localScale = new Vector2(.94f, .94f);
+        }
+        else if (_Table.GetScreenRatio() >= 0.48f && _Table.GetScreenRatio() < 0.5f)
+        {
+            buildPanel.GetComponent<RectTransform>().localScale = new Vector2(.88f, .88f);
+        }
+        else if (_Table.GetScreenRatio() >= 0.5f)
+        {
+            buildPanel.GetComponent<RectTransform>().localScale = new Vector2(.75f, .75f);
+        }
     }
 }
