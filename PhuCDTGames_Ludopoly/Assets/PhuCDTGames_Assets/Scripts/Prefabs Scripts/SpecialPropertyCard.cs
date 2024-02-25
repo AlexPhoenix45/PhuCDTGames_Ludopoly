@@ -8,15 +8,15 @@ public class SpecialPropertyCard : MonoBehaviour
 {
     [Header("Railroads Information")]
     public GameObject railroad_Panel;
-    public TextMeshProUGUI rr_propertyName;
+    public Text rr_propertyName;
 
     [Header("Utilities Information")]
     public GameObject utilities_Panel;
-    public TextMeshProUGUI ut_propertyName;
+    public Text ut_propertyName;
     public GameObject ut_waterWorks_Image;
     public GameObject ut_electricCompany_Image;
 
-    public void TradeShowCard(int slotNumber)
+    public void ShowCard(int slotNumber)
     {
         if (Table.Instance.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.RailRoad)
         {

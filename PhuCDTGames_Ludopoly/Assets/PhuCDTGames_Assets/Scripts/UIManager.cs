@@ -60,26 +60,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Color Property - Card Template")]
     [Header("Color Property Information Card")]
-    public GameObject cpi_brownCard;
-    public GameObject cpi_blueCard;
-    public GameObject cpi_greenCard;
-    public GameObject cpi_orangeCard;
-    public GameObject cpi_pinkCard;
-    public GameObject cpi_purpleCard;
-    public GameObject cpi_redCard;
-    public GameObject cpi_yellowCard;
-
-    [Header("Color Property - Information")]
-    public TextMeshProUGUI cpi_propertyName;
-    public TextMeshProUGUI cpi_rentPrice;
-    public TextMeshProUGUI cpi_rentDescription;
-    public TextMeshProUGUI cpi_house1;
-    public TextMeshProUGUI cpi_house2;
-    public TextMeshProUGUI cpi_house3;
-    public TextMeshProUGUI cpi_house4;
-    public TextMeshProUGUI cpi_hotel;
-    public TextMeshProUGUI cpi_buildPrice;
-    public TextMeshProUGUI cpi_mortgagePrice;
+    public ColorPropertyCard cpi_colorPropertyCard;
     public Button cpi_buyButton;
     public Button cpi_auctionButton;
 
@@ -95,18 +76,9 @@ public class UIManager : MonoBehaviour
 
     #region Special Property Information Card
     [Header("Special Property Information Card")]
+    public SpecialPropertyCard sp_specialPropertyCard;
     public Button sp_buyButton;
     public Button sp_auctionButton;
-
-    [Header("Special Property - Railroads Information")]
-    public GameObject railroad_Panel;
-    public TextMeshProUGUI rr_propertyName;
-
-    [Header("Special Property - Utilities Information")]
-    public GameObject utilities_Panel;
-    public TextMeshProUGUI ut_propertyName;
-    public GameObject ut_waterWorks_Image;
-    public GameObject ut_electricCompany_Image;
 
     [Header("Special Property - Bought")]
     public GameObject ut_showButtonPanel;
@@ -198,36 +170,9 @@ public class UIManager : MonoBehaviour
     public GameObject Onclick_SpecialPropertyInformationCard;
 
     [Header("On-click - Card Template")]
-    public GameObject oc_cpi_brownCard;
-    public GameObject oc_cpi_blueCard;
-    public GameObject oc_cpi_greenCard;
-    public GameObject oc_cpi_orangeCard;
-    public GameObject oc_cpi_pinkCard;
-    public GameObject oc_cpi_purpleCard;
-    public GameObject oc_cpi_redCard;
-    public GameObject oc_cpi_yellowCard;
+    public ColorPropertyCard oc_colorPropertyCard;
+    public SpecialPropertyCard oc_specialPropertyCard;
 
-    [Header("On-click - Color Property Information")]
-    public TextMeshProUGUI oc_cpi_propertyName;
-    public TextMeshProUGUI oc_cpi_rentPrice;
-    public TextMeshProUGUI oc_cpi_rentDescription;
-    public TextMeshProUGUI oc_cpi_house1;
-    public TextMeshProUGUI oc_cpi_house2;
-    public TextMeshProUGUI oc_cpi_house3;
-    public TextMeshProUGUI oc_cpi_house4;
-    public TextMeshProUGUI oc_cpi_hotel;
-    public TextMeshProUGUI oc_cpi_buildPrice;
-    public TextMeshProUGUI oc_cpi_mortgagePrice;
-
-    [Header("On-click - Railroads Information")]
-    public GameObject oc_railroad_Panel;
-    public TextMeshProUGUI oc_rr_propertyName;
-
-    [Header("On-click - Utilities Information")]
-    public GameObject oc_utilities_Panel;
-    public TextMeshProUGUI oc_ut_propertyName;
-    public GameObject oc_ut_waterWorks_Image;
-    public GameObject oc_ut_electricCompany_Image;
     #endregion
 
     #region Main Actions
@@ -1581,105 +1526,7 @@ public class UIManager : MonoBehaviour
         }
 
         colorPropertyInformationCard.transform.position = pos;
-        cpi_propertyName.text = _Table.getSlot(slotNumber).getSlotName().ToUpper();
-        cpi_rentPrice.text = "RENT $" + _Table.getSlot(slotNumber).getPropertyRentUI(0).ToString();
-        cpi_rentDescription.text = "Rent is doubled on owning all unimproved sites in the group.";
-        cpi_house1.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(1).ToString();
-        cpi_house2.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(2).ToString();
-        cpi_house3.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(3).ToString();
-        cpi_house4.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(4).ToString();
-        cpi_hotel.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(5).ToString();
-        cpi_buildPrice.text = "Contruction $" + _Table.getSlot(slotNumber).getBuildPrice().ToString() + " each";
-        cpi_mortgagePrice.text = "Mortgage $" + _Table.getSlot(slotNumber).getMortgagePrice().ToString() + " each";
-
-        if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Brown)
-        {
-            cpi_brownCard.SetActive(true);
-            cpi_blueCard.SetActive(false);
-            cpi_greenCard.SetActive(false);
-            cpi_orangeCard.SetActive(false);
-            cpi_pinkCard.SetActive(false);
-            cpi_purpleCard.SetActive(false);
-            cpi_redCard.SetActive(false);
-            cpi_yellowCard.SetActive(false);
-        }
-        else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Blue)
-        {
-            cpi_brownCard.SetActive(false);
-            cpi_blueCard.SetActive(true);
-            cpi_greenCard.SetActive(false);
-            cpi_orangeCard.SetActive(false);
-            cpi_pinkCard.SetActive(false);
-            cpi_purpleCard.SetActive(false);
-            cpi_redCard.SetActive(false);
-            cpi_yellowCard.SetActive(false);
-        }
-        else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Green)
-        {
-            cpi_brownCard.SetActive(false);
-            cpi_blueCard.SetActive(false);
-            cpi_greenCard.SetActive(true);
-            cpi_orangeCard.SetActive(false);
-            cpi_pinkCard.SetActive(false);
-            cpi_purpleCard.SetActive(false);
-            cpi_redCard.SetActive(false);
-            cpi_yellowCard.SetActive(false);
-        }
-        else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Orange)
-        {
-            cpi_brownCard.SetActive(false);
-            cpi_blueCard.SetActive(false);
-            cpi_greenCard.SetActive(false);
-            cpi_orangeCard.SetActive(true);
-            cpi_pinkCard.SetActive(false);
-            cpi_purpleCard.SetActive(false);
-            cpi_redCard.SetActive(false);
-            cpi_yellowCard.SetActive(false);
-        }
-        else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Pink)
-        {
-            cpi_brownCard.SetActive(false);
-            cpi_blueCard.SetActive(false);
-            cpi_greenCard.SetActive(false);
-            cpi_orangeCard.SetActive(false);
-            cpi_pinkCard.SetActive(true);
-            cpi_purpleCard.SetActive(false);
-            cpi_redCard.SetActive(false);
-            cpi_yellowCard.SetActive(false);
-        }
-        else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Purple)
-        {
-            cpi_brownCard.SetActive(false);
-            cpi_blueCard.SetActive(false);
-            cpi_greenCard.SetActive(false);
-            cpi_orangeCard.SetActive(false);
-            cpi_pinkCard.SetActive(false);
-            cpi_purpleCard.SetActive(true);
-            cpi_redCard.SetActive(false);
-            cpi_yellowCard.SetActive(false);
-        }
-        else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Red)
-        {
-            cpi_brownCard.SetActive(false);
-            cpi_blueCard.SetActive(false);
-            cpi_greenCard.SetActive(false);
-            cpi_orangeCard.SetActive(false);
-            cpi_pinkCard.SetActive(false);
-            cpi_purpleCard.SetActive(false);
-            cpi_redCard.SetActive(true);
-            cpi_yellowCard.SetActive(false);
-        }
-        else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Yellow)
-        {
-            cpi_brownCard.SetActive(false);
-            cpi_blueCard.SetActive(false);
-            cpi_greenCard.SetActive(false);
-            cpi_orangeCard.SetActive(false);
-            cpi_pinkCard.SetActive(false);
-            cpi_purpleCard.SetActive(false);
-            cpi_redCard.SetActive(false);
-            cpi_yellowCard.SetActive(true);
-        }
+        cpi_colorPropertyCard.ShowCard(slotNumber);
     }
 
     public void ShowColorPropertyBought()
@@ -1764,31 +1611,7 @@ public class UIManager : MonoBehaviour
             sp_auctionButton.interactable = true;
         }
 
-        if (_Table.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.RailRoad)
-        {
-            railroad_Panel.SetActive(true);
-            utilities_Panel.SetActive(false);
-
-            rr_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
-        }
-        else if (_Table.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.Utility)
-        {
-            railroad_Panel.SetActive(false);
-            utilities_Panel.SetActive(true);
-
-            if (_Table.getSlot(slotNumber).specialProperty.utilityType == Utility_Type.WaterRorks)
-            {
-                ut_waterWorks_Image.SetActive(true);
-                ut_electricCompany_Image.SetActive(false);
-                ut_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
-            }
-            else if (_Table.getSlot(slotNumber).specialProperty.utilityType == Utility_Type.ElectricCompany)
-            {
-                ut_waterWorks_Image.SetActive(false);
-                ut_electricCompany_Image.SetActive(true);
-                ut_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
-            }
-        }
+        sp_specialPropertyCard.ShowCard(slotNumber);
     }
 
     public void ShowSpecialPropertyBought()
@@ -2504,105 +2327,8 @@ public class UIManager : MonoBehaviour
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
 
         Onclick_ColorPropertyInformationCard.transform.position = pos;
-        oc_cpi_propertyName.text = tempSlot.getSlotName().ToUpper();
-        oc_cpi_rentPrice.text = "RENT $" + tempSlot.getPropertyRentUI(0).ToString();
-        oc_cpi_rentDescription.text = "Rent is doubled on owning all unimproved sites in the group.";
-        oc_cpi_house1.text = "$" + tempSlot.getPropertyRentUI(1).ToString();
-        oc_cpi_house2.text = "$" + tempSlot.getPropertyRentUI(2).ToString();
-        oc_cpi_house3.text = "$" + tempSlot.getPropertyRentUI(3).ToString();
-        oc_cpi_house4.text = "$" + tempSlot.getPropertyRentUI(4).ToString();
-        oc_cpi_hotel.text = "$" + tempSlot.getPropertyRentUI(5).ToString();
-        oc_cpi_buildPrice.text = "Contruction $" + tempSlot.getBuildPrice().ToString() + " each";
-        oc_cpi_mortgagePrice.text = "Mortgage $" + tempSlot.getMortgagePrice().ToString() + " each";
 
-        if (tempSlot.colorProperty.propertyColor == ColorProperty_Color.Brown)
-        {
-            oc_cpi_brownCard.SetActive(true);
-            oc_cpi_blueCard.SetActive(false);
-            oc_cpi_greenCard.SetActive(false);
-            oc_cpi_orangeCard.SetActive(false);
-            oc_cpi_pinkCard.SetActive(false);
-            oc_cpi_purpleCard.SetActive(false);
-            oc_cpi_redCard.SetActive(false);
-            oc_cpi_yellowCard.SetActive(false);
-        }
-        else if (tempSlot.colorProperty.propertyColor == ColorProperty_Color.Blue)
-        {
-            oc_cpi_brownCard.SetActive(false);
-            oc_cpi_blueCard.SetActive(true);
-            oc_cpi_greenCard.SetActive(false);
-            oc_cpi_orangeCard.SetActive(false);
-            oc_cpi_pinkCard.SetActive(false);
-            oc_cpi_purpleCard.SetActive(false);
-            oc_cpi_redCard.SetActive(false);
-            oc_cpi_yellowCard.SetActive(false);
-        }
-        else if (tempSlot.colorProperty.propertyColor == ColorProperty_Color.Green)
-        {
-            oc_cpi_brownCard.SetActive(false);
-            oc_cpi_blueCard.SetActive(false);
-            oc_cpi_greenCard.SetActive(true);
-            oc_cpi_orangeCard.SetActive(false);
-            oc_cpi_pinkCard.SetActive(false);
-            oc_cpi_purpleCard.SetActive(false);
-            oc_cpi_redCard.SetActive(false);
-            oc_cpi_yellowCard.SetActive(false);
-        }
-        else if (tempSlot.colorProperty.propertyColor == ColorProperty_Color.Orange)
-        {
-            oc_cpi_brownCard.SetActive(false);
-            oc_cpi_blueCard.SetActive(false);
-            oc_cpi_greenCard.SetActive(false);
-            oc_cpi_orangeCard.SetActive(true);
-            oc_cpi_pinkCard.SetActive(false);
-            oc_cpi_purpleCard.SetActive(false);
-            oc_cpi_redCard.SetActive(false);
-            oc_cpi_yellowCard.SetActive(false);
-        }
-        else if (tempSlot.colorProperty.propertyColor == ColorProperty_Color.Pink)
-        {
-            oc_cpi_brownCard.SetActive(false);
-            oc_cpi_blueCard.SetActive(false);
-            oc_cpi_greenCard.SetActive(false);
-            oc_cpi_orangeCard.SetActive(false);
-            oc_cpi_pinkCard.SetActive(true);
-            oc_cpi_purpleCard.SetActive(false);
-            oc_cpi_redCard.SetActive(false);
-            oc_cpi_yellowCard.SetActive(false);
-        }
-        else if (tempSlot.colorProperty.propertyColor == ColorProperty_Color.Purple)
-        {
-            oc_cpi_brownCard.SetActive(false);
-            oc_cpi_blueCard.SetActive(false);
-            oc_cpi_greenCard.SetActive(false);
-            oc_cpi_orangeCard.SetActive(false);
-            oc_cpi_pinkCard.SetActive(false);
-            oc_cpi_purpleCard.SetActive(true);
-            oc_cpi_redCard.SetActive(false);
-            oc_cpi_yellowCard.SetActive(false);
-        }
-        else if (tempSlot.colorProperty.propertyColor == ColorProperty_Color.Red)
-        {
-            oc_cpi_brownCard.SetActive(false);
-            oc_cpi_blueCard.SetActive(false);
-            oc_cpi_greenCard.SetActive(false);
-            oc_cpi_orangeCard.SetActive(false);
-            oc_cpi_pinkCard.SetActive(false);
-            oc_cpi_purpleCard.SetActive(false);
-            oc_cpi_redCard.SetActive(true);
-            oc_cpi_yellowCard.SetActive(false);
-        }
-        else if (tempSlot.colorProperty.propertyColor == ColorProperty_Color.Yellow)
-        {
-            oc_cpi_brownCard.SetActive(false);
-            oc_cpi_blueCard.SetActive(false);
-            oc_cpi_greenCard.SetActive(false);
-            oc_cpi_orangeCard.SetActive(false);
-            oc_cpi_pinkCard.SetActive(false);
-            oc_cpi_purpleCard.SetActive(false);
-            oc_cpi_redCard.SetActive(false);
-            oc_cpi_yellowCard.SetActive(true);
-        }
+        oc_colorPropertyCard.ShowCard(tempSlot.slotIndex);
     }
 
     public void OCShowSpecialPropertyCard(Slot tempSlot)
@@ -2614,31 +2340,7 @@ public class UIManager : MonoBehaviour
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         Onclick_SpecialPropertyInformationCard.transform.position = pos;
 
-        if (tempSlot.specialProperty.propertyType == SpecialProperty_Type.RailRoad)
-        {
-            oc_railroad_Panel.SetActive(true);
-            oc_utilities_Panel.SetActive(false);
-
-            oc_rr_propertyName.text = tempSlot.getSlotName();
-        }
-        else if (tempSlot.specialProperty.propertyType == SpecialProperty_Type.Utility)
-        {
-            oc_railroad_Panel.SetActive(false);
-            oc_utilities_Panel.SetActive(true);
-
-            if (tempSlot.specialProperty.utilityType == Utility_Type.WaterRorks)
-            {
-                oc_ut_waterWorks_Image.SetActive(true);
-                oc_ut_electricCompany_Image.SetActive(false);
-                oc_ut_propertyName.text = tempSlot.getSlotName();
-            }
-            else if (tempSlot.specialProperty.utilityType == Utility_Type.ElectricCompany)
-            {
-                oc_ut_waterWorks_Image.SetActive(false);
-                oc_ut_electricCompany_Image.SetActive(true);
-                oc_ut_propertyName.text = tempSlot.getSlotName();
-            }
-        }
+        oc_specialPropertyCard.ShowCard(tempSlot.slotIndex);
     }
 
     public void OnClick_CloseOnClickInformation()

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ColorPropertyCard : MonoBehaviour
 {
@@ -16,28 +17,28 @@ public class ColorPropertyCard : MonoBehaviour
     public GameObject yellowCard;
 
     [Header("Card Information")]
-    public TextMeshProUGUI propertyName;
-    public TextMeshProUGUI rentPrice;
-    public TextMeshProUGUI rentDescription;
-    public TextMeshProUGUI house1;
-    public TextMeshProUGUI house2;
-    public TextMeshProUGUI house3;
-    public TextMeshProUGUI house4;
-    public TextMeshProUGUI hotel;
-    public TextMeshProUGUI buildPrice;
-    public TextMeshProUGUI mortgagePrice;
-    public void TradeShowCard(int slotNumber)
+    public Text propertyName;
+    public Text rentPrice;
+    public Text rentDescription;
+    public Text house1;
+    public Text house2;
+    public Text house3;
+    public Text house4;
+    public Text hotel;
+    public Text buildPrice;
+    public Text mortgagePrice;
+    public void ShowCard(int slotNumber)
     {
         propertyName.text = Table.Instance.getSlot(slotNumber).getSlotName().ToUpper();
-        rentPrice.text = "RENT $" + Table.Instance.getSlot(slotNumber).getPropertyRentUI(0).ToString();
+        rentPrice.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(0).ToString();
         rentDescription.text = "Rent is doubled on owning all unimproved sites in the group.";
-        house1.text = "$" + Table.Instance.getSlot(slotNumber).getPropertyRentUI(1).ToString();
-        house2.text = "$" + Table.Instance.getSlot(slotNumber).getPropertyRentUI(2).ToString();
-        house3.text = "$" + Table.Instance.getSlot(slotNumber).getPropertyRentUI(3).ToString();
-        house4.text = "$" + Table.Instance.getSlot(slotNumber).getPropertyRentUI(4).ToString();
-        hotel.text = "$" + Table.Instance.getSlot(slotNumber).getPropertyRentUI(5).ToString();
-        buildPrice.text = "Contruction $" + Table.Instance.getSlot(slotNumber).getBuildPrice().ToString() + " each";
-        mortgagePrice.text = "Mortgage $" + Table.Instance.getSlot(slotNumber).getMortgagePrice().ToString() + " each";
+        house1.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(1).ToString();
+        house2.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(2).ToString();
+        house3.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(3).ToString();
+        house4.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(4).ToString();
+        hotel.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(5).ToString();
+        buildPrice.text = "Contruction " + Table.Instance.getSlot(slotNumber).getBuildPrice().ToString();
+        mortgagePrice.text = "Mortgage " + Table.Instance.getSlot(slotNumber).getMortgagePrice().ToString();
 
         if (Table.Instance.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Brown)
         {
