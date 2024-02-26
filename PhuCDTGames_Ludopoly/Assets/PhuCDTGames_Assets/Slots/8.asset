@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 8
   m_EditorClassIdentifier: 
   propertyColor: 3
-  propertyImage: {fileID: 21300000, guid: f5e98eb8b539ae44f800bd1c26ea40a0, type: 3}
+  propertyImage: {fileID: 21300000, guid: 5dab00d2a7c841148b4f56a2b308e7dc, type: 3}
   propertyName: Vermont Avenue
   propertyPrice: 100
   rentPrice: 6

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 6
   m_EditorClassIdentifier: 
   propertyColor: 3
-  propertyImage: {fileID: 21300000, guid: c766905bd8dc01a47bd3e233fbd2b83b, type: 3}
+  propertyImage: {fileID: 21300000, guid: 3fc57b68ad1770e48ac63eb0c75f1843, type: 3}
   propertyName: Oriental Avenue
   propertyPrice: 100
   rentPrice: 6

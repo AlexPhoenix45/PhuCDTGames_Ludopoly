@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 18
   m_EditorClassIdentifier: 
   propertyColor: 4
-  propertyImage: {fileID: 21300000, guid: 11de52768a1a6244bbef99d8fe0534a0, type: 3}
+  propertyImage: {fileID: 21300000, guid: d605e77611d814a429d65cbb5259eb77, type: 3}
   propertyName: Tennessee Avenue
   propertyPrice: 180
   rentPrice: 14

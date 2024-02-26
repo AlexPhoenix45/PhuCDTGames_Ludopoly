@@ -30,7 +30,17 @@ public class ColorPropertyCard : MonoBehaviour
     public void ShowCard(int slotNumber)
     {
         propertyName.text = Table.Instance.getSlot(slotNumber).getSlotName().ToUpper();
-        rentPrice.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(0).ToString();
+
+        if (Table.Instance.getSlot(slotNumber).getPropertyRentUI(0) < 10)
+        {
+            rentPrice.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(22.8125f, 47.1822f);
+            rentPrice.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(0).ToString();
+        }
+        else
+        {
+            rentPrice.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(44.375f, 47.1822f);
+            rentPrice.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(0).ToString();
+        }
         rentDescription.text = "Rent is doubled on owning all unimproved sites in the group.";
         house1.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(1).ToString();
         house2.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(2).ToString();
@@ -38,7 +48,17 @@ public class ColorPropertyCard : MonoBehaviour
         house4.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(4).ToString();
         hotel.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(5).ToString();
         buildPrice.text = "Contruction " + Table.Instance.getSlot(slotNumber).getBuildPrice().ToString();
-        mortgagePrice.text = "Mortgage " + Table.Instance.getSlot(slotNumber).getMortgagePrice().ToString();
+
+        if (Table.Instance.getSlot(slotNumber).getMortgagePrice() < 100)
+        {
+            mortgagePrice.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(86.8125f, 17);
+            mortgagePrice.text = "Mortgage " + Table.Instance.getSlot(slotNumber).getMortgagePrice().ToString();
+        }
+        else
+        {
+            mortgagePrice.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(96.1875f, 17);
+            mortgagePrice.text = "Mortgage " + Table.Instance.getSlot(slotNumber).getMortgagePrice().ToString();
+        }
 
         if (Table.Instance.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Brown)
         {

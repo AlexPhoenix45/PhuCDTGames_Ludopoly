@@ -3562,6 +3562,7 @@ MonoBehaviour:
   colorPropertyPanel: {fileID: 5970989259329888328}
   specialPropertyPanel: {fileID: 5938272822428456907}
   jailFreePanel: {fileID: 2292300107869002458}
+  propCardIndex: 0
   propertyType: 0
   brownCard: {fileID: 3435378787791328409}
   blueCard: {fileID: 3435378787833388261}

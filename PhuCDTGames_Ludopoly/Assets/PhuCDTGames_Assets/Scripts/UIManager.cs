@@ -1512,7 +1512,8 @@ public class UIManager : MonoBehaviour
         cpi_showButtonPanel.SetActive(true);
         cpi_boughtPanel.SetActive(false);
 
-        ScaleInformationPanel(colorPropertyInformationCard);
+        //ScaleInformationPanel(colorPropertyInformationCard);
+        OnEnablePanel(colorPropertyInformationCard);
 
         if (_Table.getCurrentPlayer().playerMoney < _Table.getSlot(_Table.getCurrentPlayer().currentSlot).getSlotPrice()) //can't afford
         {
@@ -1532,11 +1533,12 @@ public class UIManager : MonoBehaviour
     public void ShowColorPropertyBought()
     {
         standOnInformationPanel.SetActive(true);
-        colorPropertyInformationCard.SetActive(true);
+        //colorPropertyInformationCard.SetActive(true);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         colorPropertyInformationCard.transform.position = pos;
 
-        ScaleInformationPanel(colorPropertyInformationCard);
+        //ScaleInformationPanel(colorPropertyInformationCard);
+        OnEnablePanel(colorPropertyInformationCard);
 
         cpi_showButtonPanel.SetActive(false);
         cpi_boughtPanel.SetActive(true);
@@ -1592,13 +1594,14 @@ public class UIManager : MonoBehaviour
     public void ShowSpecialPropertyCard(int slotNumber)
     {
         standOnInformationPanel.SetActive(true);
-        specialPropertyInformationCard.SetActive(true);
+        //specialPropertyInformationCard.SetActive(true);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         specialPropertyInformationCard.transform.position = pos;
         ut_showButtonPanel.SetActive(true);
         ut_boughtPanel.SetActive(false);
 
-        ScaleInformationPanel(specialPropertyInformationCard);
+        //ScaleInformationPanel(specialPropertyInformationCard);
+        OnEnablePanel(specialPropertyInformationCard);
 
         if (_Table.getCurrentPlayer().playerMoney < _Table.getSlot(_Table.getCurrentPlayer().currentSlot).getSlotPrice()) //can't afford
         {
@@ -1617,14 +1620,15 @@ public class UIManager : MonoBehaviour
     public void ShowSpecialPropertyBought()
     {
         standOnInformationPanel.SetActive(true);
-        specialPropertyInformationCard.SetActive(true);
+        //specialPropertyInformationCard.SetActive(true);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         specialPropertyInformationCard.transform.position = pos;
 
         ut_showButtonPanel.SetActive(false);
         ut_boughtPanel.SetActive(true);
 
-        ScaleInformationPanel(specialPropertyInformationCard);
+        //ScaleInformationPanel(specialPropertyInformationCard);
+        OnEnablePanel(specialPropertyInformationCard);
 
         if (_Table.getCurrentPlayer() == _Table.player[0])
         {
@@ -1680,11 +1684,12 @@ public class UIManager : MonoBehaviour
         int chanceCardNumber = _Table.getSlot(slotNumber).supriseSlot.DrawChance();
         int communityChestNumber = _Table.getSlot(slotNumber).supriseSlot.DrawCommunityChest();
         standOnInformationPanel.SetActive(true);
-        supriseInformationCard.SetActive(true);
+        //supriseInformationCard.SetActive(true);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         supriseInformationCard.transform.position = pos;
 
-        ScaleInformationPanel(supriseInformationCard);
+        //ScaleInformationPanel(supriseInformationCard);
+        OnEnablePanel(supriseInformationCard);
 
         StartCoroutine(actions());
 
@@ -2325,7 +2330,6 @@ public class UIManager : MonoBehaviour
         Onclick_SpecialPropertyInformationCard.SetActive(false);
 
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
-
         Onclick_ColorPropertyInformationCard.transform.position = pos;
 
         oc_colorPropertyCard.ShowCard(tempSlot.slotIndex);
@@ -2341,7 +2345,7 @@ public class UIManager : MonoBehaviour
         Onclick_SpecialPropertyInformationCard.transform.position = pos;
 
         oc_specialPropertyCard.ShowCard(tempSlot.slotIndex);
-    }
+    } 
 
     public void OnClick_CloseOnClickInformation()
     {
@@ -2458,6 +2462,26 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public Vector2 ScaleInformationPanelVector2(GameObject panel)
+    {
+        if (_Table.GetScreenRatio() >= 0.46f && _Table.GetScreenRatio() < 0.48f)
+        {
+            return new Vector2(1.04f, 1.04f);
+        }
+        else if (_Table.GetScreenRatio() >= 0.48f && _Table.GetScreenRatio() < 0.5f)
+        {
+            return new Vector2(0.98f, 0.98f);
+        }
+        else if (_Table.GetScreenRatio() >= 0.5f)
+        {
+            return new Vector2(.85f, .85f);
+        }
+        else
+        {
+            return Vector2.one;
+        }
+    }
+
     public void ScaleMainActionsPanel(GameObject abc)
     {
         if (_Table.GetScreenRatio() >= 0.46f && _Table.GetScreenRatio() < 0.48f)
@@ -2472,5 +2496,21 @@ public class UIManager : MonoBehaviour
         {
             abc.GetComponent<RectTransform>().localScale = new Vector2(.76f, .76f);
         }
+    }
+
+    public void OnEnablePanel(GameObject panel)
+    {
+        //panel.SetActive(true);
+        //Vector2 oldScale = panel.transform.localScale;
+        panel.transform.localScale = new Vector2(0, 0);
+        panel.transform.LeanScale(ScaleInformationPanelVector2(panel), .5f).setEaseOutBack();
+    }
+
+    public void OnDisablePanel(GameObject panel)
+    {
+
+        Vector2 oldScale = panel.transform.localScale;
+        panel.transform.localScale = oldScale;
+        panel.transform.LeanScale(new Vector2(0, 0), .5f).setEaseInBack().setOnComplete(() => { panel.SetActive(false); });
     }
 }

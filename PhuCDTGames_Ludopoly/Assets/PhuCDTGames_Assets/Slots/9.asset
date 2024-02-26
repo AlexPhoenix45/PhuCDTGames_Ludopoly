@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 9
   m_EditorClassIdentifier: 
   propertyColor: 3
-  propertyImage: {fileID: 21300000, guid: 45b7820583c3d3943989537b71ff633a, type: 3}
+  propertyImage: {fileID: 21300000, guid: 844b475feb97ffe4aa1b6b4b75df8330, type: 3}
   propertyName: Time Square
   propertyPrice: 120
   rentPrice: 8

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 26
   m_EditorClassIdentifier: 
   propertyColor: 7
-  propertyImage: {fileID: 21300000, guid: 8834d873634b95e4aaee515dad784a62, type: 3}
+  propertyImage: {fileID: 21300000, guid: 9447b81df40b7f04a83ba121fec147d0, type: 3}
   propertyName: Atlantic Avenue
   propertyPrice: 260
   rentPrice: 22

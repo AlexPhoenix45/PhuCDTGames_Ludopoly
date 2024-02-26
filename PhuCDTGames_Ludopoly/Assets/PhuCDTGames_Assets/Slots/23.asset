@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 23
   m_EditorClassIdentifier: 
   propertyColor: 6
-  propertyImage: {fileID: 21300000, guid: af320daa9ce773648ad92ab47ddd718b, type: 3}
+  propertyImage: {fileID: 21300000, guid: 9b9c9281427860540808ca3641fdf075, type: 3}
   propertyName: Indiana Avenue
   propertyPrice: 220
   rentPrice: 18
