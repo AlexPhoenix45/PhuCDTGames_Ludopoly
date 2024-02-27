@@ -74,51 +74,51 @@ public class Slot : MonoBehaviour
     {
         if (slotType == Slot_Type.ColorProperty)
         {
-            gameObject.GetComponent<SpriteRenderer>().sprite = colorProperty.propertyImage;
-            colorProperty_Panel.SetActive(true);
-            colorProperty_Panel_Name.GetComponent<Text>().text = colorProperty.propertyName.ToUpper();
-            colorProperty_Panel_Price.GetComponent<Text>().text = colorProperty.propertyPrice.ToString() + "$";
+            //gameObject.GetComponent<SpriteRenderer>().sprite = colorProperty.propertyImage;
+            //colorProperty_Panel.SetActive(true);
+            //colorProperty_Panel_Name.GetComponent<Text>().text = colorProperty.propertyName.ToUpper();
+            //colorProperty_Panel_Price.GetComponent<Text>().text = colorProperty.propertyPrice.ToString() + "$";
         }
         else if (slotType == Slot_Type.SpecialProperty)
         {
-            specialProperty_Panel.SetActive(true);
-            specialProperty_Panel_Name.GetComponent<Text>().text = specialProperty.propertyName.ToUpper();
-            specialProperty_Panel_Price.GetComponent<Text>().text = specialProperty.propertyPrice.ToString() + "$";
-            specialProperty_Panel_Image.gameObject.GetComponent<SpriteRenderer>().sprite = specialProperty.propertyImage;
+            //specialProperty_Panel.SetActive(true);
+            //specialProperty_Panel_Name.GetComponent<Text>().text = specialProperty.propertyName.ToUpper();
+            //specialProperty_Panel_Price.GetComponent<Text>().text = specialProperty.propertyPrice.ToString() + "$";
+            //specialProperty_Panel_Image.gameObject.GetComponent<SpriteRenderer>().sprite = specialProperty.propertyImage;
         }
         else if (slotType == Slot_Type.SupriseSlot)
         {
-            supriseSlot_Panel.SetActive(true);
-            supriseSlot_Panel_Name.GetComponent<Text>().text = supriseSlot.slotName.ToUpper();
-            if (supriseSlot.taxPrice > 0)
-            {
-                supriseSlot_Panel_Price.GetComponent<Text>().text = "PAY " + supriseSlot.taxPrice.ToString() + "$";
-            }
-            else
-            {
-                supriseSlot_Panel_Price.GetComponent<Text>().text = "";
-            }
-            supriseSlot_Panel_Image.gameObject.GetComponent<SpriteRenderer>().sprite = supriseSlot.slotImage;
+            //supriseSlot_Panel.SetActive(true);
+            //supriseSlot_Panel_Name.GetComponent<Text>().text = supriseSlot.slotName.ToUpper();
+            //if (supriseSlot.taxPrice > 0)
+            //{
+            //    supriseSlot_Panel_Price.GetComponent<Text>().text = "PAY " + supriseSlot.taxPrice.ToString() + "$";
+            //}
+            //else
+            //{
+                //supriseSlot_Panel_Price.GetComponent<Text>().text = "";
+            //}
+            //supriseSlot_Panel_Image.gameObject.GetComponent<SpriteRenderer>().sprite = supriseSlot.slotImage;
         }
         else if (slotType == Slot_Type.CornerSlot)
         {
-            cornerSlot_Text.SetActive(true);
-            if (cornerSlot.slotType == CornerSlot_Type.Go)
-            {
-                cornerSlot_Text.GetComponent<Text>().text = "GO";
-            }
-            else if (cornerSlot.slotType == CornerSlot_Type.VisitingJail)
-            {
-                cornerSlot_Text.GetComponent<Text>().text = "JAIL";
-            }
-            else if (cornerSlot.slotType == CornerSlot_Type.Parking)
-            {
-                cornerSlot_Text.GetComponent<Text>().text = "PARK LOT";
-            }
-            else if (cornerSlot.slotType == CornerSlot_Type.GoToJail)
-            {
-                cornerSlot_Text.GetComponent<Text>().text = "GO TO JAIL";
-            }
+            //cornerSlot_Text.SetActive(true);
+            //if (cornerSlot.slotType == CornerSlot_Type.Go)
+            //{
+            //    cornerSlot_Text.GetComponent<Text>().text = "GO";
+            //}
+            //else if (cornerSlot.slotType == CornerSlot_Type.VisitingJail)
+            //{
+            //    cornerSlot_Text.GetComponent<Text>().text = "JAIL";
+            //}
+            //else if (cornerSlot.slotType == CornerSlot_Type.Parking)
+            //{
+            //    cornerSlot_Text.GetComponent<Text>().text = "PARK LOT";
+            //}
+            //else if (cornerSlot.slotType == CornerSlot_Type.GoToJail)
+            //{
+            //    cornerSlot_Text.GetComponent<Text>().text = "GO TO JAIL";
+            //}
         }
     }
 
@@ -591,7 +591,7 @@ public class Slot : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (!UIManager.Instance.Onclick_InformationPanel.activeSelf || !UIManager.Instance.standOnInformationPanel.activeSelf || !UIManager.Instance.jailPanel.activeSelf || !UIManager.Instance.moneyPanel.activeSelf || !UIManager.Instance.mainActionPanel.activeSelf || !UIManager.Instance.auctionPanel.activeSelf || !UIManager.Instance.tradePanel.activeSelf)
+        if (!UIManager.Instance.Onclick_InformationPanel.activeSelf && !UIManager.Instance.standOnInformationPanel.activeSelf && !UIManager.Instance.jailPanel.activeSelf && !UIManager.Instance.moneyPanel.activeSelf && !UIManager.Instance.mainActionPanel.activeSelf && !UIManager.Instance.auctionPanel.activeSelf && !UIManager.Instance.tradePanel.activeSelf)
         {
             if (slotAction == SlotAction.Idle)
             {

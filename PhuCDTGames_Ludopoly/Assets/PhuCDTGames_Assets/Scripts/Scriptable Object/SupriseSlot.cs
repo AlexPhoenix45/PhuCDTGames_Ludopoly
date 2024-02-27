@@ -6,7 +6,7 @@ using UnityEngine;
 public class SupriseSlot : ScriptableObject
 {
     public string slotName;
-    public Sprite slotImage;
+    //public Sprite slotImage;
     public CommunityChestCards communityChestCards;
     public ChanceCards chanceCards;
 

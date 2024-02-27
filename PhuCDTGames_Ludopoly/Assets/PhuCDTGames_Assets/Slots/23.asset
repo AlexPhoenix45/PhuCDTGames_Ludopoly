@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 23
   m_EditorClassIdentifier: 
   propertyColor: 6
-  propertyImage: {fileID: 21300000, guid: 9b9c9281427860540808ca3641fdf075, type: 3}
-  propertyName: Indiana Avenue
+  propertyImage: {fileID: 21300000, guid: e67a41e747c4a86438d2ac01f7a3cc34, type: 3}
+  propertyName: Thor
   propertyPrice: 220
   rentPrice: 18
   rentPrice_Set: 36

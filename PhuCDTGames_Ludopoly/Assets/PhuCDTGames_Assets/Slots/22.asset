@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a23984d3bcee5944a448a96fa1f240f, type: 3}
   m_Name: 22
   m_EditorClassIdentifier: 
-  slotName: Chance
-  slotImage: {fileID: 21300000, guid: 7c40d1a45f81a2347bba83731694344e, type: 3}
+  slotName: Fate
   communityChestCards: 0
   chanceCards: 0
   slotType: 0

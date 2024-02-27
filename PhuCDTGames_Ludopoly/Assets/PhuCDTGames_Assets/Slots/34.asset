@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 34
   m_EditorClassIdentifier: 
   propertyColor: 2
-  propertyImage: {fileID: 21300000, guid: c283f41b083e6fa4e9b35dcc6dd58fc4, type: 3}
-  propertyName: Pennsylvania Avenue
+  propertyImage: {fileID: 21300000, guid: b4ef852aff57a084994cd6958cc5f0bf, type: 3}
+  propertyName: Brahma
   propertyPrice: 320
   rentPrice: 28
   rentPrice_Set: 56

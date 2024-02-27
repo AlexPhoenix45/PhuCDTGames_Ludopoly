@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 1
   m_EditorClassIdentifier: 
   propertyColor: 1
-  propertyImage: {fileID: 21300000, guid: 31f70c0b1fdbc6540a1afddf7009e396, type: 3}
-  propertyName: Tottenham
+  propertyImage: {fileID: 21300000, guid: 51b7e350c2905de41a3451cfc70553e4, type: 3}
+  propertyName: Bes
   propertyPrice: 60
   rentPrice: 2
   rentPrice_Set: 4

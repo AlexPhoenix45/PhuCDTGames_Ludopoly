@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 13
   m_EditorClassIdentifier: 
   propertyColor: 5
-  propertyImage: {fileID: 21300000, guid: 9fe96d5e683c2874b804be4576c6ef96, type: 3}
-  propertyName: States Avenue
+  propertyImage: {fileID: 21300000, guid: 0235083d92db4014c89e864ac97cdc61, type: 3}
+  propertyName: Freya
   propertyPrice: 140
   rentPrice: 10
   rentPrice_Set: 20

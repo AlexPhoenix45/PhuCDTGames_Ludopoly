@@ -54,3 +54,30 @@ trong offer bị hiện 2 lần 1 item khi chọn đi chọn lại property đ�
 23/2/2024
 mới replace playẻ panel, replace nốt
 
+27/2/2024
+- sửa on-click information cho fit với màn hình
+- làm nốt animation cho các panel
+- thêm tag giá cho propẻty
+
+**khi auction mà có 1 người chơi trong tù, khi đổi đến lượt người 
+chơi đó thì jailPanel sẽ bật lên
+
+(animation onEnable and onDisable)
+on-click done
+auction done
+stand-on done
+jail done
+money done
+main actions done (not include trade)
+trade done
+slot opacity done
+
+
+art order:
+auction
+chance and community chest cards
+jail, both 3 panels
+money, both 2 panels
+trade
+main actions
+pawn position

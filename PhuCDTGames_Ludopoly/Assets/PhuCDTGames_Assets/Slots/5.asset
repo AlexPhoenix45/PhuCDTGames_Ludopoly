@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74b05793dd503be4eb5495145bb524a3, type: 3}
   m_Name: 5
   m_EditorClassIdentifier: 
-  propertyName: Reading RR
-  propertyImage: {fileID: 21300000, guid: 2f9fedbb4fe63804693a88666d9dc51f, type: 3}
+  propertyName: Rainbow Bridge
   propertyPrice: 200
   mortgagePrice: 100
   propertyType: 1

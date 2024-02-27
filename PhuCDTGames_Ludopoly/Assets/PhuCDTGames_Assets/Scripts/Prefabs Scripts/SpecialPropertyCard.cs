@@ -16,8 +16,12 @@ public class SpecialPropertyCard : MonoBehaviour
     public GameObject ut_waterWorks_Image;
     public GameObject ut_electricCompany_Image;
 
+    public Text slotPrice;
+
     public void ShowCard(int slotNumber)
     {
+        slotPrice.text = Table.Instance.getSlot(slotNumber).getSlotPrice().ToString();
+
         if (Table.Instance.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.RailRoad)
         {
             railroad_Panel.SetActive(true);

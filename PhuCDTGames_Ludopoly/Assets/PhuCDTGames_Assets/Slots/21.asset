@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 21
   m_EditorClassIdentifier: 
   propertyColor: 6
-  propertyImage: {fileID: 21300000, guid: 4a1439232ae8d674892e9ac3c63a5aee, type: 3}
-  propertyName: Kentucky Avenue
+  propertyImage: {fileID: 21300000, guid: 3228bb5f53816d64c8260b23672905e4, type: 3}
+  propertyName: Ares
   propertyPrice: 220
   rentPrice: 18
   rentPrice_Set: 36

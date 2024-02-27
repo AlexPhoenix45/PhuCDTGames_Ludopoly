@@ -1796,7 +1796,8 @@ public class Table : MonoBehaviour
         
         for (int i = 0; i < slot.Length; i++)
         {
-            slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+            //slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+            UnshownSlot(slot[i]);
             getSlot(i).slotAction = SlotAction.None;
 
             if (getSlot(i).slotType == Slot_Type.ColorProperty)
@@ -1805,7 +1806,7 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Brown)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        ShowSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.Build;
 
                         if (getSlot(i).numberOfHouse <= lowestHouse_Brown)
@@ -1819,7 +1820,7 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Blue)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        ShowSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.Build;
 
                         if (getSlot(i).numberOfHouse <= lowestHouse_Blue)
@@ -1833,7 +1834,7 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Pink)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        ShowSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.Build;
 
                         if (getSlot(i).numberOfHouse <= lowestHouse_Pink)
@@ -1847,7 +1848,7 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Orange)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        ShowSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.Build;
 
                         if (getSlot(i).numberOfHouse <= lowestHouse_Orange)
@@ -1861,7 +1862,7 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Red)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        ShowSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.Build;
 
                         if (getSlot(i).numberOfHouse <= lowestHouse_Red)
@@ -1875,7 +1876,7 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Yellow)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        ShowSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.Build;
 
                         if (getSlot(i).numberOfHouse <= lowestHouse_Yellow)
@@ -1889,7 +1890,7 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Green)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        ShowSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.Build;
 
                         if (getSlot(i).numberOfHouse <= lowestHouse_Green)
@@ -1903,7 +1904,7 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Purple)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        ShowSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.Build;
 
                         if (getSlot(i).numberOfHouse <= lowestHouse_Purple)
@@ -1923,17 +1924,17 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).numberOfHouse > lowestHouse_Brown) //Help to buyild house symmetrically
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getSlot(i).numberOfHouse == 5) //Not showing when reach hotel
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getCurrentPlayer().playerMoney < getSlot(i).getBuildPrice()) //when player dont hanve enough money
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                 }
@@ -1942,17 +1943,17 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).numberOfHouse > lowestHouse_Blue)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getSlot(i).numberOfHouse == 5)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getCurrentPlayer().playerMoney < getSlot(i).getBuildPrice()) //when player dont hanve enough money
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                 }
@@ -1961,17 +1962,17 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).numberOfHouse > lowestHouse_Pink)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getSlot(i).numberOfHouse == 5)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getCurrentPlayer().playerMoney < getSlot(i).getBuildPrice()) //when player dont hanve enough money
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                 }
@@ -1980,17 +1981,18 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).numberOfHouse > lowestHouse_Orange)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getSlot(i).numberOfHouse == 5)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getCurrentPlayer().playerMoney < getSlot(i).getBuildPrice()) //when player dont hanve enough money
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                 }
@@ -1999,17 +2001,17 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).numberOfHouse > lowestHouse_Red)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getSlot(i).numberOfHouse == 5)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getCurrentPlayer().playerMoney < getSlot(i).getBuildPrice()) //when player dont hanve enough money
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                 }
@@ -2018,17 +2020,17 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).numberOfHouse > lowestHouse_Yellow)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getSlot(i).numberOfHouse == 5)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getCurrentPlayer().playerMoney < getSlot(i).getBuildPrice()) //when player dont hanve enough money
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                 }
@@ -2037,17 +2039,17 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).numberOfHouse > lowestHouse_Green)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getSlot(i).numberOfHouse == 5)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getCurrentPlayer().playerMoney < getSlot(i).getBuildPrice()) //when player dont hanve enough money
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                 }
@@ -2056,17 +2058,17 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).numberOfHouse > lowestHouse_Purple)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getSlot(i).numberOfHouse == 5)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getCurrentPlayer().playerMoney < getSlot(i).getBuildPrice()) //when player dont hanve enough money
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                 }
@@ -2216,7 +2218,8 @@ public class Table : MonoBehaviour
 
         for (int i = 0; i < slot.Length; i++)
         {
-            slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+            //slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+            UnshownSlot(slot[i]);
             getSlot(i).slotAction = SlotAction.None;
 
             if (getSlot(i).slotType == Slot_Type.ColorProperty)
@@ -2225,7 +2228,7 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Brown)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        ShowSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.Sell;
 
                         if (getSlot(i).numberOfHouse > highestHouse_Brown)
@@ -2239,7 +2242,7 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Blue)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        ShowSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.Sell;
 
                         if (getSlot(i).numberOfHouse > highestHouse_Blue)
@@ -2253,7 +2256,7 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Pink)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        ShowSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.Sell;
 
                         if (getSlot(i).numberOfHouse > highestHouse_Pink)
@@ -2267,7 +2270,7 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Orange)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        ShowSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.Sell;
 
                         if (getSlot(i).numberOfHouse > highestHouse_Orange)
@@ -2281,7 +2284,7 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Red)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        ShowSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.Sell;
 
                         if (getSlot(i).numberOfHouse > highestHouse_Red)
@@ -2295,7 +2298,7 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Yellow)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        ShowSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.Sell;
 
                         if (getSlot(i).numberOfHouse > highestHouse_Yellow)
@@ -2309,7 +2312,7 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Green)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        ShowSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.Sell;
 
                         if (getSlot(i).numberOfHouse > highestHouse_Green)
@@ -2323,7 +2326,7 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).colorProperty.propertyColor == ColorProperty_Color.Purple)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                        ShowSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.Sell;
 
                         if (getSlot(i).numberOfHouse > highestHouse_Purple)
@@ -2343,12 +2346,12 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).numberOfHouse < highestHouse_Brown) //Help to buyild house symmetrically
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getSlot(i).numberOfHouse == 0) //Not showing when reach 0 house
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                 }
@@ -2357,12 +2360,12 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).numberOfHouse < highestHouse_Blue)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getSlot(i).numberOfHouse == 0)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                 }
@@ -2371,12 +2374,12 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).numberOfHouse < highestHouse_Pink)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getSlot(i).numberOfHouse == 0)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                 }
@@ -2385,12 +2388,12 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).numberOfHouse < highestHouse_Orange)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getSlot(i).numberOfHouse == 0)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                 }
@@ -2399,12 +2402,12 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).numberOfHouse < highestHouse_Red)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getSlot(i).numberOfHouse == 0)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                 }
@@ -2413,12 +2416,12 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).numberOfHouse < highestHouse_Yellow)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getSlot(i).numberOfHouse == 0)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                 }
@@ -2427,12 +2430,12 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).numberOfHouse < highestHouse_Green)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getSlot(i).numberOfHouse == 0)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                 }
@@ -2441,12 +2444,12 @@ public class Table : MonoBehaviour
                 {
                     if (getSlot(i).numberOfHouse < highestHouse_Purple)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                     else if (getSlot(i).numberOfHouse == 0)
                     {
-                        slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                        UnshownSlot(slot[i]);
                         getSlot(i).slotAction = SlotAction.None;
                     }
                 }
@@ -2467,18 +2470,18 @@ public class Table : MonoBehaviour
                 }
                 else
                 {
-                    slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                    UnshownSlot(slot[i]);
                     getSlot(i).slotAction = SlotAction.None;
                 }
             }
             else if (getSlot(i).isOwned && getSlot(i).isMortgaged)
             {
-                slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                UnshownSlot(slot[i]);
                 getSlot(i).slotAction = SlotAction.None;
             }
             else
             {
-                slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                UnshownSlot(slot[i]);
                 getSlot(i).slotAction = SlotAction.None;
             }
         }
@@ -2497,13 +2500,13 @@ public class Table : MonoBehaviour
                 }
                 else
                 {
-                    slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                    UnshownSlot(slot[i]);
                     getSlot(i).slotAction = SlotAction.None;
                 }
             }
             else
             {
-                slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
+                UnshownSlot(slot[i]);
                 getSlot(i).slotAction = SlotAction.None;
             }
         }
@@ -2526,14 +2529,41 @@ public class Table : MonoBehaviour
         }
     } 
 
-    public void UnshownSlot()
+    public void UnshownSlot(GameObject slot)
+    {
+        IEnumerator start()
+        {
+            for (float f = 0; f <= .5f; f += Time.deltaTime)
+            {
+                slot.GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, Mathf.Lerp(1f, .5f, f / .15f));
+                //standOnInformationCasvasGroup.alpha = Mathf.Lerp(0f, 1f, f / .15f);
+                yield return null;
+            }
+        }
+        StartCoroutine(start());
+    }
+
+    public void ShowSlot()
     {
         TurnPlayerApperance(true);
         for (int i = 0; i < slot.Length; i++)
         {
-            slot[i].GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
-            getSlot(i).slotAction = SlotAction.Idle;
+            ShowSlot(slot[i]);
         }
+    }
+
+    public void ShowSlot(GameObject slot)
+    {
+        IEnumerator start()
+        {
+            for (float f = 0; f <= .5f; f += Time.deltaTime)
+            {
+                slot.GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, Mathf.Lerp(.5f, 1f, f / .15f));
+                //standOnInformationCasvasGroup.alpha = Mathf.Lerp(0f, 1f, f / .15f);
+                yield return null;
+            }
+        }
+        StartCoroutine(start());
     }
 
     public void TurnPlayerApperance(bool value)

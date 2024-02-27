@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 11
   m_EditorClassIdentifier: 
   propertyColor: 5
-  propertyImage: {fileID: 21300000, guid: b46bb1bc7a11f3b46b0b7b036c579c74, type: 3}
-  propertyName: Pall Mall
+  propertyImage: {fileID: 21300000, guid: f054f110d68a6de428976f79d220f099, type: 3}
+  propertyName: Eros
   propertyPrice: 140
   rentPrice: 10
   rentPrice_Set: 20

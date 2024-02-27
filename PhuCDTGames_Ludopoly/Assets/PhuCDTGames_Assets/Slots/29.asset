@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 29
   m_EditorClassIdentifier: 
   propertyColor: 7
-  propertyImage: {fileID: 21300000, guid: 02a5f0dd56941d3459e6ec6eb9b1fe88, type: 3}
-  propertyName: Marvin Gardens
+  propertyImage: {fileID: 21300000, guid: 77b7239705ceae54bb3078ebbb24dd9e, type: 3}
+  propertyName: Anansi
   propertyPrice: 280
   rentPrice: 24
   rentPrice_Set: 48

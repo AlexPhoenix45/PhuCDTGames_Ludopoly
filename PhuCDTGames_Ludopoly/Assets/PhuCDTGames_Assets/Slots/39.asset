@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 39
   m_EditorClassIdentifier: 
   propertyColor: 0
-  propertyImage: {fileID: 21300000, guid: 3baf0175bb0967e42b56adedd47136a5, type: 3}
-  propertyName: Mayfair
+  propertyImage: {fileID: 21300000, guid: a7cbcaaaffaba7c40854f0fca43b7a31, type: 3}
+  propertyName: Allah
   propertyPrice: 400
   rentPrice: 50
   rentPrice_Set: 100

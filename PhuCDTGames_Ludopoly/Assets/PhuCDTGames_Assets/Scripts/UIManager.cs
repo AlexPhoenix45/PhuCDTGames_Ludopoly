@@ -162,6 +162,15 @@ public class UIManager : MonoBehaviour
     public GameObject cp_yellowPawn;
     #endregion
 
+    #region Bankruptcy
+
+    [Header("Bankruptcy")]
+    public GameObject bankruptcyPanel;
+    public Button payDebt;
+    public Button bankRupt;
+
+    #endregion
+
     #region On-click Information
     [Header("On-click - Information")]
     [Header("On-click")]
@@ -184,14 +193,6 @@ public class UIManager : MonoBehaviour
     public GameObject redeemPanel;
     #endregion
 
-    #region Bankruptcy
-
-    [Header("Bankruptcy")]
-    public GameObject bankruptcyPanel;
-    public Button payDebt;
-    public Button bankRupt;
-
-    #endregion
 
     #region Auction
     [Header("Auction - Information")]
@@ -964,6 +965,8 @@ public class UIManager : MonoBehaviour
         moneyPanel.SetActive(true);
         paidRentPanel.SetActive(true);
 
+        OnEnable_StandOnPanel(paidRentPanel);
+
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         paidRentPanel.transform.position = pos;
 
@@ -1036,8 +1039,7 @@ public class UIManager : MonoBehaviour
                 timeConsumed = 1f;
             }
             while (timeConsumed < 1);
-            paidRentPanel.SetActive(false);
-            moneyPanel.SetActive(false);
+            OnDisable_Panel(paidRentPanel, moneyPanel);
         }
         StartCoroutine(wait());
     }
@@ -1052,6 +1054,7 @@ public class UIManager : MonoBehaviour
             Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
             moneyPanel.SetActive(true);
             bankruptcyPanel.SetActive(true);
+            OnEnable_StandOnPanel(bankruptcyPanel);
             bankruptcyPanel.transform.position = pos;
             payDebt.interactable = true;
             bankRupt.interactable = true;
@@ -1061,6 +1064,7 @@ public class UIManager : MonoBehaviour
             Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
             moneyPanel.SetActive(true);
             bankruptcyPanel.SetActive(true);
+            OnEnable_StandOnPanel(bankruptcyPanel);
             bankruptcyPanel.transform.position = pos;
             payDebt.interactable = false;
             bankRupt.interactable = true;
@@ -1069,8 +1073,7 @@ public class UIManager : MonoBehaviour
 
     public void OnClick_PayDebt()
     {
-        moneyPanel.SetActive(false);
-        bankruptcyPanel.SetActive(false);
+        OnDisable_Panel(bankruptcyPanel, moneyPanel);
     }
 
     public void OnClick_Bankrupt()
@@ -1112,12 +1115,22 @@ public class UIManager : MonoBehaviour
     public void OnClick_Build()
     {
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
-        OnClick_ActionsClose();
         mainActionPanel.SetActive(true);
         buildPanel.SetActive(true);
-        buildPanel.transform.position = pos;
+        sellPanel.SetActive(false);
+        mortgagePanel.SetActive(false);
+        redeemPanel.SetActive(false);
+        tradePanel.SetActive(false);
 
-        ScaleMainActionsPanel(buildPanel);
+        //fix loi khi an vao nhieu action button cung 1 luc
+        build.interactable = false;
+        sell.interactable = false;
+        mortgage.interactable = false;
+        redeem.interactable = false;
+        trade.interactable = false;
+
+        OnEnable_MainActionsPanel(buildPanel);
+        buildPanel.transform.position = pos;
 
         _Table.Build();
     }
@@ -1125,14 +1138,22 @@ public class UIManager : MonoBehaviour
     public void OnClick_Sell()
     {
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
-        OnClick_ActionsClose();
         mainActionPanel.SetActive(true);
+        buildPanel.SetActive(false);
         sellPanel.SetActive(true);
+        mortgagePanel.SetActive(false);
+        redeemPanel.SetActive(false);
+        tradePanel.SetActive(false);
+
+        //fix loi khi an vao nhieu action button cung 1 luc
+        build.interactable = false;
+        sell.interactable = false;
+        mortgage.interactable = false;
+        redeem.interactable = false;
+        trade.interactable = false;
+
+        OnEnable_MainActionsPanel(sellPanel);
         sellPanel.transform.position = pos;
-
-        ScaleMainActionsPanel(sellPanel);
-
-
 
         _Table.Sell();
     }
@@ -1140,12 +1161,22 @@ public class UIManager : MonoBehaviour
     public void OnClick_Mortgage()
     {
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
-        OnClick_ActionsClose();
         mainActionPanel.SetActive(true);
+        buildPanel.SetActive(false);
+        sellPanel.SetActive(false);
         mortgagePanel.SetActive(true);
-        mortgagePanel.transform.position = pos;
+        redeemPanel.SetActive(false);
+        tradePanel.SetActive(false);
 
-        ScaleMainActionsPanel(mortgagePanel);
+        //fix loi khi an vao nhieu action button cung 1 luc
+        build.interactable = false;
+        sell.interactable = false;
+        mortgage.interactable = false;
+        redeem.interactable = false;
+        trade.interactable = false;
+
+        OnEnable_MainActionsPanel(mortgagePanel);
+        mortgagePanel.transform.position = pos;
 
         _Table.Mortgage();
     }
@@ -1153,24 +1184,46 @@ public class UIManager : MonoBehaviour
     public void OnClick_Redeem()
     {
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
-        OnClick_ActionsClose();
         mainActionPanel.SetActive(true);
+        buildPanel.SetActive(false);
+        sellPanel.SetActive(false);
+        mortgagePanel.SetActive(false);
         redeemPanel.SetActive(true);
-        redeemPanel.transform.position = pos;
+        tradePanel.SetActive(false);
 
-        ScaleMainActionsPanel(redeemPanel);
+        //fix loi khi an vao nhieu action button cung 1 luc
+        build.interactable = false;
+        sell.interactable = false;
+        mortgage.interactable = false;
+        redeem.interactable = false;
+        trade.interactable = false;
+
+        OnEnable_MainActionsPanel(redeemPanel);
+        redeemPanel.transform.position = pos;
 
         _Table.Redeem();
     }
 
     public void OnClick_Trade()
     {
-        OnClick_ActionsClose();
+        mainActionPanel.SetActive(true);
+        buildPanel.SetActive(false);
+        sellPanel.SetActive(false);
+        mortgagePanel.SetActive(false);
+        redeemPanel.SetActive(false);
         tradePanel.SetActive(true);
+
+        //fix loi khi an vao nhieu action button cung 1 luc
+        build.interactable = false;
+        sell.interactable = false;
+        mortgage.interactable = false;
+        redeem.interactable = false;
+        trade.interactable = false;
+
         trade_offerPanel.SetActive(true);
+        OnEnable_Trade(trade_offerPanel);
         trade_receivePanel.SetActive(false);
         trade_illegalPanel.SetActive(false);
-
 
         //Select trade player
         tradeoffer_title.text = _Table.getCurrentPlayer().playerName + "'s Offer";
@@ -1304,14 +1357,33 @@ public class UIManager : MonoBehaviour
 
     public void OnClick_ActionsClose()
     {
+        if (buildPanel.activeSelf || sellPanel.activeSelf || mortgagePanel.activeSelf || redeemPanel.activeSelf || tradePanel.activeSelf)
+        {
+            build.interactable = true;
+            sell.interactable = true;
+            mortgage.interactable = true;
+            redeem.interactable = true;
+            trade.interactable = true;
+        }
+
         OnClick_CloseOnClickInformation();
-        mainActionPanel.SetActive(false);
-        buildPanel.SetActive(false);
-        sellPanel.SetActive(false);
-        mortgagePanel.SetActive(false);
-        tradePanel.SetActive(false);
-        redeemPanel.SetActive(false);
-        _Table.UnshownSlot();
+
+
+        if (!tradePanel.activeSelf && (buildPanel.activeSelf || sellPanel.activeSelf || mortgagePanel.activeSelf || redeemPanel.activeSelf))
+        {
+            _Table.ShowSlot();
+        }
+        else
+        {
+            OnDisable_Panel(trade_illegalPanel, tradePanel);
+            OnDisable_Panel(trade_receivePanel, tradePanel);
+            OnDisable_Panel(trade_offerPanel, tradePanel);
+        }
+
+        OnDisable_Panel(buildPanel, mainActionPanel);
+        OnDisable_Panel(sellPanel, mainActionPanel);
+        OnDisable_Panel(mortgagePanel, mainActionPanel);
+        OnDisable_Panel(redeemPanel, mainActionPanel);
     }
 
     //Other Methods
@@ -1388,14 +1460,16 @@ public class UIManager : MonoBehaviour
     public void ShowIllegalTrade()
     {
         trade_illegalPanel.SetActive(true);
+        OnEnable_Trade(trade_illegalPanel);
         trade_offerPanel.SetActive(false);
         trade_receivePanel.SetActive(false);
     }
 
     public void ShowTradeReceive()
     {
-        trade_offerPanel.SetActive(false);
         trade_receivePanel.SetActive(true);
+        OnEnable_Trade(trade_receivePanel);
+        trade_offerPanel.SetActive(false);
         trade_illegalPanel.SetActive(false);
 
         tradereceive_title.text = _Table.getCurrentPlayer().playerName + "'s Offer";
@@ -1508,12 +1582,11 @@ public class UIManager : MonoBehaviour
     {
         standOnInformationPanel.SetActive(true);
         colorPropertyInformationCard.SetActive(true);
+        OnEnable_StandOnPanel(colorPropertyInformationCard);
         Vector2 pos  = Camera.main.WorldToScreenPoint(_Table.transform.position);
         cpi_showButtonPanel.SetActive(true);
         cpi_boughtPanel.SetActive(false);
 
-        //ScaleInformationPanel(colorPropertyInformationCard);
-        OnEnablePanel(colorPropertyInformationCard);
 
         if (_Table.getCurrentPlayer().playerMoney < _Table.getSlot(_Table.getCurrentPlayer().currentSlot).getSlotPrice()) //can't afford
         {
@@ -1533,12 +1606,11 @@ public class UIManager : MonoBehaviour
     public void ShowColorPropertyBought()
     {
         standOnInformationPanel.SetActive(true);
-        //colorPropertyInformationCard.SetActive(true);
+        colorPropertyInformationCard.SetActive(true);
+        OnEnable_StandOnPanel(colorPropertyInformationCard);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         colorPropertyInformationCard.transform.position = pos;
 
-        //ScaleInformationPanel(colorPropertyInformationCard);
-        OnEnablePanel(colorPropertyInformationCard);
 
         cpi_showButtonPanel.SetActive(false);
         cpi_boughtPanel.SetActive(true);
@@ -1581,8 +1653,7 @@ public class UIManager : MonoBehaviour
                 timeConsumed = 1.5f;
             }
             while (timeConsumed < 1.5f);
-            specialPropertyInformationCard.SetActive(false);
-            standOnInformationPanel.SetActive(false);
+            OnDisable_Panel(specialPropertyInformationCard, standOnInformationPanel);
             HideInformationCard();
         }
         StartCoroutine(wait());
@@ -1594,14 +1665,13 @@ public class UIManager : MonoBehaviour
     public void ShowSpecialPropertyCard(int slotNumber)
     {
         standOnInformationPanel.SetActive(true);
-        //specialPropertyInformationCard.SetActive(true);
+        specialPropertyInformationCard.SetActive(true);
+        OnEnable_StandOnPanel(specialPropertyInformationCard);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         specialPropertyInformationCard.transform.position = pos;
         ut_showButtonPanel.SetActive(true);
         ut_boughtPanel.SetActive(false);
 
-        //ScaleInformationPanel(specialPropertyInformationCard);
-        OnEnablePanel(specialPropertyInformationCard);
 
         if (_Table.getCurrentPlayer().playerMoney < _Table.getSlot(_Table.getCurrentPlayer().currentSlot).getSlotPrice()) //can't afford
         {
@@ -1620,15 +1690,14 @@ public class UIManager : MonoBehaviour
     public void ShowSpecialPropertyBought()
     {
         standOnInformationPanel.SetActive(true);
-        //specialPropertyInformationCard.SetActive(true);
+        specialPropertyInformationCard.SetActive(true);
+        OnEnable_StandOnPanel(specialPropertyInformationCard);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         specialPropertyInformationCard.transform.position = pos;
 
         ut_showButtonPanel.SetActive(false);
         ut_boughtPanel.SetActive(true);
 
-        //ScaleInformationPanel(specialPropertyInformationCard);
-        OnEnablePanel(specialPropertyInformationCard);
 
         if (_Table.getCurrentPlayer() == _Table.player[0])
         {
@@ -1668,8 +1737,7 @@ public class UIManager : MonoBehaviour
                 timeConsumed = 1.5f;
             }
             while (timeConsumed < 1.5f);
-            specialPropertyInformationCard.SetActive(false);
-            standOnInformationPanel.SetActive(false);
+            OnDisable_Panel(specialPropertyInformationCard, standOnInformationPanel);
             HideInformationCard();
         }
         StartCoroutine(wait());
@@ -1684,12 +1752,11 @@ public class UIManager : MonoBehaviour
         int chanceCardNumber = _Table.getSlot(slotNumber).supriseSlot.DrawChance();
         int communityChestNumber = _Table.getSlot(slotNumber).supriseSlot.DrawCommunityChest();
         standOnInformationPanel.SetActive(true);
-        //supriseInformationCard.SetActive(true);
+        supriseInformationCard.SetActive(true);
+        OnEnable_StandOnPanel(supriseInformationCard);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         supriseInformationCard.transform.position = pos;
 
-        //ScaleInformationPanel(supriseInformationCard);
-        OnEnablePanel(supriseInformationCard);
 
         StartCoroutine(actions());
 
@@ -1708,52 +1775,52 @@ public class UIManager : MonoBehaviour
                     switch (chanceCardNumber)
                     {
                         case 0:
-                            cc_description.text = "Advance to Boardwalk";
+                            cc_description.text = "Advance to Allah";
                             break;
                         case 1:
-                            cc_description.text = "Advance to Go (Collect $200)";
+                            cc_description.text = "Advance to Olympus (Collect $200)";
                             break;
                         case 2:
-                            cc_description.text = "Advance to Illinois Avenue. If you pass Go, collect $200";
+                            cc_description.text = "Advance to Horus. If you pass Olympus, collect $200";
                             break;
                         case 3:
-                            cc_description.text = "Advance to St. Charles Place. If you pass Go, collect $200";
+                            cc_description.text = "Advance to Eros Place. If you pass Olympus, collect $200";
                             break;
                         case 4:
-                            cc_description.text = "Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled";
+                            cc_description.text = "Advance to the nearest Rainbow Bridge and pay owner twice the tribute to which they are otherwise entitled. If Rainbow Bridge is unclaimed, you may claim it from the gods.";
                             break;
                         case 5:
-                            cc_description.text = "Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled";
+                            cc_description.text = "Advance to the nearest Rainbow Bridge and pay owner twice the tribute to which they are otherwise entitled. If Rainbow Bridge is unclaimed, you may claim it from the gods.";
                             break;
                         case 6:
-                            cc_description.text = "Advance token to nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total ten times amount thrown.";
+                            cc_description.text = "Advance token to nearest worship place. If unowned, you may consult it from the gods. If owned, throw dice and pay owner a total ten times amount thrown.";
                             break;
                         case 7:
-                            cc_description.text = "Bank pays you dividend of $50";
+                            cc_description.text = "The gods reward you with $50";
                             break;
                         case 8:
-                            cc_description.text = "Get Out of Jail Free";
+                            cc_description.text = "Escape from Tartarus Free";
                             break;
                         case 9:
-                            cc_description.text = "Go back 3 spaces";
+                            cc_description.text = "The Fates rewind your fate by 3 Spaces";
                             break;
                         case 10:
-                            cc_description.text = "Go to Jail. Go directly to Jail, do not pass Go, do not collect $200";
+                            cc_description.text = "Go to Tartarus. Go directly to Tartarus, do not pass Olympus, do not collect $200";
                             break;
                         case 11:
-                            cc_description.text = "Make general repairs on all your property. For each house pay $25. For each hotel pay $100";
+                            cc_description.text = "Make offerings to the gods for all your property. For each house pay $25. For each hotel pay $100";
                             break;
                         case 12:
-                            cc_description.text = "Speeding fine $15";
+                            cc_description.text = "Hermes charges you $15 for using his winged sandals";
                             break;
                         case 13:
-                            cc_description.text = "Take a trip to Reading Railroad. If you pass Go, collect $200";
+                            cc_description.text = "Take a trip to Asgard. If you pass Olympus, collect $200";
                             break;
                         case 14:
-                            cc_description.text = "You have been elected Chairman of the Board. Pay each player $50";
+                            cc_description.text = "You have been elected King of the Gods. Pay each player $50";
                             break;
                         case 15:
-                            cc_description.text = "Your building loan matures. Collect $150";
+                            cc_description.text = "Your temple construction is complete. Collect $150";
                             break;
                         default:
                             break;
@@ -1770,52 +1837,52 @@ public class UIManager : MonoBehaviour
                     switch (communityChestNumber)
                     {
                         case 0:
-                            cc_description.text = "Advance to Go (Collect $200)";
+                            cc_description.text = "Advance to Olympus (Collect $200)";
                             break;
                         case 1:
-                            cc_description.text = "Bank error in your favor. Collect $200";
+                            cc_description.text = "Divine favor in your favor. Collect $200";
                             break;
                         case 2:
-                            cc_description.text = "Doctor’s fee. Pay $50";
+                            cc_description.text = "Healing fee. Pay $50";
                             break;
                         case 3:
-                            cc_description.text = "From sale of stock you get $50";
+                            cc_description.text = "From trade with Midas you get $50";
                             break;
                         case 4:
-                            cc_description.text = "Get Out of Jail Free";
+                            cc_description.text = "Escape from Tartarus Free";
                             break;
                         case 5:
-                            cc_description.text = "Go to Jail. Go directly to jail, do not pass Go, do not collect $200";
+                            cc_description.text = "Go to Tartarus. Go directly to Tartarus, do not pass Olympus, do not collect $200";
                             break;
                         case 6:
-                            cc_description.text = "Holiday fund matures. Receive $100";
+                            cc_description.text = "Festival fund matures. Receive $100";
                             break;
                         case 7:
-                            cc_description.text = "Income tax refund. Collect $20";
+                            cc_description.text = "Caesar’s tribute. Collect $20";
                             break;
                         case 8:
-                            cc_description.text = "It is your birthday. Collect $10 from every player";
+                            cc_description.text = "It is your feast day. Collect $10 from every player";
                             break;
                         case 9:
-                            cc_description.text = "Life insurance matures. Collect $100";
+                            cc_description.text = "Reincarnation bonus. Collect $100";
                             break;
                         case 10:
-                            cc_description.text = "Pay hospital fees of $100";
+                            cc_description.text = "Pay healing fees of $100";
                             break;
                         case 11:
-                            cc_description.text = "Pay school fees of $50";
+                            cc_description.text = "Pay academy fees of $50";
                             break;
                         case 12:
-                            cc_description.text = "Receive $25 consultancy fee";
+                            cc_description.text = "Receive $25 prophecy fee";
                             break;
                         case 13:
-                            cc_description.text = "You are assessed for street repair. $40 per house. $115 per hotel";
+                            cc_description.text = "You are assessed for temple repair. $40 per house. $115 per hotel";
                             break;
                         case 14:
-                            cc_description.text = "You have won second prize in a beauty contest. Collect $10";
+                            cc_description.text = "You have impressed Aphrodite with your charm. Collect $10";
                             break;
                         case 15:
-                            cc_description.text = "You inherit $100";
+                            cc_description.text = "You receive a blessing from your ancestors. Collect $100";
                             break;
                         default:
                             break;
@@ -1860,10 +1927,10 @@ public class UIManager : MonoBehaviour
 
             jailPanel.SetActive(true);
             goToJailPanel.SetActive(true);
+            OnEnable_StandOnPanel(goToJailPanel);
             Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
             goToJailPanel.transform.position = pos;
 
-            ScaleInformationPanel(goToJailPanel);
 
             if (_Table.getCurrentPlayer().playerColor == new Vector4(255, 0, 0, 255)) //red
             {
@@ -1922,10 +1989,10 @@ public class UIManager : MonoBehaviour
             {
                 jailPanel.SetActive(true);
                 visitingJailPanel.SetActive(true);
+                OnEnable_StandOnPanel(visitingJailPanel);
                 Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
                 visitingJailPanel.transform.position = pos;
 
-                ScaleInformationPanel(visitingJailPanel);
 
                 if (_Table.getCurrentPlayer().playerColor == new Vector4(255, 0, 0, 255)) //red
                 {
@@ -1980,10 +2047,10 @@ public class UIManager : MonoBehaviour
     {
         jailPanel.SetActive(true);
         inJailPanel.SetActive(true);
+        OnEnable_StandOnPanel(inJailPanel);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         inJailPanel.transform.position = pos;
 
-        ScaleInformationPanel(inJailPanel);
 
         if (_Table.getCurrentPlayer().playerColor == new Vector4(255, 0, 0, 255)) //red
         {
@@ -2040,19 +2107,7 @@ public class UIManager : MonoBehaviour
         auctionPanel.SetActive(true);
         auctionInformationPanel.SetActive(true);
 
-        //Scaling
-        if (_Table.GetScreenRatio() >= 0.46f && _Table.GetScreenRatio() < 0.48f)
-        {
-            auctionPanel.GetComponent<RectTransform>().localScale = new Vector2(1.5f, 1.5f);
-        }
-        else if (_Table.GetScreenRatio() >= 0.48f && _Table.GetScreenRatio() < 0.5f)
-        {
-            auctionPanel.GetComponent<RectTransform>().localScale = new Vector2(1.45f, 1.45f);
-        }
-        else if (_Table.GetScreenRatio() >= 0.5f)
-        {
-            auctionPanel.GetComponent<RectTransform>().localScale = new Vector2(1.25f, 1.25f);
-        }
+        OnEnable_Auction(auctionInformationPanel);
 
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         auctionInformationPanel.transform.position = pos;
@@ -2227,16 +2282,14 @@ public class UIManager : MonoBehaviour
     {
         if (isWin)
         {
-            auctionPanel.SetActive(false);
-            auctionInformationPanel.SetActive(false);
+            OnDisable_Panel(auctionInformationPanel, auctionPanel);
             _Table.SwitchPlayer(playerWin);
             _Table.Buy(slotNumber, currentPrice);
             _Table.SwitchPlayer(playerStart);
         }
         else
         {
-            auctionPanel.SetActive(false);
-            auctionInformationPanel.SetActive(false);
+            OnDisable_Panel(auctionInformationPanel, auctionPanel);
             _Table.SwitchPlayer(playerStart);
             HideInformationCard();
         }
@@ -2327,6 +2380,7 @@ public class UIManager : MonoBehaviour
     {
         Onclick_InformationPanel.SetActive(true);
         Onclick_ColorPropertyInformationCard.SetActive(true);
+        OnEnable_OnClickPanel(Onclick_ColorPropertyInformationCard);
         Onclick_SpecialPropertyInformationCard.SetActive(false);
 
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
@@ -2339,6 +2393,7 @@ public class UIManager : MonoBehaviour
     {
         Onclick_InformationPanel.SetActive(true);
         Onclick_SpecialPropertyInformationCard.SetActive(true);
+        OnEnable_OnClickPanel(Onclick_SpecialPropertyInformationCard);
         Onclick_ColorPropertyInformationCard.SetActive(false);
 
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
@@ -2349,28 +2404,24 @@ public class UIManager : MonoBehaviour
 
     public void OnClick_CloseOnClickInformation()
     {
-        Onclick_SpecialPropertyInformationCard.SetActive(false);
-        Onclick_ColorPropertyInformationCard.SetActive(false);
-        Onclick_InformationPanel.SetActive(false);
+        OnDisable_Panel(Onclick_SpecialPropertyInformationCard, Onclick_InformationPanel);
+        OnDisable_Panel(Onclick_ColorPropertyInformationCard, Onclick_InformationPanel);
     }
 
     public void HideInformationCard()
     {
         //Stand-on Card
-        standOnInformationPanel.SetActive(false);
-        //actionsCard.SetActive(false);
-        colorPropertyInformationCard.SetActive(false);
-        specialPropertyInformationCard.SetActive(false);
-        supriseInformationCard.SetActive(false);
+        OnDisable_Panel(colorPropertyInformationCard, standOnInformationPanel);
+        OnDisable_Panel(specialPropertyInformationCard, standOnInformationPanel);
+        OnDisable_Panel(supriseInformationCard, standOnInformationPanel);
 
         //Jail
-        jailPanel.SetActive(false);
-        inJailPanel.SetActive(false);
-        goToJailPanel.SetActive(false);
-        visitingJailPanel.SetActive(false);
+        OnDisable_Panel(inJailPanel, jailPanel);
+        OnDisable_Panel(goToJailPanel, jailPanel);
+        OnDisable_Panel(visitingJailPanel, jailPanel);
 
         //Auction
-        auctionPanel.SetActive(false);
+        //auctionPanel.SetActive(false);
         acp_colorPropertyPanel.SetActive(false);
         asp_specialPropertyPanel.SetActive(false);
 
@@ -2446,23 +2497,8 @@ public class UIManager : MonoBehaviour
     //Scale panel
     //
 
-    public void ScaleInformationPanel(GameObject panel)
-    {
-        if (_Table.GetScreenRatio() >= 0.46f && _Table.GetScreenRatio() < 0.48f)
-        {
-            panel.GetComponent<RectTransform>().localScale = new Vector2(1.04f, 1.04f);
-        }
-        else if (_Table.GetScreenRatio() >= 0.48f && _Table.GetScreenRatio() < 0.5f)
-        {
-            panel.GetComponent<RectTransform>().localScale = new Vector2(0.98f, 0.98f);
-        }
-        else if (_Table.GetScreenRatio() >= 0.5f)
-        {
-            panel.GetComponent<RectTransform>().localScale = new Vector2(.85f, .85f);
-        }
-    }
 
-    public Vector2 ScaleInformationPanelVector2(GameObject panel)
+    public Vector2 Scale_InformationPanel()
     {
         if (_Table.GetScreenRatio() >= 0.46f && _Table.GetScreenRatio() < 0.48f)
         {
@@ -2482,35 +2518,109 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void ScaleMainActionsPanel(GameObject abc)
+    public Vector2 Scale_MainActionsPanel()
     {
         if (_Table.GetScreenRatio() >= 0.46f && _Table.GetScreenRatio() < 0.48f)
         {
-            abc.GetComponent<RectTransform>().localScale = new Vector2(.94f, .94f);
+            return new Vector2(.94f, .94f);
         }
         else if (_Table.GetScreenRatio() >= 0.48f && _Table.GetScreenRatio() < 0.5f)
         {
-            abc.GetComponent<RectTransform>().localScale = new Vector2(.88f, .88f);
+            return new Vector2(.88f, .88f);
         }
         else if (_Table.GetScreenRatio() >= 0.5f)
         {
-            abc.GetComponent<RectTransform>().localScale = new Vector2(.76f, .76f);
+            return new Vector2(.76f, .76f);
+        }
+        else
+        {
+            return Vector2.one;
         }
     }
 
-    public void OnEnablePanel(GameObject panel)
+    public Vector2 Scale_OnClickPanel()
+    {
+        if (_Table.GetScreenRatio() >= 0.46f && _Table.GetScreenRatio() < 0.48f)
+        {
+            return new Vector2(1.5f, 1.5f);
+        }
+        else if (_Table.GetScreenRatio() >= 0.48f && _Table.GetScreenRatio() < 0.5f)
+        {
+            return new Vector2(1.45f, 1.45f);
+        }
+        else if (_Table.GetScreenRatio() >= 0.5f)
+        {
+            return new Vector2(1.25f, 1.25f);
+        }
+        else
+        {
+            return Vector2.one;
+        }
+    }
+
+    public Vector2 Scale_AuctionPanel()
+    {
+        //Scaling
+        if (_Table.GetScreenRatio() >= 0.46f && _Table.GetScreenRatio() < 0.48f)
+        {
+            return new Vector2(1.5f, 1.5f);
+        }
+        else if (_Table.GetScreenRatio() >= 0.48f && _Table.GetScreenRatio() < 0.5f)
+        {
+            return new Vector2(1.45f, 1.45f);
+        }
+        else if (_Table.GetScreenRatio() >= 0.5f)
+        {
+            return new Vector2(1.25f, 1.25f);
+        }
+        else
+        {
+            return Vector2.one;
+        }
+    }
+
+    //Panel Animation
+    //
+
+    public void OnEnable_StandOnPanel(GameObject panel)
     {
         //panel.SetActive(true);
         //Vector2 oldScale = panel.transform.localScale;
         panel.transform.localScale = new Vector2(0, 0);
-        panel.transform.LeanScale(ScaleInformationPanelVector2(panel), .5f).setEaseOutBack();
+        panel.transform.LeanScale(Scale_InformationPanel(), .25f).setEaseOutBack();
     }
 
-    public void OnDisablePanel(GameObject panel)
+    public void OnEnable_MainActionsPanel(GameObject panel)
     {
+        //panel.SetActive(true);
+        //Vector2 oldScale = panel.transform.localScale;
+        panel.transform.localScale = new Vector2(0, 0);
+        panel.transform.LeanScale(Scale_MainActionsPanel(), .25f).setEaseOutBack();
+    }
 
-        Vector2 oldScale = panel.transform.localScale;
-        panel.transform.localScale = oldScale;
-        panel.transform.LeanScale(new Vector2(0, 0), .5f).setEaseInBack().setOnComplete(() => { panel.SetActive(false); });
+    public void OnEnable_Auction(GameObject panel)
+    {
+        if (!panel.activeSelf)
+        {
+            panel.transform.localScale = new Vector2(0, 0);
+            panel.transform.LeanScale(Scale_AuctionPanel(), .25f).setEaseOutBack();
+        }
+    }
+
+    public void OnEnable_Trade(GameObject panel)
+    {
+        panel.transform.localScale = new Vector2(0, 0);
+        panel.transform.LeanScale(new Vector2(1, 1), .25f).setEaseOutBack();
+    }
+
+    public void OnEnable_OnClickPanel(GameObject panel)
+    {
+        panel.transform.localScale = new Vector2(0, 0);
+        panel.transform.LeanScale(Scale_OnClickPanel(), .25f).setEaseOutBack();
+    }
+
+    public void OnDisable_Panel(GameObject panel, GameObject parentPanel)
+    {
+        panel.transform.LeanScale(new Vector2(0, 0), .25f).setEaseInBack().setOnComplete(() => { panel.SetActive(false); parentPanel.SetActive(false); });
     }
 }

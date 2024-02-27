@@ -17,6 +17,7 @@ public class ColorPropertyCard : MonoBehaviour
     public GameObject yellowCard;
 
     [Header("Card Information")]
+    public Text slotPrice;
     public Text propertyName;
     public Text rentPrice;
     public Text rentDescription;
@@ -30,6 +31,7 @@ public class ColorPropertyCard : MonoBehaviour
     public void ShowCard(int slotNumber)
     {
         propertyName.text = Table.Instance.getSlot(slotNumber).getSlotName().ToUpper();
+        slotPrice.text = Table.Instance.getSlot(slotNumber).getSlotPrice().ToString();
 
         if (Table.Instance.getSlot(slotNumber).getPropertyRentUI(0) < 10)
         {

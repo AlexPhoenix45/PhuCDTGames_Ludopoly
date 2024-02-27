@@ -7,7 +7,7 @@ public class SpecialProperty : ScriptableObject
 {
     //Display Data
     public string propertyName;
-    public Sprite propertyImage;
+    //public Sprite propertyImage;
     public int propertyPrice;
 
     //Others Data
