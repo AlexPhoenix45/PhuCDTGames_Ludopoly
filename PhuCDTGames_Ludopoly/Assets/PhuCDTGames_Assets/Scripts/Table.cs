@@ -823,11 +823,11 @@ public class Table : MonoBehaviour
                                 break;
                             }
                         case ChanceCards.Earn50:
-                            print(getCurrentPlayer() + " collects 50$");
+                            //print(getCurrentPlayer() + " collects 50$");
                             CurrentPlayerReceiveBank(50);
                             break;
                         case ChanceCards.JailFree:
-                            print(getCurrentPlayer() + " Get Out of Jail Free Card");
+                            //print(getCurrentPlayer() + " Get Out of Jail Free Card");
                             getCurrentPlayer().AddJailFreeCard();
                             break;
                         case ChanceCards.Back3:
@@ -883,7 +883,7 @@ public class Table : MonoBehaviour
                             print("not yet");
                             break;
                         case ChanceCards.Speeding:
-                            print(getCurrentPlayer() + " Pays 15$");
+                            //print(getCurrentPlayer() + " Pays 15$");
                             CurrentPlayerPayBank(15);
                             break;
                         case ChanceCards.ReadingRailroad:
@@ -891,11 +891,11 @@ public class Table : MonoBehaviour
                             _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
                             break;
                         case ChanceCards.Chairman:
-                            print(getCurrentPlayer() + " Pays each player 50$");
+                            //print(getCurrentPlayer() + " Pays each player 50$");
                             CurrentPlayerPayFor(getRemainingPlayer(), 50);
                             break;
                         case ChanceCards.Earn150:
-                            print(getCurrentPlayer() + " Collect 150$");
+                            //print(getCurrentPlayer() + " Collect 150$");
                             CurrentPlayerReceiveBank(150);
                             break;
                     }
@@ -913,19 +913,19 @@ public class Table : MonoBehaviour
                             _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
                             break;
                         case CommunityChestCards.BankError:
-                            print(getCurrentPlayer().ToString() + " Collect 200$");
+                            //print(getCurrentPlayer().ToString() + " Collect 200$");
                             CurrentPlayerReceiveBank(200);
                             break;
                         case CommunityChestCards.Doctor:
-                            print(getCurrentPlayer().ToString() + " Pays 50$");
+                            //print(getCurrentPlayer().ToString() + " Pays 50$");
                             CurrentPlayerPayBank(50);
                             break;
                         case CommunityChestCards.Stock:
-                            print(getCurrentPlayer().ToString() + " Collect 50$");
+                            //print(getCurrentPlayer().ToString() + " Collect 50$");
                             CurrentPlayerReceiveBank(50);
                             break;
                         case CommunityChestCards.JailFree:
-                            print(getCurrentPlayer().ToString() + " Get Out of Jaili Free Card");
+                            //print(getCurrentPlayer().ToString() + " Get Out of Jaili Free Card");
                             getCurrentPlayer().AddJailFreeCard();
                             break;
                         case CommunityChestCards.GoToJail:
@@ -956,41 +956,42 @@ public class Table : MonoBehaviour
                                 break;
                             }
                         case CommunityChestCards.Holiday:
-                            print(getCurrentPlayer().ToString() + " Collect 100$");
+                            //print(getCurrentPlayer().ToString() + " Collect 100$");
                             CurrentPlayerReceiveBank(100);
                             break;
                         case CommunityChestCards.Income:
-                            print(getCurrentPlayer().ToString() + " Collect 20$");
+                            //print(getCurrentPlayer().ToString() + " Collect 20$");
                             CurrentPlayerReceiveBank(20);
                             break;
                         case CommunityChestCards.Birthday:
-                            print(getCurrentPlayer().ToString() + " Collect 10$ from each player");
+                            //print(getCurrentPlayer().ToString() + " Collect 10$ from each player");
                             CurrentPlayerReceiveFrom(getRemainingPlayer(), 10);
                             break;
                         case CommunityChestCards.Insurance:
-                            print(getCurrentPlayer().ToString() + " Collect 100$");
+                            //print(getCurrentPlayer().ToString() + " Collect 100$");
                             CurrentPlayerReceiveBank(100);
                             break;
                         case CommunityChestCards.Hospital:
-                            print(getCurrentPlayer().ToString() + " Pays 100$"); 
+                            //print(getCurrentPlayer().ToString() + " Pays 100$"); 
                             CurrentPlayerPayBank(100);
                             break;
                         case CommunityChestCards.School:
-                            print(getCurrentPlayer().ToString() + " Pays 50$");
+                            //print(getCurrentPlayer().ToString() + " Pays 50$");
                             CurrentPlayerPayBank(50);
                             break;
                         case CommunityChestCards.Consultancy:
-                            print(getCurrentPlayer().ToString() + " Collect 25$");
+                            //print(getCurrentPlayer().ToString() + " Collect 25$");
                             CurrentPlayerReceiveBank(25);
                             break;
                         case CommunityChestCards.StreetRepair:
-                            print(getCurrentPlayer().ToString() + " Pay 40$ per house, 115$ per hotel"); break;
+                            print(getCurrentPlayer().ToString() + " Pay 40$ per house, 115$ per hotel");
+                            break;
                         case CommunityChestCards.Beauty:
-                            print(getCurrentPlayer().ToString() + " Collect 10$");
+                            //print(getCurrentPlayer().ToString() + " Collect 10$");
                             CurrentPlayerReceiveBank(10);
                             break;
                         case CommunityChestCards.Inherit:
-                            print(getCurrentPlayer().ToString() + " Collect 100$");
+                            //print(getCurrentPlayer().ToString() + " Collect 100$");
                             CurrentPlayerReceiveBank(100);
                             break;
                     }

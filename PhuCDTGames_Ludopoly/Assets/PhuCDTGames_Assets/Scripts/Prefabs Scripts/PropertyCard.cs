@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PropertyCard : MonoBehaviour
 {
@@ -23,24 +24,26 @@ public class PropertyCard : MonoBehaviour
     public GameObject yellowCard;
 
     [Header("Card Information")]
-    public TextMeshProUGUI propertyName;
-    public TextMeshProUGUI rentPrice;
-    public TextMeshProUGUI rentDescription;
-    public TextMeshProUGUI house1;
-    public TextMeshProUGUI house2;
-    public TextMeshProUGUI house3;
-    public TextMeshProUGUI house4;
-    public TextMeshProUGUI hotel;
-    public TextMeshProUGUI buildPrice;
-    public TextMeshProUGUI mortgagePrice;
+    public Text cp_slotPrice;
+    public Text propertyName;
+    public Text rentPrice;
+    public Text rentDescription;
+    public Text house1;
+    public Text house2;
+    public Text house3;
+    public Text house4;
+    public Text hotel;
+    public Text buildPrice;
+    public Text mortgagePrice;
 
     [Header("Railroads Information")]
     public GameObject railroad_Panel;
-    public TextMeshProUGUI rr_propertyName;
+    public Text rr_propertyName;
 
     [Header("Utilities Information")]
+    public Text ut_slotPrice;
     public GameObject utilities_Panel;
-    public TextMeshProUGUI ut_propertyName;
+    public Text ut_propertyName;
     public GameObject ut_waterWorks_Image;
     public GameObject ut_electricCompany_Image;
 
@@ -61,15 +64,38 @@ public class PropertyCard : MonoBehaviour
             propertyType = PropertyType.ColorProperty;
             isTrade = true;
             propertyName.text = Table.Instance.getSlot(slotNumber).getSlotName().ToUpper();
-            rentPrice.text = "RENT $" + Table.Instance.getSlot(slotNumber).getPropertyRentUI(0).ToString();
+
+            if (Table.Instance.getSlot(slotNumber).getPropertyRentUI(0) < 10)
+            {
+                rentPrice.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(22.8125f, 47.1822f);
+                rentPrice.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(0).ToString();
+            }
+            else
+            {
+                rentPrice.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(44.375f, 47.1822f);
+                rentPrice.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(0).ToString();
+            }
+
             rentDescription.text = "Rent is doubled on owning all unimproved sites in the group.";
-            house1.text = "$" + Table.Instance.getSlot(slotNumber).getPropertyRentUI(1).ToString();
-            house2.text = "$" + Table.Instance.getSlot(slotNumber).getPropertyRentUI(2).ToString();
-            house3.text = "$" + Table.Instance.getSlot(slotNumber).getPropertyRentUI(3).ToString();
-            house4.text = "$" + Table.Instance.getSlot(slotNumber).getPropertyRentUI(4).ToString();
-            hotel.text = "$" + Table.Instance.getSlot(slotNumber).getPropertyRentUI(5).ToString();
-            buildPrice.text = "Contruction $" + Table.Instance.getSlot(slotNumber).getBuildPrice().ToString() + " each";
-            mortgagePrice.text = "Mortgage $" + Table.Instance.getSlot(slotNumber).getMortgagePrice().ToString() + " each";
+            house1.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(1).ToString();
+            house2.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(2).ToString();
+            house3.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(3).ToString();
+            house4.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(4).ToString();
+            hotel.text = Table.Instance.getSlot(slotNumber).getPropertyRentUI(5).ToString();
+            buildPrice.text = Table.Instance.getSlot(slotNumber).getBuildPrice().ToString();
+
+            if (Table.Instance.getSlot(slotNumber).getMortgagePrice() < 100)
+            {
+                mortgagePrice.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(86.8125f, 17);
+                mortgagePrice.text = "Mortgage " + Table.Instance.getSlot(slotNumber).getMortgagePrice().ToString();
+            }
+            else
+            {
+                mortgagePrice.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(96.1875f, 17);
+                mortgagePrice.text = "Mortgage " + Table.Instance.getSlot(slotNumber).getMortgagePrice().ToString();
+            }
+
+            cp_slotPrice.text = Table.Instance.getSlot(slotNumber).getSlotPrice().ToString();
 
             if (Table.Instance.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Brown)
             {
@@ -167,6 +193,7 @@ public class PropertyCard : MonoBehaviour
             jailFreePanel.SetActive(false);
             propertyType = PropertyType.SpecialProperty;
             isTrade = true;
+            ut_slotPrice.text = Table.Instance.getSlot(slotNumber).getSlotPrice().ToString();
             if (Table.Instance.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.RailRoad)
             {
                 railroad_Panel.SetActive(true);

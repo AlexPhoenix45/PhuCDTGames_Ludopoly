@@ -65,6 +65,7 @@ public class UIManager : MonoBehaviour
     public Button cpi_auctionButton;
 
     [Header("Color Property - Bought")]
+    public Text cpi_buyer;
     public GameObject cpi_showButtonPanel;
     public GameObject cpi_boughtPanel;
     public GameObject cpi_redPawn;
@@ -81,6 +82,7 @@ public class UIManager : MonoBehaviour
     public Button sp_auctionButton;
 
     [Header("Special Property - Bought")]
+    public Text ut_buyer;
     public GameObject ut_showButtonPanel;
     public GameObject ut_boughtPanel;
     public GameObject ut_redPawn;
@@ -94,13 +96,13 @@ public class UIManager : MonoBehaviour
 
     [Header("Suprise Information Card")]
     public GameObject chanceAndCommunityChestInformation;
-    public TextMeshProUGUI cc_description;
+    public Text cc_description;
     public GameObject cc_communityChestImage;
     public GameObject cc_chanceImage;
 
     public GameObject taxInformation;
-    public TextMeshProUGUI t_title;
-    public TextMeshProUGUI t_description;
+    public Text t_title;
+    public Text t_description;
 
     #endregion
 
@@ -248,8 +250,8 @@ public class UIManager : MonoBehaviour
     public CanvasGroup trade_canvasGroup;
 
     [Header("Trade - Offer Panel")]
-    public TextMeshProUGUI tradeoffer_title;
-    public TextMeshProUGUI tradeoffer_selectedPlayer;
+    public Text tradeoffer_title;
+    public Text tradeoffer_selectedPlayer;
     public Transform tradeoffer_myPlayerContent;
     public Transform tradeoffer_opponentContent;
     public TextMeshProUGUI tradeoffer_myPlayerMoney;
@@ -1610,7 +1612,7 @@ public class UIManager : MonoBehaviour
         OnEnable_StandOnPanel(colorPropertyInformationCard);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         colorPropertyInformationCard.transform.position = pos;
-
+        //cpi_buyer.text = _Table.getSlot(slotNumber).getOwner().playerName;
 
         cpi_showButtonPanel.SetActive(false);
         cpi_boughtPanel.SetActive(true);
@@ -1621,6 +1623,7 @@ public class UIManager : MonoBehaviour
             cpi_bluePawn.SetActive(false);
             cpi_greenPawn.SetActive(false);
             cpi_yellowPawn.SetActive(false);
+            cpi_buyer.text = _Table.player[0].playerName;
         }
         else if (_Table.getCurrentPlayer() == _Table.player[1])
         {
@@ -1628,6 +1631,7 @@ public class UIManager : MonoBehaviour
             cpi_bluePawn.SetActive(true);
             cpi_greenPawn.SetActive(false);
             cpi_yellowPawn.SetActive(false);
+            cpi_buyer.text = _Table.player[1].playerName;
         }
         else if (_Table.getCurrentPlayer() == _Table.player[2])
         {
@@ -1635,6 +1639,7 @@ public class UIManager : MonoBehaviour
             cpi_bluePawn.SetActive(false);
             cpi_greenPawn.SetActive(true);
             cpi_yellowPawn.SetActive(false);
+            cpi_buyer.text = _Table.player[2].playerName;
         }
         else if (_Table.getCurrentPlayer() == _Table.player[3])
         {
@@ -1642,6 +1647,7 @@ public class UIManager : MonoBehaviour
             cpi_bluePawn.SetActive(false);
             cpi_greenPawn.SetActive(false);
             cpi_yellowPawn.SetActive(true);
+            cpi_buyer.text = _Table.player[3].playerName;
         }
 
         IEnumerator wait()
@@ -1705,6 +1711,7 @@ public class UIManager : MonoBehaviour
             ut_bluePawn.SetActive(false);
             ut_greenPawn.SetActive(false);
             ut_yellowPawn.SetActive(false);
+            ut_buyer.text = _Table.player[0].playerName;
         }
         else if (_Table.getCurrentPlayer() == _Table.player[1])
         {
@@ -1712,6 +1719,7 @@ public class UIManager : MonoBehaviour
             ut_bluePawn.SetActive(true);
             ut_greenPawn.SetActive(false);
             ut_yellowPawn.SetActive(false);
+            ut_buyer.text = _Table.player[1].playerName;
         }
         else if (_Table.getCurrentPlayer() == _Table.player[2])
         {
@@ -1719,6 +1727,7 @@ public class UIManager : MonoBehaviour
             ut_bluePawn.SetActive(false);
             ut_greenPawn.SetActive(true);
             ut_yellowPawn.SetActive(false);
+            ut_buyer.text = _Table.player[2].playerName;
         }
         else if (_Table.getCurrentPlayer() == _Table.player[3])
         {
@@ -1726,6 +1735,7 @@ public class UIManager : MonoBehaviour
             ut_bluePawn.SetActive(false);
             ut_greenPawn.SetActive(false);
             ut_yellowPawn.SetActive(true);
+            ut_buyer.text = _Table.player[3].playerName;
         }
 
         IEnumerator wait()
@@ -1896,13 +1906,13 @@ public class UIManager : MonoBehaviour
 
                     if (_Table.getSlot(slotNumber).supriseSlot.taxPrice == 100)
                     {
-                        t_title.text = "SUPER TAX";
-                        t_description.text = "PAY $100";
+                        t_title.text = "GOD OFFERING";
+                        t_description.text = "PAY 100 COINS";
                     }
                     else if (_Table.getSlot(slotNumber).supriseSlot.taxPrice == 200)
                     {
-                        t_title.text = "INCOME TAX";
-                        t_description.text = "PAY $200";
+                        t_title.text = "GOD OFFERING";
+                        t_description.text = "PAY 200 COINS";
                     }
                 }
                 yield return new WaitForSeconds(.2f);

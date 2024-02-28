@@ -61,6 +61,12 @@ mới replace playẻ panel, replace nốt
 
 **khi auction mà có 1 người chơi trong tù, khi đổi đến lượt người 
 chơi đó thì jailPanel sẽ bật lên
+** chanceCard repair
+** đi vào utilities chưa tính tiền
+** hiện popup cảnh báo bankruptcy khi người chơi chưa âm tiền, và k 
+được đổi lượt chơi
+** auction lần thứ 2 không được (lỗi scale)
+** onclick_bankrupt chưa xong
 
 (animation onEnable and onDisable)
 on-click done
@@ -75,9 +81,9 @@ slot opacity done
 
 art order:
 auction
-chance and community chest cards
+chance and community chest cards (done)
 jail, both 3 panels
 money, both 2 panels
-trade
-main actions
+trade (50%)  
+main actions (done, not trade)
 pawn position

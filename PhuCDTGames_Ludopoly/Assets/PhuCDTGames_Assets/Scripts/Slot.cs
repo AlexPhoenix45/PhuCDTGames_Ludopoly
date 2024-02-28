@@ -600,7 +600,10 @@ public class Slot : MonoBehaviour
                     UIManager.Instance.OnClick_ShowInformationCard(this);
                 }
             }
-            else if (slotAction == SlotAction.Build) //Build House
+        }
+        else
+        { 
+            if (slotAction == SlotAction.Build) //Build House
             {
                 AddHouse();
                 Table.Instance.CurrentPlayerInstantPayBank(getBuildPrice());
