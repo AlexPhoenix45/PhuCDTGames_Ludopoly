@@ -254,10 +254,10 @@ public class UIManager : MonoBehaviour
     public Text tradeoffer_selectedPlayer;
     public Transform tradeoffer_myPlayerContent;
     public Transform tradeoffer_opponentContent;
-    public TextMeshProUGUI tradeoffer_myPlayerMoney;
-    public TextMeshProUGUI tradeoffer_opponentMoney;
-    public TMP_InputField tradeoffer_myPlayerMoneyValue;
-    public TMP_InputField tradeoffer_opponentMoneyValue;
+    public Text tradeoffer_myPlayerMoney;
+    public Text tradeoffer_opponentMoney;
+    public InputField tradeoffer_myPlayerMoneyValue;
+    public InputField tradeoffer_opponentMoneyValue;
     public GameObject trade_property;
     Player trade_currentOpppnent;
 
@@ -1233,8 +1233,8 @@ public class UIManager : MonoBehaviour
         //Select first player to trade
         trade_currentOpppnent = _Table.SwitchWithoutPlayer(_Table.getCurrentPlayer(), _Table.getCurrentPlayer(), true); //Select player to trade
         tradeoffer_selectedPlayer.text = trade_currentOpppnent.playerName;
-        tradeoffer_myPlayerMoney.text = "Send Money (Maximum: " + _Table.getCurrentPlayer().playerMoney + "$)";
-        tradeoffer_opponentMoney.text = "Ask Money (Maximum: " + trade_currentOpppnent.playerMoney + "$)";
+        tradeoffer_myPlayerMoney.text = "Maximum: " + _Table.getCurrentPlayer().playerMoney + " coin(s)";
+        tradeoffer_opponentMoney.text = "Maximum: " + trade_currentOpppnent.playerMoney + " coin(s)";
 
         //Reset InputField
         Reset_InputField();
@@ -1265,7 +1265,7 @@ public class UIManager : MonoBehaviour
 
         trade_currentOpppnent = _Table.SwitchWithoutPlayer(trade_currentOpppnent, _Table.getCurrentPlayer(), false);
         tradeoffer_selectedPlayer.text = trade_currentOpppnent.playerName;
-        tradeoffer_opponentMoney.text = "Ask Money (Maximum: " + trade_currentOpppnent.playerMoney + "$)";
+        tradeoffer_opponentMoney.text = "Maximum: " + trade_currentOpppnent.playerMoney + " coin(s)";
         _Table.ShowTradeItem(trade_currentOpppnent, tradeoffer_opponentContent, trade_property);
         AutoCorrect_InputField();
     }
@@ -1280,7 +1280,7 @@ public class UIManager : MonoBehaviour
 
         trade_currentOpppnent = _Table.SwitchWithoutPlayer(trade_currentOpppnent, _Table.getCurrentPlayer(), true);
         tradeoffer_selectedPlayer.text = trade_currentOpppnent.playerName;
-        tradeoffer_opponentMoney.text = "Ask Money (Maximum: " + trade_currentOpppnent.playerMoney + "$)";
+        tradeoffer_opponentMoney.text = "Maximum: " + trade_currentOpppnent.playerMoney + " coin(s)";
         _Table.ShowTradeItem(trade_currentOpppnent, tradeoffer_opponentContent, trade_property);
         AutoCorrect_InputField();
     }
