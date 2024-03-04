@@ -717,296 +717,299 @@ public class Table : MonoBehaviour
     #region Property Information Card Action And Show
     public void StandOnThisSlot(int slotNumber)
     {
-        for (int i = 0; i < slot.Length; i++) //Allow to view slot information when click
+        if (getCurrentPlayer().inAuction == false) //fix bug when changing player while auctioning, jail panel is open when switch to a player in jail
         {
-            getSlot(i).slotAction = SlotAction.Idle;
-        }
-
-        if (!getSlot(slotNumber).isOwned) //If that slot didnt have an owner
-        {
-            //Call Property Information Card
-            _UIManager.ShowInformationCard(slotNumber);
-
-            if (getSlot(slotNumber).slotType == Slot_Type.SupriseSlot) //Suprise slot
+            for (int i = 0; i < slot.Length; i++) //Allow to view slot information when click
             {
-                if (getSlot(slotNumber).supriseSlot.slotType == SupriseSlot_Type.Chance)
-                {
-                    ChanceCards chanceCardsType = getSlot(slotNumber).supriseSlot.chanceCards;
-                    getCurrentPlayer().hasSecondTurn = false; //no second turn after executing cards
-                    //Process Chance Card in here
+                getSlot(i).slotAction = SlotAction.Idle;
+            }
 
-                    switch (chanceCardsType)
+            if (!getSlot(slotNumber).isOwned) //If that slot didnt have an owner
+            {
+                //Call Property Information Card
+                _UIManager.ShowInformationCard(slotNumber);
+
+                if (getSlot(slotNumber).slotType == Slot_Type.SupriseSlot) //Suprise slot
+                {
+                    if (getSlot(slotNumber).supriseSlot.slotType == SupriseSlot_Type.Chance)
                     {
-                        case ChanceCards.AdvanceToBoardwalk:
-                            getCurrentPlayer().setLateMove(39, true);
-                            _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
-                            break;
-                        case ChanceCards.AdvanceToGo:
-                            getCurrentPlayer().setLateMove(0, true);
-                            _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
-                            break;
-                        case ChanceCards.AdvanceToIllinois:
-                            getCurrentPlayer().setLateMove(24, true);
-                            _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
-                            break;
-                        case ChanceCards.AdvanceToStCharles:
-                            getCurrentPlayer().setLateMove(11, true);
-                            _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
-                            break;
-                        case ChanceCards.AdvanceToRailroad1:
-                            if (getCurrentPlayer().currentSlot == 7)
-                            {
-                                getCurrentPlayer().setLateMove(15, true);
+                        ChanceCards chanceCardsType = getSlot(slotNumber).supriseSlot.chanceCards;
+                        getCurrentPlayer().hasSecondTurn = false; //no second turn after executing cards
+                        //Process Chance Card in here
+
+                        switch (chanceCardsType)
+                        {
+                            case ChanceCards.AdvanceToBoardwalk:
+                                getCurrentPlayer().setLateMove(39, true);
                                 _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
                                 break;
-                            }
-                            else if (getCurrentPlayer().currentSlot == 22)
-                            {
-                                getCurrentPlayer().setLateMove(25, true);
+                            case ChanceCards.AdvanceToGo:
+                                getCurrentPlayer().setLateMove(0, true);
                                 _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
                                 break;
-                            }
-                            else if (getCurrentPlayer().currentSlot == 36)
-                            {
+                            case ChanceCards.AdvanceToIllinois:
+                                getCurrentPlayer().setLateMove(24, true);
+                                _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                break;
+                            case ChanceCards.AdvanceToStCharles:
+                                getCurrentPlayer().setLateMove(11, true);
+                                _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                break;
+                            case ChanceCards.AdvanceToRailroad1:
+                                if (getCurrentPlayer().currentSlot == 7)
+                                {
+                                    getCurrentPlayer().setLateMove(15, true);
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                                else if (getCurrentPlayer().currentSlot == 22)
+                                {
+                                    getCurrentPlayer().setLateMove(25, true);
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                                else if (getCurrentPlayer().currentSlot == 36)
+                                {
+                                    getCurrentPlayer().setLateMove(5, true);
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            case ChanceCards.AdvanceToRailroad2:
+                                if (getCurrentPlayer().currentSlot == 7)
+                                {
+                                    getCurrentPlayer().setLateMove(15, true);
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                                else if (getCurrentPlayer().currentSlot == 22)
+                                {
+                                    getCurrentPlayer().setLateMove(25, true);
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                                else if (getCurrentPlayer().currentSlot == 36)
+                                {
+                                    getCurrentPlayer().setLateMove(5, true);
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            case ChanceCards.AdvanceToUtility:
+                                if (getCurrentPlayer().currentSlot == 7)
+                                {
+                                    getCurrentPlayer().setLateMove(12, true);
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                                else if (getCurrentPlayer().currentSlot == 22)
+                                {
+                                    getCurrentPlayer().setLateMove(28, true);
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                                else if (getCurrentPlayer().currentSlot == 36)
+                                {
+                                    getCurrentPlayer().setLateMove(28, false);
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            case ChanceCards.Earn50:
+                                //print(getCurrentPlayer() + " collects 50$");
+                                CurrentPlayerReceiveBank(50);
+                                break;
+                            case ChanceCards.JailFree:
+                                //print(getCurrentPlayer() + " Get Out of Jail Free Card");
+                                getCurrentPlayer().AddJailFreeCard();
+                                break;
+                            case ChanceCards.Back3:
+                                if (getCurrentPlayer().currentSlot == 7)
+                                {
+                                    getCurrentPlayer().setLateMove(7 - 3, false);
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                                else if (getCurrentPlayer().currentSlot == 22)
+                                {
+                                    getCurrentPlayer().setLateMove(22 - 3, false);
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                                else if (getCurrentPlayer().currentSlot == 36)
+                                {
+                                    getCurrentPlayer().setLateMove(36 - 3, false);
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            case ChanceCards.GoToJail:
+                                if (getCurrentPlayer().currentSlot == 7)
+                                {
+                                    getCurrentPlayer().setLateMove(10, true);
+                                    getCurrentPlayer().isInJail = true;
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                                else if (getCurrentPlayer().currentSlot == 22)
+                                {
+                                    getCurrentPlayer().setLateMove(10, false);
+                                    getCurrentPlayer().isInJail = true;
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                                else if (getCurrentPlayer().currentSlot == 36)
+                                {
+                                    getCurrentPlayer().setLateMove(10, false);
+                                    getCurrentPlayer().isInJail = true;
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            case ChanceCards.Repair:
+                                print("not yet");
+                                break;
+                            case ChanceCards.Speeding:
+                                //print(getCurrentPlayer() + " Pays 15$");
+                                CurrentPlayerPayBank(15);
+                                break;
+                            case ChanceCards.ReadingRailroad:
                                 getCurrentPlayer().setLateMove(5, true);
                                 _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
                                 break;
-                            }
-                            else
-                            {
+                            case ChanceCards.Chairman:
+                                //print(getCurrentPlayer() + " Pays each player 50$");
+                                CurrentPlayerPayFor(getRemainingPlayer(), 50);
                                 break;
-                            }
-                        case ChanceCards.AdvanceToRailroad2:
-                            if (getCurrentPlayer().currentSlot == 7)
-                            {
-                                getCurrentPlayer().setLateMove(15, true);
-                                _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                            case ChanceCards.Earn150:
+                                //print(getCurrentPlayer() + " Collect 150$");
+                                CurrentPlayerReceiveBank(150);
                                 break;
-                            }
-                            else if (getCurrentPlayer().currentSlot == 22)
-                            {
-                                getCurrentPlayer().setLateMove(25, true);
-                                _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
-                                break;
-                            }
-                            else if (getCurrentPlayer().currentSlot == 36)
-                            {
-                                getCurrentPlayer().setLateMove(5, true);
-                                _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
-                                break;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        case ChanceCards.AdvanceToUtility:
-                            if (getCurrentPlayer().currentSlot == 7)
-                            {
-                                getCurrentPlayer().setLateMove(12, true);
-                                _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
-                                break;
-                            }
-                            else if (getCurrentPlayer().currentSlot == 22)
-                            {
-                                getCurrentPlayer().setLateMove(28, true);
-                                _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
-                                break;
-                            }
-                            else if (getCurrentPlayer().currentSlot == 36)
-                            {
-                                getCurrentPlayer().setLateMove(28, false);
-                                _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
-                                break;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        case ChanceCards.Earn50:
-                            //print(getCurrentPlayer() + " collects 50$");
-                            CurrentPlayerReceiveBank(50);
-                            break;
-                        case ChanceCards.JailFree:
-                            //print(getCurrentPlayer() + " Get Out of Jail Free Card");
-                            getCurrentPlayer().AddJailFreeCard();
-                            break;
-                        case ChanceCards.Back3:
-                            if (getCurrentPlayer().currentSlot == 7)
-                            {
-                                getCurrentPlayer().setLateMove(7 - 3, false);
-                                _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
-                                break;
-                            }
-                            else if (getCurrentPlayer().currentSlot == 22)
-                            {
-                                getCurrentPlayer().setLateMove(22 - 3, false);
-                                _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
-                                break;
-                            }
-                            else if (getCurrentPlayer().currentSlot == 36)
-                            {
-                                getCurrentPlayer().setLateMove(36 - 3, false);
-                                _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
-                                break;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        case ChanceCards.GoToJail:
-                            if (getCurrentPlayer().currentSlot == 7)
-                            {
-                                getCurrentPlayer().setLateMove(10, true);
-                                getCurrentPlayer().isInJail = true;
-                                _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
-                                break;
-                            }
-                            else if (getCurrentPlayer().currentSlot == 22)
-                            {
-                                getCurrentPlayer().setLateMove(10, false);
-                                getCurrentPlayer().isInJail = true;
-                                _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
-                                break;
-                            }
-                            else if (getCurrentPlayer().currentSlot == 36)
-                            {
-                                getCurrentPlayer().setLateMove(10, false);
-                                getCurrentPlayer().isInJail = true;
-                                _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
-                                break;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        case ChanceCards.Repair:
-                            print("not yet");
-                            break;
-                        case ChanceCards.Speeding:
-                            //print(getCurrentPlayer() + " Pays 15$");
-                            CurrentPlayerPayBank(15);
-                            break;
-                        case ChanceCards.ReadingRailroad:
-                            getCurrentPlayer().setLateMove(5, true);
-                            _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
-                            break;
-                        case ChanceCards.Chairman:
-                            //print(getCurrentPlayer() + " Pays each player 50$");
-                            CurrentPlayerPayFor(getRemainingPlayer(), 50);
-                            break;
-                        case ChanceCards.Earn150:
-                            //print(getCurrentPlayer() + " Collect 150$");
-                            CurrentPlayerReceiveBank(150);
-                            break;
+                        }
                     }
-                }
-                else if (getSlot(slotNumber).supriseSlot.slotType == SupriseSlot_Type.CommunityChest)
-                {
-                    //Process Community Chest Card in here
-                    CommunityChestCards communityChestCardsType = getSlot(slotNumber).supriseSlot.communityChestCards;
-                    getCurrentPlayer().hasSecondTurn = false; //no second turn after executing cards
-
-                    switch (communityChestCardsType)
+                    else if (getSlot(slotNumber).supriseSlot.slotType == SupriseSlot_Type.CommunityChest)
                     {
-                        case CommunityChestCards.AdvanceToGo:
-                            getCurrentPlayer().setLateMove(0, true);
-                            _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
-                            break;
-                        case CommunityChestCards.BankError:
-                            //print(getCurrentPlayer().ToString() + " Collect 200$");
-                            CurrentPlayerReceiveBank(200);
-                            break;
-                        case CommunityChestCards.Doctor:
-                            //print(getCurrentPlayer().ToString() + " Pays 50$");
-                            CurrentPlayerPayBank(50);
-                            break;
-                        case CommunityChestCards.Stock:
-                            //print(getCurrentPlayer().ToString() + " Collect 50$");
-                            CurrentPlayerReceiveBank(50);
-                            break;
-                        case CommunityChestCards.JailFree:
-                            //print(getCurrentPlayer().ToString() + " Get Out of Jaili Free Card");
-                            getCurrentPlayer().AddJailFreeCard();
-                            break;
-                        case CommunityChestCards.GoToJail:
-                            if (getCurrentPlayer().currentSlot == 2)
-                            {
-                                getCurrentPlayer().setLateMove(10, true);
-                                getCurrentPlayer().isInJail = true;
+                        //Process Community Chest Card in here
+                        CommunityChestCards communityChestCardsType = getSlot(slotNumber).supriseSlot.communityChestCards;
+                        getCurrentPlayer().hasSecondTurn = false; //no second turn after executing cards
+
+                        switch (communityChestCardsType)
+                        {
+                            case CommunityChestCards.AdvanceToGo:
+                                getCurrentPlayer().setLateMove(0, true);
                                 _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
                                 break;
-                            }
-                            else if (getCurrentPlayer().currentSlot == 17)
-                            {
-                                getCurrentPlayer().setLateMove(10, false);
-                                getCurrentPlayer().isInJail = true;
-                                _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                            case CommunityChestCards.BankError:
+                                //print(getCurrentPlayer().ToString() + " Collect 200$");
+                                CurrentPlayerReceiveBank(200);
                                 break;
-                            }
-                            else if (getCurrentPlayer().currentSlot == 33)
-                            {
-                                getCurrentPlayer().setLateMove(10, false);
-                                getCurrentPlayer().isInJail = true;
-                                _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                            case CommunityChestCards.Doctor:
+                                //print(getCurrentPlayer().ToString() + " Pays 50$");
+                                CurrentPlayerPayBank(50);
                                 break;
-                            }
-                            else
-                            {
-                                _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                            case CommunityChestCards.Stock:
+                                //print(getCurrentPlayer().ToString() + " Collect 50$");
+                                CurrentPlayerReceiveBank(50);
                                 break;
-                            }
-                        case CommunityChestCards.Holiday:
-                            //print(getCurrentPlayer().ToString() + " Collect 100$");
-                            CurrentPlayerReceiveBank(100);
-                            break;
-                        case CommunityChestCards.Income:
-                            //print(getCurrentPlayer().ToString() + " Collect 20$");
-                            CurrentPlayerReceiveBank(20);
-                            break;
-                        case CommunityChestCards.Birthday:
-                            //print(getCurrentPlayer().ToString() + " Collect 10$ from each player");
-                            CurrentPlayerReceiveFrom(getRemainingPlayer(), 10);
-                            break;
-                        case CommunityChestCards.Insurance:
-                            //print(getCurrentPlayer().ToString() + " Collect 100$");
-                            CurrentPlayerReceiveBank(100);
-                            break;
-                        case CommunityChestCards.Hospital:
-                            //print(getCurrentPlayer().ToString() + " Pays 100$"); 
-                            CurrentPlayerPayBank(100);
-                            break;
-                        case CommunityChestCards.School:
-                            //print(getCurrentPlayer().ToString() + " Pays 50$");
-                            CurrentPlayerPayBank(50);
-                            break;
-                        case CommunityChestCards.Consultancy:
-                            //print(getCurrentPlayer().ToString() + " Collect 25$");
-                            CurrentPlayerReceiveBank(25);
-                            break;
-                        case CommunityChestCards.StreetRepair:
-                            print(getCurrentPlayer().ToString() + " Pay 40$ per house, 115$ per hotel");
-                            break;
-                        case CommunityChestCards.Beauty:
-                            //print(getCurrentPlayer().ToString() + " Collect 10$");
-                            CurrentPlayerReceiveBank(10);
-                            break;
-                        case CommunityChestCards.Inherit:
-                            //print(getCurrentPlayer().ToString() + " Collect 100$");
-                            CurrentPlayerReceiveBank(100);
-                            break;
+                            case CommunityChestCards.JailFree:
+                                //print(getCurrentPlayer().ToString() + " Get Out of Jaili Free Card");
+                                getCurrentPlayer().AddJailFreeCard();
+                                break;
+                            case CommunityChestCards.GoToJail:
+                                if (getCurrentPlayer().currentSlot == 2)
+                                {
+                                    getCurrentPlayer().setLateMove(10, true);
+                                    getCurrentPlayer().isInJail = true;
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                                else if (getCurrentPlayer().currentSlot == 17)
+                                {
+                                    getCurrentPlayer().setLateMove(10, false);
+                                    getCurrentPlayer().isInJail = true;
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                                else if (getCurrentPlayer().currentSlot == 33)
+                                {
+                                    getCurrentPlayer().setLateMove(10, false);
+                                    getCurrentPlayer().isInJail = true;
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                                else
+                                {
+                                    _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
+                                    break;
+                                }
+                            case CommunityChestCards.Holiday:
+                                //print(getCurrentPlayer().ToString() + " Collect 100$");
+                                CurrentPlayerReceiveBank(100);
+                                break;
+                            case CommunityChestCards.Income:
+                                //print(getCurrentPlayer().ToString() + " Collect 20$");
+                                CurrentPlayerReceiveBank(20);
+                                break;
+                            case CommunityChestCards.Birthday:
+                                //print(getCurrentPlayer().ToString() + " Collect 10$ from each player");
+                                CurrentPlayerReceiveFrom(getRemainingPlayer(), 10);
+                                break;
+                            case CommunityChestCards.Insurance:
+                                //print(getCurrentPlayer().ToString() + " Collect 100$");
+                                CurrentPlayerReceiveBank(100);
+                                break;
+                            case CommunityChestCards.Hospital:
+                                //print(getCurrentPlayer().ToString() + " Pays 100$"); 
+                                CurrentPlayerPayBank(100);
+                                break;
+                            case CommunityChestCards.School:
+                                //print(getCurrentPlayer().ToString() + " Pays 50$");
+                                CurrentPlayerPayBank(50);
+                                break;
+                            case CommunityChestCards.Consultancy:
+                                //print(getCurrentPlayer().ToString() + " Collect 25$");
+                                CurrentPlayerReceiveBank(25);
+                                break;
+                            case CommunityChestCards.StreetRepair:
+                                print(getCurrentPlayer().ToString() + " Pay 40$ per house, 115$ per hotel");
+                                break;
+                            case CommunityChestCards.Beauty:
+                                //print(getCurrentPlayer().ToString() + " Collect 10$");
+                                CurrentPlayerReceiveBank(10);
+                                break;
+                            case CommunityChestCards.Inherit:
+                                //print(getCurrentPlayer().ToString() + " Collect 100$");
+                                CurrentPlayerReceiveBank(100);
+                                break;
+                        }
                     }
-                }
-                else if (getSlot(slotNumber).supriseSlot.slotType == SupriseSlot_Type.Tax)
-                {
-                    //Process Tax Card in here
-                    //print("Paid " + getSlot(slotNumber).supriseSlot.taxPrice);
-                    CurrentPlayerPayBank(getSlot(slotNumber).supriseSlot.taxPrice);
+                    else if (getSlot(slotNumber).supriseSlot.slotType == SupriseSlot_Type.Tax)
+                    {
+                        //Process Tax Card in here
+                        //print("Paid " + getSlot(slotNumber).supriseSlot.taxPrice);
+                        CurrentPlayerPayBank(getSlot(slotNumber).supriseSlot.taxPrice);
+                    }
                 }
             }
-        }
-        else //has to paid slot
-        {
-            PaidRent(slotNumber);
+            else //has to paid slot
+            {
+                PaidRent(slotNumber);
+            }
         }
     }
 
@@ -2513,13 +2516,22 @@ public class Table : MonoBehaviour
         }
     }
 
-    public void ShowTradeItem(Player player, Transform content, GameObject property)
+    public void ShowTradeItem(Player player, Transform content, GameObject property, bool forOpponent)
     {
         foreach (Slot slot in player.slotOwned)
         {
             GameObject tempProperty = Instantiate(property, content);
             tempProperty.GetComponent<PropertyCard>().TradeShowCard(slot.slotIndex);
             tempProperty.GetComponent<PropertyCard>().isSelected = false;
+
+            if (!forOpponent)
+            {
+                tempProperty.GetComponent<PropertyCard>().tradeLeft = true;
+            }
+            else
+            {
+                tempProperty.GetComponent<PropertyCard>().tradeLeft = false;
+            }
         }
 
         for (int i = 0; i < player.getPlayerJailFreeCard(); i++)
@@ -2527,6 +2539,15 @@ public class Table : MonoBehaviour
             GameObject tempProperty = Instantiate(property, content);
             tempProperty.GetComponent<PropertyCard>().TradeShowCard(-1);
             tempProperty.GetComponent<PropertyCard>().isSelected = false;
+
+            if (!forOpponent)
+            {
+                tempProperty.GetComponent<PropertyCard>().tradeLeft = true;
+            }
+            else
+            {
+                tempProperty.GetComponent<PropertyCard>().tradeLeft = false;
+            }
         }
     } 
 

@@ -51,6 +51,9 @@ public class PropertyCard : MonoBehaviour
     public bool isTrade;
     public bool isSelected;
     public GameObject selectedMask;
+    public GameObject selectedMask_MyPlayer;
+    public GameObject selectedMask_Opponent;
+    public bool tradeLeft = true;
 
 
     public void TradeShowCard(int slotNumber)
@@ -236,12 +239,34 @@ public class PropertyCard : MonoBehaviour
         if (isTrade && !isSelected)
         {
             isSelected = true;
-            selectedMask.SetActive(true);
+            if (tradeLeft)
+            {
+                selectedMask.SetActive(true);
+                selectedMask_MyPlayer.SetActive(true);
+                selectedMask_Opponent.SetActive(false);
+            }
+            else
+            {
+                selectedMask.SetActive(true);
+                selectedMask_MyPlayer.SetActive(false);
+                selectedMask_Opponent.SetActive(true);
+            }
         }
         else if (isTrade && isSelected)
         {
             isSelected = false;
-            selectedMask.SetActive(false);
+            if (tradeLeft)
+            {
+                selectedMask.SetActive(false);
+                selectedMask_MyPlayer.SetActive(false);
+                selectedMask_Opponent.SetActive(false);
+            }
+            else
+            {
+                selectedMask.SetActive(false);
+                selectedMask_MyPlayer.SetActive(false);
+                selectedMask_Opponent.SetActive(false);
+            }
         }
     }
 }

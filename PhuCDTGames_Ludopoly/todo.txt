@@ -60,7 +60,7 @@ mới replace playẻ panel, replace nốt
 - thêm tag giá cho propẻty
 
 **khi auction mà có 1 người chơi trong tù, khi đổi đến lượt người 
-chơi đó thì jailPanel sẽ bật lên
+chơi đó thì jailPanel sẽ bật lên (done)
 ** chanceCard repair
 ** đi vào utilities chưa tính tiền
 ** hiện popup cảnh báo bankruptcy khi người chơi chưa âm tiền, và k 
@@ -80,10 +80,13 @@ slot opacity done
 
 
 art order:
-auction
+auction (done)
 chance and community chest cards (done)
 jail, both 3 panels
 money, both 2 panels
-trade (50%)  
+trade (100%)  
 main actions (done, not trade)
 pawn position
+
+fix trade_result
+fix money not closing on time (1.5f)

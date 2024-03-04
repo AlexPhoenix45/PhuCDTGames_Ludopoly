@@ -53,6 +53,7 @@ public class Player : MonoBehaviour
     //Auction
     //
     public bool joinAuction = true;
+    public bool inAuction = false;
 
     //Set curent Slot
     //
@@ -316,7 +317,7 @@ public class Player : MonoBehaviour
 
         if (isMyTurn)
         {
-            if (isInJail)
+            if (isInJail && !inAuction)
             {
                 UIManager.Instance.ShowIsInJail();
             }

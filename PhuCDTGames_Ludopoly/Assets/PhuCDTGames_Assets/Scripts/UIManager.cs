@@ -2,6 +2,7 @@ using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
@@ -202,46 +203,16 @@ public class UIManager : MonoBehaviour
     public GameObject auctionPanel;
     public CanvasGroup auctionCanvasGroup;
     public GameObject auctionInformationPanel;
-    public TextMeshProUGUI ai_currentPlayerTurn;
-    public TextMeshProUGUI ai_currentPrice;
+    public Text ai_currentPlayerTurn;
+    public Text ai_currentPrice;
+    public GameObject ai_currentPrice_Container;
+    public Text ai_currentPrice_Player;
     public Button ai_smallBid;
     public Button ai_bigBid;
     public Button ai_withdraw;
-
-    [Header("Auction - Card Template")]
-    public GameObject acp_brownCard;
-    public GameObject acp_blueCard;
-    public GameObject acp_greenCard;
-    public GameObject acp_orangeCard;
-    public GameObject acp_pinkCard;
-    public GameObject acp_purpleCard;
-    public GameObject acp_redCard;
-    public GameObject acp_yellowCard;
-
-    [Header("Auction - Information Color Property")]
-    public GameObject acp_colorPropertyPanel;
-    public TextMeshProUGUI acp_propertyName;
-    public TextMeshProUGUI acp_rentPrice;
-    public TextMeshProUGUI acp_rentDescription;
-    public TextMeshProUGUI acp_house1;
-    public TextMeshProUGUI acp_house2;
-    public TextMeshProUGUI acp_house3;
-    public TextMeshProUGUI acp_house4;
-    public TextMeshProUGUI acp_hotel;
-    public TextMeshProUGUI acp_buildPrice;
-    public TextMeshProUGUI acp_mortgagePrice;
-
-    [Header("Auction - Special Property")]
-    public GameObject asp_specialPropertyPanel;
-    public GameObject asp_railroad_Panel;
-    public TextMeshProUGUI asp_rr_propertyName;
-
-    [Header("Auction - Utilities Information")]
-    public GameObject asp_utilities_Panel;
-    public TextMeshProUGUI asp_ut_propertyName;
-    public GameObject asp_ut_waterWorks_Image;
-    public GameObject asp_ut_electricCompany_Image;
-
+    public ColorPropertyCard ai_colorPropertyCard;
+    public SpecialPropertyCard ai_specialPropertyCard;
+    
     [Header("Trade")]
     public GameObject tradePanel;
     public GameObject trade_offerPanel;
@@ -262,11 +233,18 @@ public class UIManager : MonoBehaviour
     Player trade_currentOpppnent;
 
     [Header("Trade - Receive Panel")]
-    public TextMeshProUGUI tradereceive_title;
+    public Text tradereceive_title;
     public Transform tradereceive_myPlayerContent;
     public Transform tradereceive_opponentContent;
-    public TextMeshProUGUI tradereceive_myPlayerMoney;
-    public TextMeshProUGUI tradereceive_opponentMoney;
+    public Text tradereceive_myPlayerMoney;
+    public Text tradereceive_opponentMoney;
+    public GameObject tradereceive_myPlayerMoney_Container;
+    public GameObject tradereceive_opponentMoney_Container;
+
+    [Header("Trade Result")]
+    public GameObject tradeResultPanel;
+    public GameObject tr_accept;
+    public GameObject tr_decline;
 
     #endregion
 
@@ -1252,8 +1230,8 @@ public class UIManager : MonoBehaviour
             Destroy(tradeoffer_opponentContent.GetChild(i).gameObject);
         }
 
-        _Table.ShowTradeItem(_Table.getCurrentPlayer(), tradeoffer_myPlayerContent, trade_property);
-        _Table.ShowTradeItem(trade_currentOpppnent, tradeoffer_opponentContent, trade_property);
+        _Table.ShowTradeItem(_Table.getCurrentPlayer(), tradeoffer_myPlayerContent, trade_property, false);
+        _Table.ShowTradeItem(trade_currentOpppnent, tradeoffer_opponentContent, trade_property, true);
     }
 
     public void OnClick_Trade_PrevPlayer()
@@ -1266,7 +1244,7 @@ public class UIManager : MonoBehaviour
         trade_currentOpppnent = _Table.SwitchWithoutPlayer(trade_currentOpppnent, _Table.getCurrentPlayer(), false);
         tradeoffer_selectedPlayer.text = trade_currentOpppnent.playerName;
         tradeoffer_opponentMoney.text = "Maximum: " + trade_currentOpppnent.playerMoney + " coin(s)";
-        _Table.ShowTradeItem(trade_currentOpppnent, tradeoffer_opponentContent, trade_property);
+        _Table.ShowTradeItem(trade_currentOpppnent, tradeoffer_opponentContent, trade_property, true);
         AutoCorrect_InputField();
     }
 
@@ -1281,7 +1259,7 @@ public class UIManager : MonoBehaviour
         trade_currentOpppnent = _Table.SwitchWithoutPlayer(trade_currentOpppnent, _Table.getCurrentPlayer(), true);
         tradeoffer_selectedPlayer.text = trade_currentOpppnent.playerName;
         tradeoffer_opponentMoney.text = "Maximum: " + trade_currentOpppnent.playerMoney + " coin(s)";
-        _Table.ShowTradeItem(trade_currentOpppnent, tradeoffer_opponentContent, trade_property);
+        _Table.ShowTradeItem(trade_currentOpppnent, tradeoffer_opponentContent, trade_property, true);
         AutoCorrect_InputField();
     }
 
@@ -1354,6 +1332,13 @@ public class UIManager : MonoBehaviour
 
         _Table.PlayerPayForPlayer(trade_currentOpppnent, _Table.getCurrentPlayer(), int.Parse(tradeoffer_opponentMoneyValue.text));
 
+        OnClick_ActionsClose();
+        ShowTradeResult(true);
+    }
+
+    public void OnClick_Trade_Decline()
+    {
+        ShowTradeResult(false);
         OnClick_ActionsClose();
     }
 
@@ -1492,6 +1477,7 @@ public class UIManager : MonoBehaviour
         {
             GameObject temp = Instantiate(card.gameObject, tradereceive_myPlayerContent);
             temp.GetComponent<PropertyCard>().isTrade = false;
+            temp.GetComponent<PropertyCard>().tradeLeft = true;
             temp.GetComponent<PropertyCard>().selectedMask.SetActive(false);
         }
 
@@ -1499,26 +1485,119 @@ public class UIManager : MonoBehaviour
         {
             GameObject temp = Instantiate(card.gameObject, tradereceive_opponentContent);
             temp.GetComponent<PropertyCard>().isTrade = false;
+            temp.GetComponent<PropertyCard>().tradeLeft = false;
             temp.GetComponent<PropertyCard>().selectedMask.SetActive(false);
         }
 
         //Money part
         if (tradeoffer_myPlayerMoneyValue.text == "" || tradeoffer_myPlayerMoneyValue.text == "0")
         {
-            tradereceive_myPlayerMoney.text = "0$";
+            tradereceive_myPlayerMoney.text = "0";
+            tradereceive_myPlayerMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(1, true);
         }
         else
         {
-            tradereceive_myPlayerMoney.text = tradeoffer_myPlayerMoneyValue.text + "$";
+            tradereceive_myPlayerMoney.text = tradeoffer_myPlayerMoneyValue.text;
+            if (int.Parse(tradeoffer_myPlayerMoneyValue.text) >= 0 && int.Parse(tradeoffer_myPlayerMoneyValue.text) < 10)
+            {
+                tradereceive_myPlayerMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(1, true);
+            }
+            else if (int.Parse(tradeoffer_myPlayerMoneyValue.text) >= 10 && int.Parse(tradeoffer_myPlayerMoneyValue.text) < 100)
+            {
+                tradereceive_myPlayerMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(2, true);
+            }
+            else if (int.Parse(tradeoffer_myPlayerMoneyValue.text) >= 100 && int.Parse(tradeoffer_myPlayerMoneyValue.text) < 1000)
+            {
+                tradereceive_myPlayerMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(3, true);
+            }
+            else if (int.Parse(tradeoffer_myPlayerMoneyValue.text) >= 1000 && int.Parse(tradeoffer_myPlayerMoneyValue.text) < 10000)
+            {
+                tradereceive_myPlayerMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(4, true);
+            }
+            else if (int.Parse(tradeoffer_myPlayerMoneyValue.text) >= 10000)
+            {
+                tradereceive_myPlayerMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(5, true);
+            }
         }
 
         if (tradeoffer_opponentMoneyValue.text == "" || tradeoffer_opponentMoneyValue.text == "0")
         {
-            tradereceive_opponentMoney.text = "0$";
+            tradereceive_opponentMoney.text = "0";
+            tradereceive_opponentMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(1, false);
         }
         else
         {
-            tradereceive_opponentMoney.text = tradeoffer_opponentMoneyValue.text + "$";
+            tradereceive_opponentMoney.text = tradeoffer_opponentMoneyValue.text;
+            if (int.Parse(tradeoffer_opponentMoneyValue.text) >= 0 && int.Parse(tradeoffer_opponentMoneyValue.text) < 10)
+            {
+                tradereceive_opponentMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(1, false);
+            }
+            else if (int.Parse(tradeoffer_opponentMoneyValue.text) >= 10 && int.Parse(tradeoffer_opponentMoneyValue.text) < 100)
+            {
+                tradereceive_opponentMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(2, false);
+            }
+            else if (int.Parse(tradeoffer_opponentMoneyValue.text) >= 100 && int.Parse(tradeoffer_opponentMoneyValue.text) < 1000)
+            {
+                tradereceive_opponentMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(3, false);
+            }
+            else if (int.Parse(tradeoffer_opponentMoneyValue.text) >= 1000 && int.Parse(tradeoffer_opponentMoneyValue.text) < 10000)
+            {
+                tradereceive_opponentMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(4, false);
+            }
+            else if (int.Parse(tradeoffer_opponentMoneyValue.text) >= 10000)
+            {
+                tradereceive_opponentMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(5, false);
+            }
+        }
+
+        Vector2 ContainerSetPos(int numOfChar, bool isLeft)
+        {
+            if (isLeft)
+            {
+                if (numOfChar == 1)
+                {
+                    return new Vector2(-277.8f, -536f);
+                }
+                else if (numOfChar == 2)
+                {
+                    return new Vector2(-266.5f, -536f);
+                }
+                else if (numOfChar == 3)
+                {
+                    return new Vector2(-255.8f, -536f);
+                }
+                else if (numOfChar == 4)
+                {
+                    return new Vector2(-242.6f, -536f);
+                }
+                else
+                {
+                    return new Vector2(-228.5f, -536f);
+                }
+            }
+            else
+            {
+                if (numOfChar == 1)
+                {
+                    return new Vector2(170.2f, -536f);
+                }
+                else if (numOfChar == 2)
+                {
+                    return new Vector2(183.3f, -536f);
+                }
+                else if (numOfChar == 3)
+                {
+                    return new Vector2(197.4f, -536f);
+                }
+                else if (numOfChar == 4)
+                {
+                    return new Vector2(210.1f, -536f);
+                }
+                else
+                {
+                    return new Vector2(222.1f, -536f);
+                }
+            }
         }
     }
 
@@ -1584,6 +1663,10 @@ public class UIManager : MonoBehaviour
     {
         standOnInformationPanel.SetActive(true);
         colorPropertyInformationCard.SetActive(true);
+
+        supriseInformationCard.SetActive(false);
+        specialPropertyInformationCard.SetActive(false);
+
         OnEnable_StandOnPanel(colorPropertyInformationCard);
         Vector2 pos  = Camera.main.WorldToScreenPoint(_Table.transform.position);
         cpi_showButtonPanel.SetActive(true);
@@ -1659,7 +1742,7 @@ public class UIManager : MonoBehaviour
                 timeConsumed = 1.5f;
             }
             while (timeConsumed < 1.5f);
-            OnDisable_Panel(specialPropertyInformationCard, standOnInformationPanel);
+            OnDisable_Panel(colorPropertyInformationCard, standOnInformationPanel);
             HideInformationCard();
         }
         StartCoroutine(wait());
@@ -1672,6 +1755,10 @@ public class UIManager : MonoBehaviour
     {
         standOnInformationPanel.SetActive(true);
         specialPropertyInformationCard.SetActive(true);
+
+        colorPropertyInformationCard.SetActive(false);
+        supriseInformationCard.SetActive(false);
+
         OnEnable_StandOnPanel(specialPropertyInformationCard);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         specialPropertyInformationCard.transform.position = pos;
@@ -1763,6 +1850,10 @@ public class UIManager : MonoBehaviour
         int communityChestNumber = _Table.getSlot(slotNumber).supriseSlot.DrawCommunityChest();
         standOnInformationPanel.SetActive(true);
         supriseInformationCard.SetActive(true);
+
+        colorPropertyInformationCard.SetActive(false);
+        specialPropertyInformationCard.SetActive(false);
+
         OnEnable_StandOnPanel(supriseInformationCard);
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
         supriseInformationCard.transform.position = pos;
@@ -1919,9 +2010,9 @@ public class UIManager : MonoBehaviour
 
                 timeConsumed += .2f;
             }
-            while (timeConsumed < 3 && supriseInformationCard.activeSelf);
+            while (timeConsumed < 1.5f);
 
-            if (timeConsumed > 3)
+            if (timeConsumed > 1.5f)
             {
                 OnClick_Done();
             }
@@ -2115,181 +2206,153 @@ public class UIManager : MonoBehaviour
     public void ShowAuction(int slotNumber, Player currentPlayer, int currentPrice, Player playerWithHighestBid)
     {
         auctionPanel.SetActive(true);
-        auctionInformationPanel.SetActive(true);
+        
+        foreach (Player p in _Table.player)
+        {
+            p.inAuction = true;
+        }
 
-        OnEnable_Auction(auctionInformationPanel);
+        OnEnable_Auction(auctionInformationPanel); //enable panel
 
+        //set position for panel
         Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
-        auctionInformationPanel.transform.position = pos;
+        auctionInformationPanel.transform.position = pos; 
 
+        //Set card information
         if (_Table.getSlot(slotNumber).slotType == Slot_Type.ColorProperty)
         {
-            acp_colorPropertyPanel.SetActive(true);
+            ai_colorPropertyCard.gameObject.SetActive(true);
+            ai_specialPropertyCard.gameObject.SetActive(false);
 
-            acp_propertyName.text = _Table.getSlot(slotNumber).getSlotName().ToUpper();
-            acp_rentPrice.text = "RENT $" + _Table.getSlot(slotNumber).getPropertyRentUI(0).ToString();
-            acp_rentDescription.text = "Rent is doubled on owning all unimproved sites in the group.";
-            acp_house1.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(1).ToString();
-            acp_house2.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(2).ToString();
-            acp_house3.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(3).ToString();
-            acp_house4.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(4).ToString();
-            acp_hotel.text = "$" + _Table.getSlot(slotNumber).getPropertyRentUI(5).ToString();
-            acp_buildPrice.text = "Contruction $" + _Table.getSlot(slotNumber).getBuildPrice().ToString() + " each";
-            acp_mortgagePrice.text = "Mortgage $" + _Table.getSlot(slotNumber).getMortgagePrice().ToString() + " each";
-
-            if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Brown)
-            {
-                acp_brownCard.SetActive(true);
-                acp_blueCard.SetActive(false);
-                acp_greenCard.SetActive(false);
-                acp_orangeCard.SetActive(false);
-                acp_pinkCard.SetActive(false);
-                acp_purpleCard.SetActive(false);
-                acp_redCard.SetActive(false);
-                acp_yellowCard.SetActive(false);
-            }
-            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Blue)
-            {
-                acp_brownCard.SetActive(false);
-                acp_blueCard.SetActive(true);
-                acp_greenCard.SetActive(false);
-                acp_orangeCard.SetActive(false);
-                acp_pinkCard.SetActive(false);
-                acp_purpleCard.SetActive(false);
-                acp_redCard.SetActive(false);
-                acp_yellowCard.SetActive(false);
-            }
-            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Green)
-            {
-                acp_brownCard.SetActive(false);
-                acp_blueCard.SetActive(false);
-                acp_greenCard.SetActive(true);
-                acp_orangeCard.SetActive(false);
-                acp_pinkCard.SetActive(false);
-                acp_purpleCard.SetActive(false);
-                acp_redCard.SetActive(false);
-                acp_yellowCard.SetActive(false);
-            }
-            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Orange)
-            {
-                acp_brownCard.SetActive(false);
-                acp_blueCard.SetActive(false);
-                acp_greenCard.SetActive(false);
-                acp_orangeCard.SetActive(true);
-                acp_pinkCard.SetActive(false);
-                acp_purpleCard.SetActive(false);
-                acp_redCard.SetActive(false);
-                acp_yellowCard.SetActive(false);
-            }
-            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Pink)
-            {
-                acp_brownCard.SetActive(false);
-                acp_blueCard.SetActive(false);
-                acp_greenCard.SetActive(false);
-                acp_orangeCard.SetActive(false);
-                acp_pinkCard.SetActive(true);
-                acp_purpleCard.SetActive(false);
-                acp_redCard.SetActive(false);
-                acp_yellowCard.SetActive(false);
-            }
-            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Purple)
-            {
-                acp_brownCard.SetActive(false);
-                acp_blueCard.SetActive(false);
-                acp_greenCard.SetActive(false);
-                acp_orangeCard.SetActive(false);
-                acp_pinkCard.SetActive(false);
-                acp_purpleCard.SetActive(true);
-                acp_redCard.SetActive(false);
-                acp_yellowCard.SetActive(false);
-            }
-            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Red)
-            {
-                acp_brownCard.SetActive(false);
-                acp_blueCard.SetActive(false);
-                acp_greenCard.SetActive(false);
-                acp_orangeCard.SetActive(false);
-                acp_pinkCard.SetActive(false);
-                acp_purpleCard.SetActive(false);
-                acp_redCard.SetActive(true);
-                acp_yellowCard.SetActive(false);
-            }
-            else if (_Table.getSlot(slotNumber).colorProperty.propertyColor == ColorProperty_Color.Yellow)
-            {
-                acp_brownCard.SetActive(false);
-                acp_blueCard.SetActive(false);
-                acp_greenCard.SetActive(false);
-                acp_orangeCard.SetActive(false);
-                acp_pinkCard.SetActive(false);
-                acp_purpleCard.SetActive(false);
-                acp_redCard.SetActive(false);
-                acp_yellowCard.SetActive(true);
-            }
+            ai_colorPropertyCard.ShowCard(slotNumber);
         }
         else if (_Table.getSlot(slotNumber).slotType == Slot_Type.SpecialProperty)
         {
-            asp_specialPropertyPanel.SetActive(true);
+            ai_colorPropertyCard.gameObject.SetActive(false);
+            ai_specialPropertyCard.gameObject.SetActive(true);
 
-            if (_Table.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.RailRoad)
-            {
-                asp_railroad_Panel.SetActive(true);
-                asp_utilities_Panel.SetActive(false);
-
-                asp_rr_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
-            }
-            else if (_Table.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.Utility)
-            {
-                asp_railroad_Panel.SetActive(false);
-                asp_utilities_Panel.SetActive(true);
-
-                if (_Table.getSlot(slotNumber).specialProperty.utilityType == Utility_Type.WaterRorks)
-                {
-                    asp_ut_waterWorks_Image.SetActive(true);
-                    asp_ut_electricCompany_Image.SetActive(false);
-                    asp_ut_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
-                }
-                else if (_Table.getSlot(slotNumber).specialProperty.utilityType == Utility_Type.ElectricCompany)
-                {
-                    asp_ut_waterWorks_Image.SetActive(false);
-                    asp_ut_electricCompany_Image.SetActive(true);
-                    asp_ut_propertyName.text = _Table.getSlot(slotNumber).getSlotName();
-                }
-            }
+            ai_specialPropertyCard.ShowCard(slotNumber);
         }
 
-        if (currentPlayer.playerMoney < currentPrice + 10) //just can withdraw
-        {
-            ai_smallBid.interactable = false;
-            ai_bigBid.interactable = false;
-            ai_withdraw.interactable = true;
-        }
-        else if (currentPlayer.playerMoney < currentPrice + 100) //can small bid
-        {
-            ai_smallBid.interactable = true;
-            ai_bigBid.interactable = false;
-            ai_withdraw.interactable = true;
-        }
-        else //can big bid
-        {
-            ai_smallBid.interactable = true;
-            ai_bigBid.interactable = true;
-            ai_withdraw.interactable = true;
-        }
+        //turn on buttons with cooldown
+        StartCoroutine(buttonCooldown());
 
         //update currentPlayer and currentPrice
-        ai_currentPlayerTurn.text = "Current Turn\n" + currentPlayer.playerName;
+        ai_currentPlayerTurn.text = currentPlayer.playerName;
         if (playerWithHighestBid == null)
         {
-            ai_currentPrice.text = "Current Price: " + currentPrice + "$ (None)";
+            ai_currentPrice.text = currentPrice.ToString();
+
+            if (currentPrice >= 0 && currentPrice < 10)
+            {
+                ai_currentPrice_Container.GetComponent<RectTransform>().localPosition = TextSetPos(1);
+            }
+            else if (currentPrice >= 10 && currentPrice < 100)
+            {
+                ai_currentPrice_Container.GetComponent<RectTransform>().localPosition = TextSetPos(2);
+            }
+            else if (currentPrice >= 100 && currentPrice < 1000)
+            {
+                ai_currentPrice_Container.GetComponent<RectTransform>().localPosition = TextSetPos(3);
+            }
+            else if (currentPrice >= 1000 && currentPrice < 10000)
+            {
+                ai_currentPrice_Container.GetComponent<RectTransform>().localPosition = TextSetPos(4);
+            }
+            else 
+            {
+                ai_currentPrice_Container.GetComponent<RectTransform>().localPosition = TextSetPos(5);
+            }
+
+            ai_currentPrice_Player.text = "NONE";
         }
         else
         {
-            ai_currentPrice.text = "Current Price: " + currentPrice + "$ (" + playerWithHighestBid.playerName + ")";
+            ai_currentPrice.text = currentPrice.ToString();
+
+            if (currentPrice >= 0 && currentPrice < 10)
+            {
+                ai_currentPrice_Container.GetComponent<RectTransform>().localPosition = TextSetPos(1);
+            }
+            else if (currentPrice >= 10 && currentPrice < 100)
+            {
+                ai_currentPrice_Container.GetComponent<RectTransform>().localPosition = TextSetPos(2);
+            }
+            else if (currentPrice >= 100 && currentPrice < 1000)
+            {
+                ai_currentPrice_Container.GetComponent<RectTransform>().localPosition = TextSetPos(3);
+            }
+            else if (currentPrice >= 1000 && currentPrice < 10000)
+            {
+                ai_currentPrice_Container.GetComponent<RectTransform>().localPosition = TextSetPos(4);
+            }
+            else
+            {
+                ai_currentPrice_Container.GetComponent<RectTransform>().localPosition = TextSetPos(5);
+            }
+
+            ai_currentPrice_Player.text = playerWithHighestBid.playerName;
+        }
+
+        Vector2 TextSetPos(int numOfChar)
+        {
+            if (numOfChar == 1)
+            {
+                return new Vector2(-34f, 0f);
+            }
+            else if (numOfChar == 2)
+            {
+                return new Vector2(-28.3f, 0f);
+            }
+            else if (numOfChar == 3)
+            {
+                return new Vector2(-18.7f, 0f);
+            }
+            else if (numOfChar == 4)
+            {
+                return new Vector2(-9.6f, 0f);
+            }
+            else
+            {
+                return new Vector2(0f, 0f);
+            }
+        } //Set Position for Price + Image
+
+        IEnumerator buttonCooldown() //Set cooldown for buttons
+        {
+            ai_smallBid.interactable = false;
+            ai_bigBid.interactable = false;
+            ai_withdraw.interactable = false;
+
+            yield return new WaitForSeconds(.5f);
+
+            if (currentPlayer.playerMoney < currentPrice + 10) //just can withdraw
+            {
+                ai_smallBid.interactable = false;
+                ai_bigBid.interactable = false;
+                ai_withdraw.interactable = true;
+            }
+            else if (currentPlayer.playerMoney < currentPrice + 100) //can small bid
+            {
+                ai_smallBid.interactable = true;
+                ai_bigBid.interactable = false;
+                ai_withdraw.interactable = true;
+            }
+            else //can big bid
+            {
+                ai_smallBid.interactable = true;
+                ai_bigBid.interactable = true;
+                ai_withdraw.interactable = true;
+            }
         }
     }
     
     public void CloseAuction(int slotNumber, Player playerWin, Player playerStart, int currentPrice, bool isWin)
     {
+        ai_smallBid.interactable = false;
+        ai_bigBid.interactable = false;
+        ai_withdraw.interactable = false;
+
         if (isWin)
         {
             OnDisable_Panel(auctionInformationPanel, auctionPanel);
@@ -2307,6 +2370,7 @@ public class UIManager : MonoBehaviour
         foreach (Player p in _Table.player) //reset lai luojt tham gia auction cua nguoi choi
         {
             p.joinAuction = true;
+            p.inAuction = false;
         }
 
         if (playerStart.hasSecondTurn) //sua loi hien xuc sac khi dau gia xong
@@ -2432,8 +2496,9 @@ public class UIManager : MonoBehaviour
 
         //Auction
         //auctionPanel.SetActive(false);
-        acp_colorPropertyPanel.SetActive(false);
-        asp_specialPropertyPanel.SetActive(false);
+        OnDisable_Panel(auctionInformationPanel, auctionPanel);
+        //acp_colorPropertyPanel.SetActive(false);
+        //asp_specialPropertyPanel.SetActive(false);
 
         MoneyUpdate();
         _Table.getCurrentPlayer().CheckBankruptcy();
@@ -2441,6 +2506,31 @@ public class UIManager : MonoBehaviour
     }
 
     #endregion
+
+    //Trade Result
+    public void ShowTradeResult(bool isAccept)
+    {
+        IEnumerator start()
+        {
+            if (isAccept)
+            {
+                tr_decline.SetActive(false);
+                tradeResultPanel.SetActive(true);
+                OnEnable_Auction(tr_accept);
+                yield return new WaitForSeconds(1f);
+                OnDisable_Panel(tr_accept, tradeResultPanel);
+            }
+            else
+            {
+                tr_accept.SetActive(false);
+                tradeResultPanel.SetActive(true);
+                OnEnable_Auction(tr_decline);
+                yield return new WaitForSeconds(1f);
+                OnDisable_Panel(tr_decline, tradeResultPanel);
+            }
+        }
+        StartCoroutine(start());
+    }
 
     //Show Board
     //
@@ -2612,8 +2702,9 @@ public class UIManager : MonoBehaviour
     {
         if (!panel.activeSelf)
         {
+            auctionInformationPanel.SetActive(true);
             panel.transform.localScale = new Vector2(0, 0);
-            panel.transform.LeanScale(Scale_AuctionPanel(), .25f).setEaseOutBack();
+            panel.transform.LeanScale(new Vector2(1, 1), .25f).setEaseOutBack();
         }
     }
 
@@ -2629,8 +2720,32 @@ public class UIManager : MonoBehaviour
         panel.transform.LeanScale(Scale_OnClickPanel(), .25f).setEaseOutBack();
     }
 
+    public void Onenable_OnClick_TradeResult(GameObject panel)
+    {
+        panel.transform.localScale = new Vector2(0, 0);
+        panel.transform.LeanScale(Vector2.one, .25f).setEaseOutBack();
+        panel.GetComponent<RectTransform>().localPosition = Vector2.zero;
+    }
+
     public void OnDisable_Panel(GameObject panel, GameObject parentPanel)
     {
-        panel.transform.LeanScale(new Vector2(0, 0), .25f).setEaseInBack().setOnComplete(() => { panel.SetActive(false); parentPanel.SetActive(false); });
+        if (!panel.activeSelf)
+        {
+            panel.transform.LeanScale(new Vector2(0, 0), .25f).setEaseInBack().setOnComplete(() =>
+            {
+                panel.SetActive(false);
+                IEnumerator start()
+                {
+                    for (float f = 0; f <= .2f; f += Time.deltaTime)
+                    {
+                        parentPanel.GetComponent<Image>().color = new Vector4(0, 0, 0, Mathf.Lerp(0.3529412f, 0f, f / .15f));
+                        //standOnInformationCasvasGroup.alpha = Mathf.Lerp(0f, 1f, f / .15f);
+                        yield return null;
+                    }
+                    parentPanel.SetActive(false);
+                }
+                StartCoroutine(start());
+            });
+            }
     }
 }
