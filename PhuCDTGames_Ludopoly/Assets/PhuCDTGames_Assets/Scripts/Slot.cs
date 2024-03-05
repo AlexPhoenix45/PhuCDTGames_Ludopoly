@@ -65,6 +65,28 @@ public class Slot : MonoBehaviour
     [Header("Slot Position")]
     public int numOfPlayerInSlot = 0;
 
+    public Transform outJail_1P;
+    public Transform outJail_2P1;
+    public Transform outJail_2P2;
+    public Transform outJail_3P1;
+    public Transform outJail_3P2;
+    public Transform outJail_3P3;
+    public Transform outJail_4P1;
+    public Transform outJail_4P2;
+    public Transform outJail_4P3;
+    public Transform outJail_4P4;
+
+    public Transform inJail_1P;
+    public Transform inJail_2P1;
+    public Transform inJail_2P2;
+    public Transform inJail_3P1;
+    public Transform inJail_3P2;
+    public Transform inJail_3P3;
+    public Transform inJail_4P1;
+    public Transform inJail_4P2;
+    public Transform inJail_4P3;
+    public Transform inJail_4P4;
+
     private void Start()
     {
         DisplaySlot();
@@ -536,52 +558,167 @@ public class Slot : MonoBehaviour
     {
         temp_playerOnSlot.Clear();
         temp_playerOnSlot = playerOnSlot;
-        if (playerOnSlot.Count == 1)
+        if (slotIndex >= 0 && slotIndex < 10 || slotIndex >= 20 && slotIndex <= 30)
         {
-            LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y), .25f).setEaseInOutCirc();
-        }
-        else if (playerOnSlot.Count == 2)
+            if (playerOnSlot.Count == 1)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y), .25f).setEaseInOutCirc();
+            }
+            else if (playerOnSlot.Count == 2)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x + .1f, gameObject.transform.position.y + .1f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.1f, gameObject.transform.position.y + -.1f), .25f).setEaseInOutCirc();
+            }
+            else if (playerOnSlot.Count == 3)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x + .1f, gameObject.transform.position.y + .1f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.1f, gameObject.transform.position.y + .1f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[2].gameObject, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + -.1f), .25f).setEaseInOutCirc();
+            }
+            else if (playerOnSlot.Count == 4)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x + .1f, gameObject.transform.position.y + .1f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.1f, gameObject.transform.position.y + .1f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[2].gameObject, new Vector3(gameObject.transform.position.x + .1f, gameObject.transform.position.y + -.1f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[3].gameObject, new Vector3(gameObject.transform.position.x + -.1f, gameObject.transform.position.y + -.1f), .25f).setEaseInOutCirc();
+            }
+        }    //Top and Bottom slots
+        else if (slotIndex > 10 && slotIndex <= 20 || slotIndex >= 30 && slotIndex <= 39)
         {
-            LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x + .1f, gameObject.transform.position.y + .1f), .25f).setEaseInOutCirc();
-            LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.1f, gameObject.transform.position.y + -.1f), .25f).setEaseInOutCirc();
-        }
-        else if (playerOnSlot.Count == 3)
+            if (playerOnSlot.Count == 1)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y), .25f).setEaseInOutCirc();
+            }
+            else if (playerOnSlot.Count == 2)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x + .15f, gameObject.transform.position.y + .08f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.15f, gameObject.transform.position.y + -.08f), .25f).setEaseInOutCirc();
+            }
+            else if (playerOnSlot.Count == 3)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x + .15f, gameObject.transform.position.y + .08f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.15f, gameObject.transform.position.y + .08f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[2].gameObject, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + -.08f), .25f).setEaseInOutCirc();
+            }
+            else if (playerOnSlot.Count == 4)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x + .15f, gameObject.transform.position.y + .08f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.15f, gameObject.transform.position.y + .08f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[2].gameObject, new Vector3(gameObject.transform.position.x + .15f, gameObject.transform.position.y + -.08f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[3].gameObject, new Vector3(gameObject.transform.position.x + -.15f, gameObject.transform.position.y + -.08f), .25f).setEaseInOutCirc();
+            }
+        } //Right and Left slots
+        else //Jail Slot
         {
-            LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x + .1f, gameObject.transform.position.y + .1f), .25f).setEaseInOutCirc();
-            LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.1f, gameObject.transform.position.y + .1f), .25f).setEaseInOutCirc();
-            LeanTween.move(playerOnSlot[2].gameObject, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + -.1f), .25f).setEaseInOutCirc();
-        }
-        else if (playerOnSlot.Count == 4)
-        {
-            LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x + .1f, gameObject.transform.position.y + .1f), .25f).setEaseInOutCirc();
-            LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.1f, gameObject.transform.position.y + .1f), .25f).setEaseInOutCirc();
-            LeanTween.move(playerOnSlot[2].gameObject, new Vector3(gameObject.transform.position.x + .1f, gameObject.transform.position.y + -.1f), .25f).setEaseInOutCirc();
-            LeanTween.move(playerOnSlot[3].gameObject, new Vector3(gameObject.transform.position.x + -.1f, gameObject.transform.position.y + -.1f), .25f).setEaseInOutCirc();
+            int numOfPlayerInJail = 0;
+            foreach (var item in playerOnSlot)
+            {
+                if (item.isInJail)
+                {
+                    numOfPlayerInJail++;
+                }
+            }
+
+            int numOfPlayerOutJail = playerOnSlot.Count - numOfPlayerInJail;
+
+            if (numOfPlayerOutJail == 1)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector2(-5.85f + 5.3f, -5.75f + 5.3f), .25f).setEaseInOutCirc();
+            }
+            else if (numOfPlayerOutJail == 2)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(-5.93f + 5.3f, -5.2f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(-5.2f + 5.3f, -5.75f + 5.3f), .25f).setEaseInOutCirc();
+            }
+            else if (numOfPlayerOutJail == 3)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(-5.85f + 5.3f, -5.75f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(-5.93f + 5.3f, -5.2f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[2].gameObject, new Vector3(-5.2f + 5.3f, -5.75f + 5.3f), .25f).setEaseInOutCirc();
+            }
+            else if (numOfPlayerOutJail == 4)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(-5.93f + 5.3f, -4.8f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(-5.93f + 5.3f, -5.4f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[2].gameObject, new Vector3(-5.5f + 5.3f, -5.75f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[3].gameObject, new Vector3(-4.85f + 5.3f, -5.75f + 5.3f), .25f).setEaseInOutCirc();
+            }
+
+            if (numOfPlayerInJail == 1)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(-5.13f + 5.3f, -5.15f + 5.3f), .25f).setEaseInOutCirc();
+            }
+            else if (numOfPlayerInJail == 2)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(-5.48f + 5.3f, -5.4f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(-4.85f + 5.3f, -4.95f + 5.3f), .25f).setEaseInOutCirc();
+            }
+            else if (numOfPlayerInJail == 3)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(-5.48f + 5.3f, -4.95f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(-4.85f + 5.3f, -4.95f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[2].gameObject, new Vector3(-5.18f + 5.3f, -5.4f + 5.3f), .25f).setEaseInOutCirc();
+            }
+            else if (numOfPlayerInJail == 4)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(-5.48f + 5.3f, -4.95f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(-4.85f + 5.3f, -4.95f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[2].gameObject, new Vector3(-5.48f + 5.3f, -5.4f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(playerOnSlot[3].gameObject, new Vector3(-4.85f + 5.3f, -5.4f + 5.3f), .25f).setEaseInOutCirc();
+            }
         }
     }
     public void setPlayerLeave(List<Player> playerOnSlot)
     {
-        if (playerOnSlot.Count == 1)
+        if (slotIndex >= 0 && slotIndex < 10 || slotIndex >= 20 && slotIndex <= 30)
         {
-            LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y), .15f).setDelay(.5f);
+            if (playerOnSlot.Count == 1)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y), .15f).setDelay(.5f);
+            }
+            else if (playerOnSlot.Count == 2)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x + .1f, gameObject.transform.position.y + .1f), .15f).setDelay(.5f);
+                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.1f, gameObject.transform.position.y + -.1f), .15f).setDelay(.5f);
+            }
+            else if (playerOnSlot.Count == 3)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x + .1f, gameObject.transform.position.y + .1f), .15f).setDelay(.5f);
+                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.1f, gameObject.transform.position.y + .1f), .15f).setDelay(.5f);
+                LeanTween.move(playerOnSlot[2].gameObject, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + -.1f), .15f).setDelay(.5f);
+            }
+            else if (playerOnSlot.Count == 4)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x + .1f, gameObject.transform.position.y + .1f), .15f).setDelay(.5f);
+                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.1f, gameObject.transform.position.y + .1f), .15f).setDelay(.5f);
+                LeanTween.move(playerOnSlot[2].gameObject, new Vector3(gameObject.transform.position.x + .1f, gameObject.transform.position.y + -.1f), .15f).setDelay(.5f);
+                LeanTween.move(playerOnSlot[3].gameObject, new Vector3(gameObject.transform.position.x + -.1f, gameObject.transform.position.y + -.1f), .15f).setDelay(.5f);
+            }
         }
-        else if (playerOnSlot.Count == 2)
+        else if (slotIndex > 10 && slotIndex <= 20 || slotIndex >= 30 && slotIndex <= 39)
         {
-            LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x + .1f, gameObject.transform.position.y + .1f), .15f).setDelay(.5f);
-            LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.1f, gameObject.transform.position.y + -.1f), .15f).setDelay(.5f);
-        }
-        else if (playerOnSlot.Count == 3)
-        {
-            LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x + .1f, gameObject.transform.position.y + .1f), .15f).setDelay(.5f);
-            LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.1f, gameObject.transform.position.y + .1f), .15f).setDelay(.5f);
-            LeanTween.move(playerOnSlot[2].gameObject, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + -.1f), .15f).setDelay(.5f);
-        }
-        else if (playerOnSlot.Count == 4)
-        {
-            LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x + .1f, gameObject.transform.position.y + .1f), .15f).setDelay(.5f);
-            LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.1f, gameObject.transform.position.y + .1f), .15f).setDelay(.5f);
-            LeanTween.move(playerOnSlot[2].gameObject, new Vector3(gameObject.transform.position.x + .1f, gameObject.transform.position.y + -.1f), .15f).setDelay(.5f);
-            LeanTween.move(playerOnSlot[3].gameObject, new Vector3(gameObject.transform.position.x + -.1f, gameObject.transform.position.y + -.1f), .15f).setDelay(.5f);
+            if (playerOnSlot.Count == 1)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y), .15f).setDelay(.5f);
+            }
+            else if (playerOnSlot.Count == 2)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x + .15f, gameObject.transform.position.y + .08f), .15f).setDelay(.5f);
+                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.15f, gameObject.transform.position.y + -.08f), .15f).setDelay(.5f);
+            }
+            else if (playerOnSlot.Count == 3)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x + .15f, gameObject.transform.position.y + .08f), .15f).setDelay(.5f);
+                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.15f, gameObject.transform.position.y + .08f), .15f).setDelay(.5f);
+                LeanTween.move(playerOnSlot[2].gameObject, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + -.08f), .15f).setDelay(.5f);
+            }
+            else if (playerOnSlot.Count == 4)
+            {
+                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(gameObject.transform.position.x + .15f, gameObject.transform.position.y + .08f), .15f).setDelay(.5f);
+                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.15f, gameObject.transform.position.y + .08f), .15f).setDelay(.5f);
+                LeanTween.move(playerOnSlot[2].gameObject, new Vector3(gameObject.transform.position.x + .15f, gameObject.transform.position.y + -.08f), .15f).setDelay(.5f);
+                LeanTween.move(playerOnSlot[3].gameObject, new Vector3(gameObject.transform.position.x + -.15f, gameObject.transform.position.y + -.08f), .15f).setDelay(.5f);
+            }
         }
     }
 

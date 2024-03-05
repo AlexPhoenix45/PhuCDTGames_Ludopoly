@@ -150,7 +150,8 @@ public class UIManager : MonoBehaviour
     [Header("Money")]
     public GameObject moneyPanel;
     public GameObject paidRentPanel;
-    public TextMeshProUGUI paidAmount;
+    public Text paidAmount;
+    public GameObject paidAmountContainer;
 
     [Header("Money - Paid Profile")]
     public GameObject pp_redPawn;
@@ -1008,18 +1009,35 @@ public class UIManager : MonoBehaviour
             cp_yellowPawn.SetActive(true);
         }
 
-        paidAmount.text = amount.ToString() + "$";
+        paidAmount.text = amount.ToString();
+
+        if (amount >= 0 && amount < 10)
+        {
+            paidAmountContainer.GetComponent<RectTransform>().localPosition = new Vector2(-33.3f, -6.5765f);
+        }
+        else if (amount >= 10 && amount < 100)
+        {
+            paidAmountContainer.GetComponent<RectTransform>().localPosition = new Vector2(-18.2f, -6.5765f);
+        }
+        else if (amount >= 100 && amount < 1000)
+        {
+            paidAmountContainer.GetComponent<RectTransform>().localPosition = new Vector2(-7.1f, -6.5765f);
+        }
+        else if (amount >= 1000)
+        { 
+            paidAmountContainer.GetComponent<RectTransform>().localPosition = new Vector2(5.5f, -6.5765f);
+        }
 
         IEnumerator wait()
         {
             float timeConsumed = 0f;
             do
             {
-                yield return new WaitForSeconds(1f);
-                timeConsumed = 1f;
+                yield return new WaitForSeconds(.2f);
+                timeConsumed += .2f;
             }
             while (timeConsumed < 1);
-            OnDisable_Panel(paidRentPanel, moneyPanel);
+            OnDisable_TransparentPanel(paidRentPanel, moneyPanel);
         }
         StartCoroutine(wait());
     }
@@ -1362,15 +1380,20 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            OnDisable_Panel(trade_illegalPanel, tradePanel);
-            OnDisable_Panel(trade_receivePanel, tradePanel);
-            OnDisable_Panel(trade_offerPanel, tradePanel);
+            OnDisable_TransparentPanel(trade_illegalPanel, tradePanel);
+            OnDisable_TransparentPanel(trade_receivePanel, tradePanel);
+            OnDisable_TransparentPanel(trade_offerPanel, tradePanel);
         }
 
-        OnDisable_Panel(buildPanel, mainActionPanel);
-        OnDisable_Panel(sellPanel, mainActionPanel);
-        OnDisable_Panel(mortgagePanel, mainActionPanel);
-        OnDisable_Panel(redeemPanel, mainActionPanel);
+        OnDisable_TransparentPanel(buildPanel, mainActionPanel);
+        OnDisable_TransparentPanel(sellPanel, mainActionPanel);
+        OnDisable_TransparentPanel(mortgagePanel, mainActionPanel);
+        OnDisable_TransparentPanel(redeemPanel, mainActionPanel);
+
+        foreach (GameObject slot in _Table.slot)
+        {
+            slot.GetComponent<Slot>().slotAction = SlotAction.Idle;
+        }
     }
 
     //Other Methods
@@ -1879,25 +1902,25 @@ public class UIManager : MonoBehaviour
                             cc_description.text = "Advance to Allah";
                             break;
                         case 1:
-                            cc_description.text = "Advance to Olympus (Collect $200)";
+                            cc_description.text = "Advance to Olympus (Collect 200 Coins)";
                             break;
                         case 2:
-                            cc_description.text = "Advance to Horus. If you pass Olympus, collect $200";
+                            cc_description.text = "Advance to Horus. If you pass Olympus, collect 200 Coins";
                             break;
                         case 3:
-                            cc_description.text = "Advance to Eros Place. If you pass Olympus, collect $200";
+                            cc_description.text = "Advance to Eros Place. If you pass Olympus, collect 200 Coins";
                             break;
                         case 4:
-                            cc_description.text = "Advance to the nearest Rainbow Bridge and pay owner twice the tribute to which they are otherwise entitled. If Rainbow Bridge is unclaimed, you may claim it from the gods.";
+                            cc_description.text = "Advance to the nearest Holy Road. If unowned, you may claim it from the gods. If owned, pay the owner twice the tribute to which they are otherwise entitled.";
                             break;
                         case 5:
-                            cc_description.text = "Advance to the nearest Rainbow Bridge and pay owner twice the tribute to which they are otherwise entitled. If Rainbow Bridge is unclaimed, you may claim it from the gods.";
+                            cc_description.text = "Advance to the nearest Holy Road. If unowned, you may claim it from the gods. If owned, pay the owner twice the tribute to which they are otherwise entitled.";
                             break;
                         case 6:
                             cc_description.text = "Advance token to nearest worship place. If unowned, you may consult it from the gods. If owned, throw dice and pay owner a total ten times amount thrown.";
                             break;
                         case 7:
-                            cc_description.text = "The gods reward you with $50";
+                            cc_description.text = "The gods reward you with 50 Coins";
                             break;
                         case 8:
                             cc_description.text = "Escape from Tartarus Free";
@@ -1906,22 +1929,22 @@ public class UIManager : MonoBehaviour
                             cc_description.text = "The Fates rewind your fate by 3 Spaces";
                             break;
                         case 10:
-                            cc_description.text = "Go to Tartarus. Go directly to Tartarus, do not pass Olympus, do not collect $200";
+                            cc_description.text = "Go to Tartarus. Go directly to Tartarus, do not pass Olympus, do not collect 200 Coins";
                             break;
                         case 11:
-                            cc_description.text = "Make offerings to the gods for all your property. For each house pay $25. For each hotel pay $100";
+                            cc_description.text = "Make offerings to the gods for all your property. For each house pay 25 Coins. For each hotel pay 100 Coins";
                             break;
                         case 12:
                             cc_description.text = "Hermes charges you $15 for using his winged sandals";
                             break;
                         case 13:
-                            cc_description.text = "Take a trip to Asgard. If you pass Olympus, collect $200";
+                            cc_description.text = "Take a trip to Rainbow Bridge. If you pass Olympus, collect 200 Coins";
                             break;
                         case 14:
-                            cc_description.text = "You have been elected King of the Gods. Pay each player $50";
+                            cc_description.text = "You have been elected King of the Gods. Pay each player 50 Coins";
                             break;
                         case 15:
-                            cc_description.text = "Your temple construction is complete. Collect $150";
+                            cc_description.text = "Your temple construction is complete. Collect 150 Coins";
                             break;
                         default:
                             break;
@@ -1938,52 +1961,52 @@ public class UIManager : MonoBehaviour
                     switch (communityChestNumber)
                     {
                         case 0:
-                            cc_description.text = "Advance to Olympus (Collect $200)";
+                            cc_description.text = "Advance to Olympus (Collect 200 Coins)";
                             break;
                         case 1:
-                            cc_description.text = "Divine favor in your favor. Collect $200";
+                            cc_description.text = "Divine favor in your favor. Collect 200 Coins";
                             break;
                         case 2:
-                            cc_description.text = "Healing fee. Pay $50";
+                            cc_description.text = "Healing fee. Pay 50 Coins";
                             break;
                         case 3:
-                            cc_description.text = "From trade with Midas you get $50";
+                            cc_description.text = "From trade with Midas you get 50 Coins";
                             break;
                         case 4:
                             cc_description.text = "Escape from Tartarus Free";
                             break;
                         case 5:
-                            cc_description.text = "Go to Tartarus. Go directly to Tartarus, do not pass Olympus, do not collect $200";
+                            cc_description.text = "Go to Tartarus. Go directly to Tartarus, do not pass Olympus, do not collect 200 Coins";
                             break;
                         case 6:
-                            cc_description.text = "Festival fund matures. Receive $100";
+                            cc_description.text = "Festival fund matures. Receive 100 Coins";
                             break;
                         case 7:
-                            cc_description.text = "Caesar’s tribute. Collect $20";
+                            cc_description.text = "Caesar’s tribute. Collect 20 Coins";
                             break;
                         case 8:
-                            cc_description.text = "It is your feast day. Collect $10 from every player";
+                            cc_description.text = "It is your feast day. Collect 10 Coins from every player";
                             break;
                         case 9:
-                            cc_description.text = "Reincarnation bonus. Collect $100";
+                            cc_description.text = "Reincarnation bonus. Collect 100 Coins";
                             break;
                         case 10:
-                            cc_description.text = "Pay healing fees of $100";
+                            cc_description.text = "Pay healing fees of 100 Coins";
                             break;
                         case 11:
-                            cc_description.text = "Pay academy fees of $50";
+                            cc_description.text = "Pay academy fees of 50 Coins";
                             break;
                         case 12:
-                            cc_description.text = "Receive $25 prophecy fee";
+                            cc_description.text = "Receive 25 Coins prophecy fee";
                             break;
                         case 13:
-                            cc_description.text = "You are assessed for temple repair. $40 per house. $115 per hotel";
+                            cc_description.text = "You are assessed for temple repair. 40 Coins per house. 115 Coins per hotel";
                             break;
                         case 14:
-                            cc_description.text = "You have impressed Aphrodite with your charm. Collect $10";
+                            cc_description.text = "You have impressed Aphrodite with your charm. Collect 10 Coins";
                             break;
                         case 15:
-                            cc_description.text = "You receive a blessing from your ancestors. Collect $100";
+                            cc_description.text = "You receive a blessing from your ancestors. Collect 100 Coins";
                             break;
                         default:
                             break;
@@ -2355,14 +2378,50 @@ public class UIManager : MonoBehaviour
 
         if (isWin)
         {
-            OnDisable_Panel(auctionInformationPanel, auctionPanel);
-            _Table.SwitchPlayer(playerWin);
-            _Table.Buy(slotNumber, currentPrice);
-            _Table.SwitchPlayer(playerStart);
+            StartCoroutine(start());
+            IEnumerator start()
+            {
+                print("called");
+                standOnInformationPanel.SetActive(false);
+                OnDisable_PanelForcedClose(auctionInformationPanel, auctionPanel);
+                yield return new WaitForSeconds(.5f);
+                _Table.SwitchPlayer(playerWin);
+
+                if (_Table.getSlot(slotNumber).slotType == Slot_Type.ColorProperty)
+                {
+                    cpi_colorPropertyCard.ChangeSlotPrice(currentPrice);
+                }
+                else if (_Table.getSlot(slotNumber).slotType == Slot_Type.SpecialProperty)
+                {
+                    sp_specialPropertyCard.ChangeSlotPrice(currentPrice);
+                }
+
+                _Table.Buy(slotNumber, currentPrice);
+                _Table.SwitchPlayer(playerStart);
+
+                foreach (Player p in _Table.player) //reset lai luojt tham gia auction cua nguoi choi
+                {
+                    p.joinAuction = true;
+                    p.inAuction = false;
+                }
+
+                if (playerStart.hasSecondTurn) //sua loi hien xuc sac khi dau gia xong
+                {
+                    DicesActive(true);
+                    DicesFacesActive();
+                }
+                else
+                {
+                    DicesActive(false);
+                    DicesFacesActive();
+                }
+            }
         }
         else
         {
-            OnDisable_Panel(auctionInformationPanel, auctionPanel);
+            print("called false");
+            standOnInformationPanel.SetActive(false);
+            OnDisable_PanelForcedClose(auctionInformationPanel, auctionPanel);
             _Table.SwitchPlayer(playerStart);
             HideInformationCard();
         }
@@ -2383,6 +2442,8 @@ public class UIManager : MonoBehaviour
             DicesActive(false);
             DicesFacesActive();
         }
+
+        _Table.auc_playerWithHighestBid = null; //fix loi khi dau gia xong van con luu lai playerWithHighestBid cu
     }
 
     //On-Click
@@ -2478,8 +2539,8 @@ public class UIManager : MonoBehaviour
 
     public void OnClick_CloseOnClickInformation()
     {
-        OnDisable_Panel(Onclick_SpecialPropertyInformationCard, Onclick_InformationPanel);
-        OnDisable_Panel(Onclick_ColorPropertyInformationCard, Onclick_InformationPanel);
+        OnDisable_TransparentPanel(Onclick_SpecialPropertyInformationCard, Onclick_InformationPanel);
+        OnDisable_TransparentPanel(Onclick_ColorPropertyInformationCard, Onclick_InformationPanel);
     }
 
     public void HideInformationCard()
@@ -2493,12 +2554,6 @@ public class UIManager : MonoBehaviour
         OnDisable_Panel(inJailPanel, jailPanel);
         OnDisable_Panel(goToJailPanel, jailPanel);
         OnDisable_Panel(visitingJailPanel, jailPanel);
-
-        //Auction
-        //auctionPanel.SetActive(false);
-        OnDisable_Panel(auctionInformationPanel, auctionPanel);
-        //acp_colorPropertyPanel.SetActive(false);
-        //asp_specialPropertyPanel.SetActive(false);
 
         MoneyUpdate();
         _Table.getCurrentPlayer().CheckBankruptcy();
@@ -2516,17 +2571,21 @@ public class UIManager : MonoBehaviour
             {
                 tr_decline.SetActive(false);
                 tradeResultPanel.SetActive(true);
-                OnEnable_Auction(tr_accept);
+                tr_accept.SetActive(true); 
+                OnEnable_Trade(tr_accept);
+                tr_accept.transform.position = Camera.main.WorldToScreenPoint(_Table.transform.position);
                 yield return new WaitForSeconds(1f);
-                OnDisable_Panel(tr_accept, tradeResultPanel);
+                OnDisable_PanelForcedClose(tr_accept, tradeResultPanel);
             }
             else
             {
                 tr_accept.SetActive(false);
                 tradeResultPanel.SetActive(true);
-                OnEnable_Auction(tr_decline);
+                tr_decline.SetActive(true);
+                OnEnable_Trade(tr_decline);
+                tr_decline.transform.position = Camera.main.WorldToScreenPoint(_Table.transform.position);
                 yield return new WaitForSeconds(1f);
-                OnDisable_Panel(tr_decline, tradeResultPanel);
+                OnDisable_PanelForcedClose(tr_decline, tradeResultPanel);
             }
         }
         StartCoroutine(start());
@@ -2729,23 +2788,44 @@ public class UIManager : MonoBehaviour
 
     public void OnDisable_Panel(GameObject panel, GameObject parentPanel)
     {
-        if (!panel.activeSelf)
+        panel.transform.LeanScale(new Vector2(0, 0), .25f).setEaseInBack().setOnComplete(() =>
         {
-            panel.transform.LeanScale(new Vector2(0, 0), .25f).setEaseInBack().setOnComplete(() =>
+            panel.SetActive(false);
+            IEnumerator start()
             {
-                panel.SetActive(false);
-                IEnumerator start()
+                for (float f = 0; f <= .2f; f += Time.deltaTime)
                 {
-                    for (float f = 0; f <= .2f; f += Time.deltaTime)
-                    {
-                        parentPanel.GetComponent<Image>().color = new Vector4(0, 0, 0, Mathf.Lerp(0.3529412f, 0f, f / .15f));
-                        //standOnInformationCasvasGroup.alpha = Mathf.Lerp(0f, 1f, f / .15f);
-                        yield return null;
-                    }
-                    parentPanel.SetActive(false);
+                    parentPanel.GetComponent<Image>().color = new Vector4(0, 0, 0, Mathf.Lerp(0.3529412f, 0f, f / .15f));
+                    //standOnInformationCasvasGroup.alpha = Mathf.Lerp(0f, 1f, f / .15f);
+                    yield return null;
                 }
-                StartCoroutine(start());
-            });
+                parentPanel.SetActive(false);
             }
+            StartCoroutine(start());
+        });
+    }
+
+    public void OnDisable_TransparentPanel(GameObject panel, GameObject parentPanel)
+    {
+        panel.transform.LeanScale(new Vector2(0, 0), .25f).setEaseInBack().setOnComplete(() => { panel.SetActive(false); parentPanel.SetActive(false); });
+    }
+
+    public void OnDisable_PanelForcedClose(GameObject panel, GameObject parentPanel)
+    {
+        panel.transform.LeanScale(new Vector2(0, 0), .25f).setEaseInBack().setOnComplete(() =>
+        {
+            panel.SetActive(false);
+            IEnumerator start()
+            {
+                for (float f = 0; f <= .2f; f += Time.deltaTime)
+                {
+                    parentPanel.GetComponent<Image>().color = new Vector4(0, 0, 0, Mathf.Lerp(0.3529412f, 0f, f / .15f));
+                    //standOnInformationCasvasGroup.alpha = Mathf.Lerp(0f, 1f, f / .15f);
+                    yield return null;
+                }
+                parentPanel.SetActive(false);
+            }
+            StartCoroutine(start());
+        });
     }
 }

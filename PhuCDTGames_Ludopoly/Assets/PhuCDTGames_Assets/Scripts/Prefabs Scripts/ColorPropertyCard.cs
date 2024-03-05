@@ -28,10 +28,15 @@ public class ColorPropertyCard : MonoBehaviour
     public Text hotel;
     public Text buildPrice;
     public Text mortgagePrice;
+
+    bool isChanged = false;
     public void ShowCard(int slotNumber)
     {
         propertyName.text = Table.Instance.getSlot(slotNumber).getSlotName().ToUpper();
-        slotPrice.text = Table.Instance.getSlot(slotNumber).getSlotPrice().ToString();
+        if (!isChanged)
+        {
+            slotPrice.text = Table.Instance.getSlot(slotNumber).getSlotPrice().ToString();
+        }
 
         if (Table.Instance.getSlot(slotNumber).getPropertyRentUI(0) < 10)
         {
@@ -150,5 +155,16 @@ public class ColorPropertyCard : MonoBehaviour
                 redCard.SetActive(false);
                 yellowCard.SetActive(true);
             }
+    }
+
+    public void ChangeSlotPrice(int value)
+    {
+        isChanged = true;
+        slotPrice.text = value.ToString();
+    }
+
+    private void OnDisable()
+    {
+        isChanged = false;
     }
 }

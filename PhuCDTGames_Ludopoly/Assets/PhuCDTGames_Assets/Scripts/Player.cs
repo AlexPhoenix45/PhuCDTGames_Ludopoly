@@ -144,6 +144,7 @@ public class Player : MonoBehaviour
     {
         IEnumerator move()
         {
+            GetComponent<SpriteRenderer>().sortingOrder = 999;
             if (!passGo)
             {
                 for (int i = prvSlot + 1; i <= currentSlot; i++)
@@ -284,6 +285,7 @@ public class Player : MonoBehaviour
             }
             Table.Instance.AfterPlayerMove(this);
             //Table.Instance.SwitchPlayer();
+            GetComponent<SpriteRenderer>().sortingOrder = 0;
         }
         StartCoroutine(move());
     }
@@ -291,7 +293,8 @@ public class Player : MonoBehaviour
     public void setPosNeg (int destinationNumber)
     {
         IEnumerator move()
-        { 
+        {
+            GetComponent<SpriteRenderer>().sortingOrder = 999;
             for (int i = currentSlot - 1; i >= destinationNumber; i--)
             {
                 LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
@@ -300,6 +303,7 @@ public class Player : MonoBehaviour
 
             setCurrentSlot(destinationNumber);
             Table.Instance.AfterPlayerMove(this);
+            GetComponent<SpriteRenderer>().sortingOrder = 0;
         }
         StartCoroutine(move());
         Table.Instance.SetPlayLeaveSlot(this);

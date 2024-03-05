@@ -25,7 +25,7 @@ public class Table : MonoBehaviour
     int auc_currentPrice;
     Player auc_currentPlayer;
     Player auc_startingPlayer;
-    Player auc_playerWithHighestBid;
+    public Player auc_playerWithHighestBid;
     int auc_playerInAuction;
     int auc_slotNumber;
 

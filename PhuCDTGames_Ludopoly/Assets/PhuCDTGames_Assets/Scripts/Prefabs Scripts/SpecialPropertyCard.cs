@@ -18,9 +18,14 @@ public class SpecialPropertyCard : MonoBehaviour
 
     public Text slotPrice;
 
+    bool isChanged = false;
+
     public void ShowCard(int slotNumber)
     {
-        slotPrice.text = Table.Instance.getSlot(slotNumber).getSlotPrice().ToString();
+        if (!isChanged)
+        {
+            slotPrice.text = Table.Instance.getSlot(slotNumber).getSlotPrice().ToString();
+        }
 
         if (Table.Instance.getSlot(slotNumber).specialProperty.propertyType == SpecialProperty_Type.RailRoad)
         {
@@ -47,5 +52,15 @@ public class SpecialPropertyCard : MonoBehaviour
                 ut_propertyName.text = Table.Instance.getSlot(slotNumber).getSlotName();
             }
         }
+    }
+    public void ChangeSlotPrice(int value)
+    {
+        isChanged = true;
+        slotPrice.text = value.ToString();
+    }
+
+    private void OnDisable()
+    {
+        isChanged = false;
     }
 }
