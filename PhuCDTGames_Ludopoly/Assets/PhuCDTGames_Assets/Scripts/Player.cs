@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -16,6 +17,9 @@ public class Player : MonoBehaviour
     public Vector4 playerColor;
     public bool isMyTurn = false;
     public bool isInJail = false;
+    public bool isBankrupt = false;
+
+    public int playerRanking = -1;
 
     public bool hasSecondTurn = false;
 
@@ -24,6 +28,12 @@ public class Player : MonoBehaviour
     public int timesGetDoubles = 0;
     public int timesNotGetDoubles = 0;
     public int currentDices;
+
+    //Executing Utilities and Railroads
+    //
+    public bool isRolltoPay = false;
+    public bool exeUtilities = false;
+    public bool exeRailroads = false;
 
     //Late Move
     //
@@ -38,7 +48,21 @@ public class Player : MonoBehaviour
 
     //Money
     //
-    public int playerMoney = 1000;
+    public int PlayerMoney = 1000;
+
+    public int playerMoney
+    {
+        get { return PlayerMoney; }
+        set
+        {
+            PlayerMoney = value;
+            if (PlayerMoney < 0)
+            {
+                CheckBankruptcy();
+            }
+        }
+    }
+
     public int oldPlayerMoney = 0;
     public bool moneyWarning = false;
 
@@ -160,7 +184,7 @@ public class Player : MonoBehaviour
                         {
                             LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .4f).setEaseInOutCirc();
                             yield return new WaitForSeconds(.4f);
-                            Table.Instance.SetPlayerOnSLot(i+1);
+                            Table.Instance.SetPlayerOnSlot(i+1);
                         }
                         else
                         {
@@ -179,7 +203,7 @@ public class Player : MonoBehaviour
                         {
                             LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
                             yield return new WaitForSeconds(.15f);
-                            Table.Instance.SetPlayerOnSLot(i+1);
+                            Table.Instance.SetPlayerOnSlot(i+1);
                         }
                         else
                         {
@@ -212,7 +236,7 @@ public class Player : MonoBehaviour
                             { 
                                 LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .4f).setEaseInOutCirc();
                                 yield return new WaitForSeconds(.4f);
-                                Table.Instance.SetPlayerOnSLot(i + 1);
+                                Table.Instance.SetPlayerOnSlot(i + 1);
                             }
                             else
                             {
@@ -231,7 +255,7 @@ public class Player : MonoBehaviour
                             { 
                                 LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .4f).setEaseInOutCirc();
                                 yield return new WaitForSeconds(.4f);
-                                Table.Instance.SetPlayerOnSLot(i - 40 + 1);
+                                Table.Instance.SetPlayerOnSlot(i - 40 + 1);
                             }
                             else
                             {
@@ -253,7 +277,7 @@ public class Player : MonoBehaviour
                             { 
                                 LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
                                 yield return new WaitForSeconds(.15f);
-                                Table.Instance.SetPlayerOnSLot(i + 1);
+                                Table.Instance.SetPlayerOnSlot(i + 1);
                             }
                             //else
                             //{
@@ -272,7 +296,7 @@ public class Player : MonoBehaviour
                             {
                                 LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .15f);
                                 yield return new WaitForSeconds(.15f);
-                                Table.Instance.SetPlayerOnSLot(i - 40 + 1);
+                                Table.Instance.SetPlayerOnSlot(i - 40 + 1);
                             }
                             //else
                             //{
@@ -302,6 +326,7 @@ public class Player : MonoBehaviour
             }
 
             setCurrentSlot(destinationNumber);
+            Table.Instance.SetPlayerOnSlot(destinationNumber);
             Table.Instance.AfterPlayerMove(this);
             GetComponent<SpriteRenderer>().sortingOrder = 0;
         }
@@ -319,14 +344,17 @@ public class Player : MonoBehaviour
     {
         isMyTurn = value;
 
-        if (isMyTurn)
+        if (isMyTurn && !isBankrupt)
         {
             if (isInJail && !inAuction)
             {
                 UIManager.Instance.ShowIsInJail();
             }
 
-            CheckBankruptcy();
+            if (!isBankrupt)
+            {
+                CheckBankruptcy();
+            }
         }
     }
 
@@ -455,12 +483,13 @@ public class Player : MonoBehaviour
 
     public void CheckBankruptcy()
     {
-        if (playerMoney < 0)
+        if (playerMoney < 0 && !inAuction)
         {
             UIManager.Instance.ActionsActive(true);
             UIManager.Instance.DicesActive(false);
             UIManager.Instance.DicesFacesActive();
             UIManager.Instance.EndTurnActive(false);
+            print("first");
 
             moneyLeft = 0; //Calculate all the property after sell and mortgage, if it is not enough, player is bankruptcy, left the game
 
@@ -506,4 +535,38 @@ public class Player : MonoBehaviour
     }
 
     #endregion
+
+    public void StartBankrupt()
+    {
+        foreach (var item in slotOwned)
+        {
+            item.removeOwner();
+        }
+
+        slotOwned.Clear();
+
+        Table.Instance.RemainingPlayer--;
+
+        if (playerIndex == 1)
+        {
+            UIManager.Instance.player1_bankruptImage.SetActive(true);
+        }
+        else if (playerIndex == 2)
+        {
+            UIManager.Instance.player2_bankruptImage.SetActive(true);
+        }
+        else if (playerIndex == 3)
+        {
+            UIManager.Instance.player3_bankruptImage.SetActive(true);
+        }
+        else if (playerIndex == 4)
+        {
+            UIManager.Instance.player4_bankruptImage.SetActive(true);
+        }
+
+        this.playerRanking = Table.Instance.playerRank;
+        Table.Instance.playerRank--;
+        isBankrupt = true;
+        Table.Instance.ExecutingBankrupt(); //turn off bankruptcy panel
+    } 
 }

@@ -10,13 +10,15 @@ public class Table : MonoBehaviour
 {
     public UIManager _UIManager;
     public static Table Instance;
+    [HideInInspector]
     public GameObject[] slot;
+    [HideInInspector]
     public Player[] player;
 
     [Header("Game Parameters")]
     public short numOfPlayers;
 
-    //[HideInInspector]
+    [HideInInspector]
     public CurrentPlayer currentPlayer;
 
     //Auction Parameter
@@ -25,27 +27,54 @@ public class Table : MonoBehaviour
     int auc_currentPrice;
     Player auc_currentPlayer;
     Player auc_startingPlayer;
+    [HideInInspector]
     public Player auc_playerWithHighestBid;
     int auc_playerInAuction;
     int auc_slotNumber;
 
     //Pawns
     //
+    [HideInInspector]
     public GameObject p1Pawn;
+    [HideInInspector]
     public GameObject p2Pawn;
+    [HideInInspector]
     public GameObject p3Pawn;
+    [HideInInspector]
     public GameObject p4Pawn;
 
     [Header("Dice Tester")]
     public int test_dice1;
     public int test_dice2;
-    public bool opentest = false;
+    public bool dice_openTest = false;
+
+    [HideInInspector]
+    public int remainingPlayer;
+    public int RemainingPlayer
+    {
+        get { return remainingPlayer; }
+        set 
+        { 
+            remainingPlayer = value; 
+            if (remainingPlayer == 1)
+            {
+                _UIManager.ShowScoreboard();
+            }
+        }
+    }
+    
+
+    [HideInInspector]
+    public int playerRank;
+
     private void Start()
     {
         if (Instance == null)
             Instance = this;
         SetPawn();
-        SetPlayerOnSLot(0);
+        SetPlayerOnSlot(0);
+        remainingPlayer = numOfPlayers;
+        playerRank = numOfPlayers;
     }
 
     //Starting
@@ -101,7 +130,7 @@ public class Table : MonoBehaviour
         dice1 = Random.Range(1, 7);
         dice2 = Random.Range(1, 7);
 
-        if (opentest)
+        if (dice_openTest)
         {
             dice1 = test_dice1;
             dice2 = test_dice2;
@@ -116,7 +145,7 @@ public class Table : MonoBehaviour
             getSlot(i).slotAction = SlotAction.None;
         }
 
-        if (!getCurrentPlayer().rollForJail)
+        if (!getCurrentPlayer().rollForJail && !getCurrentPlayer().isRolltoPay) //if this roll is not for jail nor to pay. then do the move and animation
         {
             if (dice1 == dice2)
             {
@@ -134,25 +163,38 @@ public class Table : MonoBehaviour
         }
         else
         {
-            if (dice1 == dice2)
+            if (getCurrentPlayer().rollForJail) //if this is roll for jail
             {
-                getCurrentPlayer().setTimesGetDoubles(true, true);
-
-                if (!getCurrentPlayer().isInJail)
+                if (dice1 == dice2)
                 {
-                    getCurrentPlayer().Move(dice1 + dice2, false);
+                    getCurrentPlayer().setTimesGetDoubles(true, true);
+
+                    if (!getCurrentPlayer().isInJail)
+                    {
+                        getCurrentPlayer().Move(dice1 + dice2, false);
+                    }
                 }
+                else
+                {
+                    getCurrentPlayer().setTimesGetDoubles(false, true);
+
+                    if (!getCurrentPlayer().isInJail)
+                    {
+                        getCurrentPlayer().Move(dice1 + dice2, false);
+                    }
+                }
+                getCurrentPlayer().rollForJail = false;
             }
-            else
+            else if (getCurrentPlayer().isRolltoPay)
             {
-                getCurrentPlayer().setTimesGetDoubles(false, true);
-
-                if (!getCurrentPlayer().isInJail)
-                {
-                    getCurrentPlayer().Move(dice1 + dice2, false);
-                }
+                CurrentPlayerPayFor(getSlot(getCurrentPlayer().currentSlot).owner, (dice1 + dice2) * 10);
+                _UIManager.ShowRentPaidUI(getCurrentPlayer(), getSlot(getCurrentPlayer().currentSlot).owner, (dice1 + dice2) * 10);
+                getCurrentPlayer().isRolltoPay = false;
+                getCurrentPlayer().exeUtilities = false;
+                _UIManager.EndTurnActive(true);
+                _UIManager.DicesActive(false);
+                _UIManager.DicesFacesActive();
             }
-            getCurrentPlayer().rollForJail = false;
         }
 
         return new int[] { dice1, dice2 };
@@ -178,6 +220,11 @@ public class Table : MonoBehaviour
                 player[0].setIsMyTurn(false);
                 player[1].setIsMyTurn(true);
                 _UIManager.setTurn(player[1].playerIndex, false);
+
+                if (player[1].isBankrupt)
+                {
+                    SwitchPlayer();
+                }
             }
             else if (currentPlayer == CurrentPlayer.player2)
             {
@@ -185,6 +232,11 @@ public class Table : MonoBehaviour
                 player[1].setIsMyTurn(false);
                 player[0].setIsMyTurn(true);
                 _UIManager.setTurn(player[0].playerIndex, false);
+
+                if (player[0].isBankrupt)
+                {
+                    SwitchPlayer();
+                }
             }
         }
         else if (numOfPlayers == 3)
@@ -195,6 +247,11 @@ public class Table : MonoBehaviour
                 player[0].setIsMyTurn(false);
                 player[1].setIsMyTurn(true);
                 _UIManager.setTurn(player[1].playerIndex, false);
+
+                if (player[1].isBankrupt)
+                {
+                    SwitchPlayer();
+                }
             }
             else if (currentPlayer == CurrentPlayer.player2)
             {
@@ -202,6 +259,11 @@ public class Table : MonoBehaviour
                 player[1].setIsMyTurn(false);
                 player[2].setIsMyTurn(true);
                 _UIManager.setTurn(player[2].playerIndex, false);
+
+                if (player[2].isBankrupt)
+                {
+                    SwitchPlayer();
+                }
             }
             else if (currentPlayer == CurrentPlayer.player3)
             {
@@ -209,6 +271,11 @@ public class Table : MonoBehaviour
                 player[2].setIsMyTurn(false);
                 player[0].setIsMyTurn(true);
                 _UIManager.setTurn(player[0].playerIndex, false);
+
+                if (player[0].isBankrupt)
+                {
+                    SwitchPlayer();
+                }
             }
         }
         else if (numOfPlayers == 4)
@@ -219,6 +286,11 @@ public class Table : MonoBehaviour
                 player[0].setIsMyTurn(false);
                 player[1].setIsMyTurn(true);
                 _UIManager.setTurn(player[1].playerIndex, false);
+
+                if (player[1].isBankrupt)
+                {
+                    SwitchPlayer();
+                }
             }
             else if (currentPlayer == CurrentPlayer.player2)
             {
@@ -226,6 +298,11 @@ public class Table : MonoBehaviour
                 player[1].setIsMyTurn(false);
                 player[2].setIsMyTurn(true);
                 _UIManager.setTurn(player[2].playerIndex, false);
+
+                if (player[2].isBankrupt)
+                {
+                    SwitchPlayer();
+                }
             }
             else if (currentPlayer == CurrentPlayer.player3)
             {
@@ -233,6 +310,11 @@ public class Table : MonoBehaviour
                 player[2].setIsMyTurn(false);
                 player[3].setIsMyTurn(true);
                 _UIManager.setTurn(player[3].playerIndex, false);
+
+                if (player[3].isBankrupt)
+                {
+                    SwitchPlayer();
+                }
             }
             else if (currentPlayer == CurrentPlayer.player4)
             {
@@ -240,6 +322,11 @@ public class Table : MonoBehaviour
                 player[3].setIsMyTurn(false);
                 player[0].setIsMyTurn(true);
                 _UIManager.setTurn(player[0].playerIndex, false);
+
+                if (player[0].isBankrupt)
+                {
+                    SwitchPlayer();
+                }
             }
         }
     }
@@ -256,6 +343,11 @@ public class Table : MonoBehaviour
                     player[0].setIsMyTurn(false);
                     player[1].setIsMyTurn(true);
                     UIManager.Instance.setTurn(player[1].playerIndex, true);
+
+                    if (player[1].isBankrupt)
+                    {
+                        SwitchPlayer(true);
+                    }
                 }
                 else if (currentPlayer == CurrentPlayer.player2)
                 {
@@ -263,6 +355,11 @@ public class Table : MonoBehaviour
                     player[1].setIsMyTurn(false);
                     player[0].setIsMyTurn(true);
                     UIManager.Instance.setTurn(player[0].playerIndex, true);
+
+                    if (player[0].isBankrupt)
+                    {
+                        SwitchPlayer(true);
+                    }
                 }
             }
             else if (numOfPlayers == 3)
@@ -273,6 +370,11 @@ public class Table : MonoBehaviour
                     player[0].setIsMyTurn(false);
                     player[1].setIsMyTurn(true);
                     UIManager.Instance.setTurn(player[1].playerIndex, true);
+
+                    if (player[1].isBankrupt)
+                    {
+                        SwitchPlayer(true);
+                    }
                 }
                 else if (currentPlayer == CurrentPlayer.player2)
                 {
@@ -280,6 +382,11 @@ public class Table : MonoBehaviour
                     player[1].setIsMyTurn(false);
                     player[2].setIsMyTurn(true);
                     UIManager.Instance.setTurn(player[2].playerIndex, true);
+
+                    if (player[2].isBankrupt)
+                    {
+                        SwitchPlayer(true);
+                    }
                 }
                 else if (currentPlayer == CurrentPlayer.player3)
                 {
@@ -287,6 +394,11 @@ public class Table : MonoBehaviour
                     player[2].setIsMyTurn(false);
                     player[0].setIsMyTurn(true);
                     UIManager.Instance.setTurn(player[0].playerIndex, true);
+
+                    if (player[0].isBankrupt)
+                    {
+                        SwitchPlayer(true);
+                    }
                 }
             }
             else if (numOfPlayers == 4)
@@ -297,6 +409,11 @@ public class Table : MonoBehaviour
                     player[0].setIsMyTurn(false);
                     player[1].setIsMyTurn(true);
                     UIManager.Instance.setTurn(player[1].playerIndex, true);
+
+                    if (player[1].isBankrupt)
+                    {
+                        SwitchPlayer(true);
+                    }
                 }
                 else if (currentPlayer == CurrentPlayer.player2)
                 {
@@ -304,6 +421,11 @@ public class Table : MonoBehaviour
                     player[1].setIsMyTurn(false);
                     player[2].setIsMyTurn(true);
                     UIManager.Instance.setTurn(player[2].playerIndex, true);
+
+                    if (player[2].isBankrupt)
+                    {
+                        SwitchPlayer(true);
+                    }
                 }
                 else if (currentPlayer == CurrentPlayer.player3)
                 {
@@ -311,6 +433,11 @@ public class Table : MonoBehaviour
                     player[2].setIsMyTurn(false);
                     player[3].setIsMyTurn(true);
                     UIManager.Instance.setTurn(player[3].playerIndex, true);
+
+                    if (player[3].isBankrupt)
+                    {
+                        SwitchPlayer(true);
+                    }
                 }
                 else if (currentPlayer == CurrentPlayer.player4)
                 {
@@ -318,6 +445,11 @@ public class Table : MonoBehaviour
                     player[3].setIsMyTurn(false);
                     player[0].setIsMyTurn(true);
                     UIManager.Instance.setTurn(player[0].playerIndex, true);
+
+                    if (player[0].isBankrupt)
+                    {
+                        SwitchPlayer(true);
+                    }
                 }
             }
         }
@@ -728,6 +860,9 @@ public class Table : MonoBehaviour
             {
                 //Call Property Information Card
                 _UIManager.ShowInformationCard(slotNumber);
+                //If the slot is unowned, turn off executing Utilities and Railroad of the currentPlayer
+                getCurrentPlayer().exeRailroads = false;
+                getCurrentPlayer().exeUtilities = false;
 
                 if (getSlot(slotNumber).slotType == Slot_Type.SupriseSlot) //Suprise slot
                 {
@@ -756,6 +891,8 @@ public class Table : MonoBehaviour
                                 _UIManager.EndTurnActive(false); //Turn off the endturn UI when executing cards
                                 break;
                             case ChanceCards.AdvanceToRailroad1:
+                                getCurrentPlayer().exeRailroads = true;
+
                                 if (getCurrentPlayer().currentSlot == 7)
                                 {
                                     getCurrentPlayer().setLateMove(15, true);
@@ -779,6 +916,8 @@ public class Table : MonoBehaviour
                                     break;
                                 }
                             case ChanceCards.AdvanceToRailroad2:
+                                getCurrentPlayer().exeRailroads = true;
+
                                 if (getCurrentPlayer().currentSlot == 7)
                                 {
                                     getCurrentPlayer().setLateMove(15, true);
@@ -802,6 +941,8 @@ public class Table : MonoBehaviour
                                     break;
                                 }
                             case ChanceCards.AdvanceToUtility:
+                                getCurrentPlayer().exeUtilities = true;
+
                                 if (getCurrentPlayer().currentSlot == 7)
                                 {
                                     getCurrentPlayer().setLateMove(12, true);
@@ -882,7 +1023,7 @@ public class Table : MonoBehaviour
                                     break;
                                 }
                             case ChanceCards.Repair:
-                                print("not yet");
+                                CurrentPlayerPayBank(getCurrentPlayer().houseOwned * 25 + getCurrentPlayer().hotelOwned * 100);
                                 break;
                             case ChanceCards.Speeding:
                                 //print(getCurrentPlayer() + " Pays 15$");
@@ -986,7 +1127,8 @@ public class Table : MonoBehaviour
                                 CurrentPlayerReceiveBank(25);
                                 break;
                             case CommunityChestCards.StreetRepair:
-                                print(getCurrentPlayer().ToString() + " Pay 40$ per house, 115$ per hotel");
+                                CurrentPlayerPayBank(getCurrentPlayer().houseOwned * 40 + getCurrentPlayer().hotelOwned * 115);
+                                //print(getCurrentPlayer().ToString() + " Pay 40$ per house, 115$ per hotel");
                                 break;
                             case CommunityChestCards.Beauty:
                                 //print(getCurrentPlayer().ToString() + " Collect 10$");
@@ -1015,11 +1157,28 @@ public class Table : MonoBehaviour
 
     public void PaidRent(int slotNumber)
     {
-        if ((getSlot(slotNumber).slotType == Slot_Type.ColorProperty || getSlot(slotNumber).slotType == Slot_Type.SpecialProperty) && getSlot(slotNumber).getOwner() != getCurrentPlayer() && !getSlot(slotNumber).isMortgaged)
+        if ((getSlot(slotNumber).slotType == Slot_Type.ColorProperty || getSlot(slotNumber).slotType == Slot_Type.SpecialProperty) && getSlot(slotNumber).getOwner() != getCurrentPlayer() && !getSlot(slotNumber).isMortgaged) //is color or special props & the owner is not this currentPlayer & the slot is not morgaged
         {
-            //print("Player " + getCurrentPlayer().playerName + " has to pay" + getSlot(slotNumber).getOwner().playerName + " amount of " + getSlot(slotNumber).getPropertyRent() + "$");
-            CurrentPlayerPayFor(getSlot(slotNumber).getOwner(), getSlot(slotNumber).getPropertyRent());
-            _UIManager.ShowRentPaidUI(getCurrentPlayer(), getSlot(slotNumber).getOwner(), getSlot(slotNumber).getPropertyRent());
+            //if current player is executing Utilities or Railroads
+            if (getCurrentPlayer().exeRailroads)
+            {
+                CurrentPlayerPayFor(getSlot(slotNumber).getOwner(), getSlot(slotNumber).getPropertyRent() * 2);
+                _UIManager.ShowRentPaidUI(getCurrentPlayer(), getSlot(slotNumber).getOwner(), getSlot(slotNumber).getPropertyRent() * 2);
+                getCurrentPlayer().exeRailroads = false;
+            }
+            else if (getCurrentPlayer().exeUtilities) //show the UI said the player must roll again to pay the owner
+            {
+                //show UI
+                _UIManager.DicesActive(true); //turn on dices
+                _UIManager.DicesFacesActive();
+                getCurrentPlayer().isRolltoPay = true;
+                _UIManager.EndTurnActive(false);
+            }    
+            else //if player is not executing anything
+            {
+                CurrentPlayerPayFor(getSlot(slotNumber).getOwner(), getSlot(slotNumber).getPropertyRent());
+                _UIManager.ShowRentPaidUI(getCurrentPlayer(), getSlot(slotNumber).getOwner(), getSlot(slotNumber).getPropertyRent());
+            }
         }
     }
 
@@ -1538,7 +1697,7 @@ public class Table : MonoBehaviour
         auc_currentPrice = 0;
         auc_currentPlayer = getCurrentPlayer();
         auc_startingPlayer = getCurrentPlayer();
-        auc_playerInAuction = numOfPlayers;
+        auc_playerInAuction = remainingPlayer;
         auc_slotNumber = getCurrentPlayer().currentSlot;
 
         _UIManager.ShowAuction(auc_slotNumber, auc_currentPlayer, auc_currentPrice, auc_playerWithHighestBid);
@@ -1579,7 +1738,7 @@ public class Table : MonoBehaviour
             {
                 SwitchPlayer(true);
             }
-            while (getCurrentPlayer().joinAuction == false);
+            while (getCurrentPlayer().joinAuction == false || getCurrentPlayer().isBankrupt);
 
             auc_currentPlayer = getCurrentPlayer();
             AuctionExecute();
@@ -1605,7 +1764,7 @@ public class Table : MonoBehaviour
             {
                 SwitchPlayer(true);
             }
-            while (getCurrentPlayer().joinAuction == false);
+            while (getCurrentPlayer().joinAuction == false || getCurrentPlayer().isBankrupt);
 
             auc_currentPlayer = getCurrentPlayer();
             AuctionExecute();
@@ -1629,7 +1788,7 @@ public class Table : MonoBehaviour
             {
                 SwitchPlayer(true);
             }
-            while (getCurrentPlayer().joinAuction == false);
+            while (getCurrentPlayer().joinAuction == false || getCurrentPlayer().isBankrupt);
 
             auc_currentPlayer = getCurrentPlayer();
             AuctionExecute();
@@ -2657,7 +2816,7 @@ public class Table : MonoBehaviour
         }
     }
 
-    public void SetPlayerOnSLot(int currentSlot)
+    public void SetPlayerOnSlot(int currentSlot)
     {
         if (currentSlot >= 40)
         {
@@ -2766,5 +2925,10 @@ public class Table : MonoBehaviour
         print("W: " + width + "; H: " + height);
         print(dpi);
         return dpi;
+    }
+
+    public void ExecutingBankrupt()
+    {
+        _UIManager.OnDisable_TransparentPanel(_UIManager.bankruptcyPanel, _UIManager.moneyPanel);
     }
 }

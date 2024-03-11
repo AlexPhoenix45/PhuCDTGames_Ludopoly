@@ -1,8 +1,9 @@
 using NaughtyAttributes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Experimental.GraphView;
+//using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
@@ -29,26 +30,36 @@ public class UIManager : MonoBehaviour
     public GameObject[] dice1Faces;
     public GameObject[] dice2Faces;
 
+    //-263.74
+
     [Header("Player 1")]
     [Header("Players")]
     public GameObject player1Panel;
     public Text player1Name;
     public Text player1Money;
+    public CanvasGroup player1CanvasGroup;
+    public GameObject player1_bankruptImage;
 
     [Header("Player 2")]
     public GameObject player2Panel;
     public Text player2Name;
     public Text player2Money;
+    public CanvasGroup player2CanvasGroup;
+    public GameObject player2_bankruptImage;
 
     [Header("Player 3")]
     public GameObject player3Panel;
     public Text player3Name;
     public Text player3Money;
+    public CanvasGroup player3CanvasGroup;
+    public GameObject player3_bankruptImage;
 
     [Header("Player 4")]
     public GameObject player4Panel;
     public Text player4Name;
     public Text player4Money;
+    public CanvasGroup player4CanvasGroup;
+    public GameObject player4_bankruptImage;
 
     [Header("Slot Information")]
     public GameObject standOnInformationPanel;
@@ -247,6 +258,24 @@ public class UIManager : MonoBehaviour
     public GameObject tr_accept;
     public GameObject tr_decline;
 
+    [Header("Scoreboard")]
+    public GameObject scoreboardPanel;
+    public GameObject scoreboardPanel_children;
+    public GameObject scb_1st_Panel;
+    public Text scb_1st_Name;
+    public Profile scb_1st_Profile;
+
+    public GameObject scb_2nd_Panel;
+    public Text scb_2nd_Name;
+    public Profile scb_2nd_Profile;
+
+    public GameObject scb_3rd_Panel;
+    public Text scb_3rd_Name;
+    public Profile scb_3rd_Profile;
+
+    public GameObject scb_4th_Panel;
+    public Text scb_4th_Name;
+    public Profile scb_4th_Profile;
     #endregion
 
     private void Start()
@@ -273,8 +302,8 @@ public class UIManager : MonoBehaviour
             do
             {
                 yield return new WaitForSeconds(.05f);
-                int diceFace1 = Random.Range(0, 6);
-                int diceFace2 = Random.Range(0, 6);
+                int diceFace1 = UnityEngine.Random.Range(0, 6);
+                int diceFace2 = UnityEngine.Random.Range(0, 6);
                 setDicesFaces(1, diceFace1);
                 setDicesFaces(2, diceFace2);
                 timeConsumed += 0.05f;
@@ -517,7 +546,14 @@ public class UIManager : MonoBehaviour
 
     public void DicesActive(bool value)
     {
+        print("second");
         rollDice.interactable = value;
+
+        if (_Table.getCurrentPlayer().isBankrupt)
+        {
+            rollDice.interactable = false;
+            DicesFacesActive();
+        }
     }
 
     public void DicesFacesActive()
@@ -629,37 +665,46 @@ public class UIManager : MonoBehaviour
         switch (playerIndex)
         {
             case 1:
-                player1Panel.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                player2Panel.GetComponent<Image>().color = new Color(1, 1, 1, .4f);
-                player3Panel.GetComponent<Image>().color = new Color(1, 1, 1, .4f);
-                player4Panel.GetComponent<Image>().color = new Color(1, 1, 1, .4f);
+                player1CanvasGroup.alpha = 1;
+                player2CanvasGroup.alpha = .5f;
+                player3CanvasGroup.alpha = .5f;
+                player4CanvasGroup.alpha = .5f;
                 break;
             case 2:
-                player2Panel.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                player1Panel.GetComponent<Image>().color = new Color(1, 1, 1, .4f);
-                player3Panel.GetComponent<Image>().color = new Color(1, 1, 1, .4f);
-                player4Panel.GetComponent<Image>().color = new Color(1, 1, 1, .4f);
+                player1CanvasGroup.alpha = .5f;
+                player2CanvasGroup.alpha = 1;
+                player3CanvasGroup.alpha = .5f;
+                player4CanvasGroup.alpha = .5f;
                 break;
             case 3:
-                player3Panel.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                player2Panel.GetComponent<Image>().color = new Color(1, 1, 1, .4f);
-                player1Panel.GetComponent<Image>().color = new Color(1, 1, 1, .4f);
-                player4Panel.GetComponent<Image>().color = new Color(1, 1, 1, .4f);
+                player1CanvasGroup.alpha = .5f;
+                player2CanvasGroup.alpha = .5f;
+                player3CanvasGroup.alpha = 1;
+                player4CanvasGroup.alpha = .5f;
                 break;
             case 4:
-                player4Panel.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                player2Panel.GetComponent<Image>().color = new Color(1, 1, 1, .4f);
-                player3Panel.GetComponent<Image>().color = new Color(1, 1, 1, .4f);
-                player1Panel.GetComponent<Image>().color = new Color(1, 1, 1, .4f);
+                player1CanvasGroup.alpha = .5f;
+                player2CanvasGroup.alpha = .5f;
+                player3CanvasGroup.alpha = .5f;
+                player4CanvasGroup.alpha = 1;
                 break;
             default:
                 break;
         }
         if (!isSuffle)
         {
-            ActionsActive(true);
-            DicesActive(true);
-            DicesFacesActive();
+            if (_Table.getCurrentPlayer().playerMoney >= 0) //fix loi hien xuc xac khi hien panel bankruptcy
+            {
+                ActionsActive(true);
+                DicesActive(true);
+                DicesFacesActive();
+            }
+            else
+            {
+                ActionsActive(true);
+                DicesActive(false);
+                DicesFacesActive();
+            }
         }
     }
 
@@ -1047,6 +1092,9 @@ public class UIManager : MonoBehaviour
 
     public void ShowBankruptcy(bool isBankrupt)
     {
+        DicesActive(false);
+        DicesFacesActive();
+        EndTurnActive(false);
         if (!isBankrupt)
         {
             Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
@@ -1077,6 +1125,7 @@ public class UIManager : MonoBehaviour
     public void OnClick_Bankrupt()
     {
         //End game Checker
+        _Table.getCurrentPlayer().StartBankrupt();
     }
 
     #endregion 
@@ -2232,7 +2281,10 @@ public class UIManager : MonoBehaviour
         
         foreach (Player p in _Table.player)
         {
-            p.inAuction = true;
+            if (!p.isBankrupt && p.gameObject.activeSelf) //them active self
+            {
+                p.inAuction = true;
+            }
         }
 
         OnEnable_Auction(auctionInformationPanel); //enable panel
@@ -2556,7 +2608,7 @@ public class UIManager : MonoBehaviour
         OnDisable_Panel(visitingJailPanel, jailPanel);
 
         MoneyUpdate();
-        _Table.getCurrentPlayer().CheckBankruptcy();
+        //_Table.getCurrentPlayer().CheckBankruptcy();
         //StopAllCoroutines();
     }
 
@@ -2779,7 +2831,7 @@ public class UIManager : MonoBehaviour
         panel.transform.LeanScale(Scale_OnClickPanel(), .25f).setEaseOutBack();
     }
 
-    public void Onenable_OnClick_TradeResult(GameObject panel)
+    public void OnEnable_OnClick_TradeResult(GameObject panel)
     {
         panel.transform.localScale = new Vector2(0, 0);
         panel.transform.LeanScale(Vector2.one, .25f).setEaseOutBack();
@@ -2827,5 +2879,97 @@ public class UIManager : MonoBehaviour
             }
             StartCoroutine(start());
         });
+    }
+
+    //Scoreboard
+    //
+    public void ShowScoreboard()
+    {
+        scoreboardPanel.SetActive(true);
+        OnEnable_OnClick_TradeResult(scoreboardPanel_children);
+
+        if (_Table.numOfPlayers == 2)
+        {
+            scb_1st_Panel.SetActive(true);
+            scb_2nd_Panel.SetActive(true);
+            scb_3rd_Panel.SetActive(false);
+            scb_4th_Panel.SetActive(false);
+            foreach (var p in _Table.player)
+            {
+                if (p.playerRanking == 1)
+                {
+                    scb_1st_Name.text = p.playerName.ToUpper();
+                    scb_1st_Profile.SetProfile(p);
+                }
+
+                if (p.playerRanking == 2)
+                {
+                    scb_2nd_Name.text = p.playerName.ToUpper();
+                    scb_2nd_Profile.SetProfile(p);
+                }
+            }
+        }
+        else if (_Table.numOfPlayers == 3)
+        {
+            scb_1st_Panel.SetActive(true);
+            scb_2nd_Panel.SetActive(true);
+            scb_3rd_Panel.SetActive(true);
+            scb_4th_Panel.SetActive(false);
+            foreach (var p in _Table.player)
+            {
+                if (p.playerRanking == 1)
+                {
+                    scb_1st_Name.text = p.playerName.ToUpper();
+                    scb_1st_Profile.SetProfile(p);
+                }
+
+                if (p.playerRanking == 2)
+                {
+                    scb_2nd_Name.text = p.playerName.ToUpper();
+                    scb_2nd_Profile.SetProfile(p);
+                }
+
+                if (p.playerRanking == 3)
+                {
+                    scb_2nd_Name.text = p.playerName.ToUpper();
+                    scb_2nd_Profile.SetProfile(p);
+                }
+            }
+        }
+        else if (_Table.numOfPlayers == 4)
+        {
+
+            scb_1st_Panel.SetActive(true);
+            scb_2nd_Panel.SetActive(true);
+            scb_3rd_Panel.SetActive(true);
+            scb_4th_Panel.SetActive(false);
+            foreach (var p in _Table.player)
+            {
+                if (p.playerRanking == 1)
+                {
+                    scb_1st_Name.text = p.playerName.ToUpper();
+                    scb_1st_Profile.SetProfile(p);
+                }
+
+                if (p.playerRanking == 2)
+                {
+                    scb_2nd_Name.text = p.playerName.ToUpper();
+                    scb_2nd_Profile.SetProfile(p);
+                }
+
+                if (p.playerRanking == 3)
+                {
+                    scb_3rd_Name.text = p.playerName.ToUpper();
+                    scb_3rd_Profile.SetProfile(p);
+                }
+
+                if (p.playerRanking == 4)
+                {
+                    scb_4th_Name.text = p.playerName.ToUpper();
+                    scb_4th_Profile.SetProfile(p);
+                }
+
+            }
+        }
     }
 }

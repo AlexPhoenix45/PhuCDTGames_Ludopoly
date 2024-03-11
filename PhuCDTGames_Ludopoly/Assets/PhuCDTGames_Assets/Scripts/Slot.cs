@@ -65,6 +65,7 @@ public class Slot : MonoBehaviour
     [Header("Slot Position")]
     public int numOfPlayerInSlot = 0;
 
+    //Especially for No.10 slot
     public Transform outJail_1P;
     public Transform outJail_2P1;
     public Transform outJail_2P2;
@@ -434,6 +435,13 @@ public class Slot : MonoBehaviour
         }
     }
 
+    public void removeOwner() //for player who bankrupt
+    {
+        ownerTag.SetActive(false);
+        isOwned = false;
+        owner = null;
+    }
+
     public void forcedSetOwner(Player player)
     {
         owner = player;
@@ -611,60 +619,70 @@ public class Slot : MonoBehaviour
         else //Jail Slot
         {
             int numOfPlayerInJail = 0;
+            int numOfPlayerOutJail = 0;
+
+            List<Player> temp_playerInJail = new List<Player>();
+            List<Player> temp_playerOutJail = new List<Player>();
+
             foreach (var item in playerOnSlot)
             {
                 if (item.isInJail)
                 {
                     numOfPlayerInJail++;
+                    temp_playerInJail.Add(item);
+                }
+                else if (!item.isInJail)
+                {
+                    numOfPlayerOutJail++;
+                    temp_playerOutJail.Add(item);
                 }
             }
 
-            int numOfPlayerOutJail = playerOnSlot.Count - numOfPlayerInJail;
 
             if (numOfPlayerOutJail == 1)
             {
-                LeanTween.move(playerOnSlot[0].gameObject, new Vector2(-5.85f + 5.3f, -5.75f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerOutJail[0].gameObject, outJail_1P, .25f).setEaseInOutCirc();
             }
             else if (numOfPlayerOutJail == 2)
             {
-                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(-5.93f + 5.3f, -5.2f + 5.3f), .25f).setEaseInOutCirc();
-                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(-5.2f + 5.3f, -5.75f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerOutJail[0].gameObject, outJail_2P1, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerOutJail[1].gameObject, outJail_2P2, .25f).setEaseInOutCirc();
             }
             else if (numOfPlayerOutJail == 3)
             {
-                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(-5.85f + 5.3f, -5.75f + 5.3f), .25f).setEaseInOutCirc();
-                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(-5.93f + 5.3f, -5.2f + 5.3f), .25f).setEaseInOutCirc();
-                LeanTween.move(playerOnSlot[2].gameObject, new Vector3(-5.2f + 5.3f, -5.75f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerOutJail[0].gameObject, outJail_3P1, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerOutJail[1].gameObject, outJail_3P2, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerOutJail[2].gameObject, outJail_3P3, .25f).setEaseInOutCirc();
             }
             else if (numOfPlayerOutJail == 4)
             {
-                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(-5.93f + 5.3f, -4.8f + 5.3f), .25f).setEaseInOutCirc();
-                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(-5.93f + 5.3f, -5.4f + 5.3f), .25f).setEaseInOutCirc();
-                LeanTween.move(playerOnSlot[2].gameObject, new Vector3(-5.5f + 5.3f, -5.75f + 5.3f), .25f).setEaseInOutCirc();
-                LeanTween.move(playerOnSlot[3].gameObject, new Vector3(-4.85f + 5.3f, -5.75f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerOutJail[0].gameObject, outJail_4P1, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerOutJail[1].gameObject, outJail_4P2, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerOutJail[2].gameObject, outJail_4P3, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerOutJail[3].gameObject, outJail_4P4, .25f).setEaseInOutCirc();
             }
 
             if (numOfPlayerInJail == 1)
             {
-                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(-5.13f + 5.3f, -5.15f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerInJail[0].gameObject, inJail_1P, .25f).setEaseInOutCirc();
             }
             else if (numOfPlayerInJail == 2)
             {
-                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(-5.48f + 5.3f, -5.4f + 5.3f), .25f).setEaseInOutCirc();
-                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(-4.85f + 5.3f, -4.95f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerInJail[0].gameObject, inJail_2P1, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerInJail[1].gameObject, inJail_2P2, .25f).setEaseInOutCirc();
             }
             else if (numOfPlayerInJail == 3)
             {
-                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(-5.48f + 5.3f, -4.95f + 5.3f), .25f).setEaseInOutCirc();
-                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(-4.85f + 5.3f, -4.95f + 5.3f), .25f).setEaseInOutCirc();
-                LeanTween.move(playerOnSlot[2].gameObject, new Vector3(-5.18f + 5.3f, -5.4f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerInJail[0].gameObject, inJail_3P1, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerInJail[1].gameObject, inJail_3P2, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerInJail[2].gameObject, inJail_3P3, .25f).setEaseInOutCirc();
             }
             else if (numOfPlayerInJail == 4)
             {
-                LeanTween.move(playerOnSlot[0].gameObject, new Vector3(-5.48f + 5.3f, -4.95f + 5.3f), .25f).setEaseInOutCirc();
-                LeanTween.move(playerOnSlot[1].gameObject, new Vector3(-4.85f + 5.3f, -4.95f + 5.3f), .25f).setEaseInOutCirc();
-                LeanTween.move(playerOnSlot[2].gameObject, new Vector3(-5.48f + 5.3f, -5.4f + 5.3f), .25f).setEaseInOutCirc();
-                LeanTween.move(playerOnSlot[3].gameObject, new Vector3(-4.85f + 5.3f, -5.4f + 5.3f), .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerInJail[0].gameObject, inJail_4P1, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerInJail[1].gameObject, inJail_4P2, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerInJail[2].gameObject, inJail_4P3, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerInJail[3].gameObject, inJail_4P4, .25f).setEaseInOutCirc();
             }
         }
     }
@@ -718,6 +736,75 @@ public class Slot : MonoBehaviour
                 LeanTween.move(playerOnSlot[1].gameObject, new Vector3(gameObject.transform.position.x + -.15f, gameObject.transform.position.y + .08f), .15f).setDelay(.5f);
                 LeanTween.move(playerOnSlot[2].gameObject, new Vector3(gameObject.transform.position.x + .15f, gameObject.transform.position.y + -.08f), .15f).setDelay(.5f);
                 LeanTween.move(playerOnSlot[3].gameObject, new Vector3(gameObject.transform.position.x + -.15f, gameObject.transform.position.y + -.08f), .15f).setDelay(.5f);
+            }
+        }
+        else //Jail Slot
+        {
+            int numOfPlayerInJail = 0;
+            int numOfPlayerOutJail = 0;
+
+            List<Player> temp_playerInJail = new List<Player>();
+            List<Player> temp_playerOutJail = new List<Player>();
+
+            foreach (var item in playerOnSlot)
+            {
+                if (item.isInJail)
+                {
+                    numOfPlayerInJail++;
+                    temp_playerInJail.Add(item);
+                }
+                else if (!item.isInJail)
+                {
+                    numOfPlayerOutJail++;
+                    temp_playerOutJail.Add(item);
+                }
+            }
+
+
+            if (numOfPlayerOutJail == 1)
+            {
+                LeanTween.move(temp_playerOutJail[0].gameObject, outJail_1P, .25f).setEaseInOutCirc();
+            }
+            else if (numOfPlayerOutJail == 2)
+            {
+                LeanTween.move(temp_playerOutJail[0].gameObject, outJail_2P1, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerOutJail[1].gameObject, outJail_2P2, .25f).setEaseInOutCirc();
+            }
+            else if (numOfPlayerOutJail == 3)
+            {
+                LeanTween.move(temp_playerOutJail[0].gameObject, outJail_3P1, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerOutJail[1].gameObject, outJail_3P2, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerOutJail[2].gameObject, outJail_3P3, .25f).setEaseInOutCirc();
+            }
+            else if (numOfPlayerOutJail == 4)
+            {
+                LeanTween.move(temp_playerOutJail[0].gameObject, outJail_4P1, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerOutJail[1].gameObject, outJail_4P2, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerOutJail[2].gameObject, outJail_4P3, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerOutJail[3].gameObject, outJail_4P4, .25f).setEaseInOutCirc();
+            }
+
+            if (numOfPlayerInJail == 1)
+            {
+                LeanTween.move(temp_playerInJail[0].gameObject, inJail_1P, .25f).setEaseInOutCirc();
+            }
+            else if (numOfPlayerInJail == 2)
+            {
+                LeanTween.move(temp_playerInJail[0].gameObject, inJail_2P1, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerInJail[1].gameObject, inJail_2P2, .25f).setEaseInOutCirc();
+            }
+            else if (numOfPlayerInJail == 3)
+            {
+                LeanTween.move(temp_playerInJail[0].gameObject, inJail_3P1, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerInJail[1].gameObject, inJail_3P2, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerInJail[2].gameObject, inJail_3P3, .25f).setEaseInOutCirc();
+            }
+            else if (numOfPlayerInJail == 4)
+            {
+                LeanTween.move(temp_playerInJail[0].gameObject, inJail_4P1, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerInJail[1].gameObject, inJail_4P2, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerInJail[2].gameObject, inJail_4P3, .25f).setEaseInOutCirc();
+                LeanTween.move(temp_playerInJail[3].gameObject, inJail_4P4, .25f).setEaseInOutCirc();
             }
         }
     }

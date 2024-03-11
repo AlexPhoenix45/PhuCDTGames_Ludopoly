@@ -78,66 +78,22 @@ slot opacity done
 art order:
 auction (done)
 chance and community chest cards (done)
-jail, both 3 panels (waiting for new art)
+jail, both 3 panels (waiting for new art) (done)
 money, both 2 panels (done)
-trade (100%)  
+trade (100%)  (done)
 main actions (done, not trade)
 
 fix trade_result (done)
 fix money not closing on time (1.5f) (done)
 
 5/3/24
- ** chanceCard repair
-** đi vào utilities chưa tính tiền
+ ** chanceCard repair (done)
+** đi vào utilities chưa tính tiền (done)
 ** hiện popup cảnh báo bankruptcy khi người chơi chưa âm tiền, và k 
 được đổi lượt chơi
-** onclick_bankrupt chưa xong
+** onclick_bankrupt chưa xong (bugs)
 
-pawn position
+pawn position (done)
 
-    if (numOfPlayerOutJail == 1)
-    {
-        LeanTween.move(playerOnSlot[0].gameObject, outJail_1P, .25f).setEaseInOutCirc();
-    }
-    else if (numOfPlayerOutJail == 2)
-    {
-        LeanTween.move(playerOnSlot[0].gameObject, outJail_2P1, .25f).setEaseInOutCirc();
-        LeanTween.move(playerOnSlot[1].gameObject, outJail_2P2, .25f).setEaseInOutCirc();
-    }
-    else if (numOfPlayerOutJail == 3)
-    {
-        LeanTween.move(playerOnSlot[0].gameObject, outJail_3P1, .25f).setEaseInOutCirc();
-        LeanTween.move(playerOnSlot[1].gameObject, outJail_3P2, .25f).setEaseInOutCirc();
-        LeanTween.move(playerOnSlot[2].gameObject, outJail_3P3, .25f).setEaseInOutCirc();
-    }
-    else if (numOfPlayerOutJail == 4)
-    {
-        LeanTween.move(playerOnSlot[0].gameObject, outJail_4P1, .25f).setEaseInOutCirc();
-        LeanTween.move(playerOnSlot[1].gameObject, outJail_4P2, .25f).setEaseInOutCirc();
-        LeanTween.move(playerOnSlot[2].gameObject, outJail_4P3, .25f).setEaseInOutCirc();
-        LeanTween.move(playerOnSlot[3].gameObject, outJail_4P4, .25f).setEaseInOutCirc();
-    }
-
-    if (numOfPlayerInJail == 1)
-    {
-        LeanTween.move(playerOnSlot[0].gameObject, inJail_1P, .25f).setEaseInOutCirc();
-    }
-    else if (numOfPlayerInJail == 2)
-    {
-        LeanTween.move(playerOnSlot[0].gameObject, inJail_2P1, .25f).setEaseInOutCirc();
-        LeanTween.move(playerOnSlot[1].gameObject, inJail_2P2, .25f).setEaseInOutCirc();
-    }
-    else if (numOfPlayerInJail == 3)
-    {
-        LeanTween.move(playerOnSlot[0].gameObject, inJail_3P1, .25f).setEaseInOutCirc();
-        LeanTween.move(playerOnSlot[1].gameObject, inJail_3P3, .25f).setEaseInOutCirc();
-        LeanTween.move(playerOnSlot[2].gameObject, inJail_3P3, .25f).setEaseInOutCirc();
-    }
-    else if (numOfPlayerInJail == 4)
-    {
-        LeanTween.move(playerOnSlot[0].gameObject, inJail_4P1, .25f).setEaseInOutCirc();
-        LeanTween.move(playerOnSlot[1].gameObject, inJail_4P2, .25f).setEaseInOutCirc();
-        LeanTween.move(playerOnSlot[2].gameObject, inJail_4P3, .25f).setEaseInOutCirc();
-        LeanTween.move(playerOnSlot[3].gameObject, inJail_4P4, .25f).setEaseInOutCirc();
-    }
-}
+hasPlayerTurn
+isMyTurn

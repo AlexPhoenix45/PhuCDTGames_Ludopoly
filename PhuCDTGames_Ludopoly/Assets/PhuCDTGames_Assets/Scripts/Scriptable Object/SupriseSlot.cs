@@ -76,6 +76,7 @@ public class SupriseSlot : ScriptableObject
     public int DrawChance() 
     {
         int random = UnityEngine.Random.Range(0, 16);
+        random = 5;
 
         switch (random)
         {
