@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OnEnableFaded : MonoBehaviour
+namespace GameAdd_Ludopoly
+{
+    public class OnEnableFaded : MonoBehaviour
 {
     public float fadedValue = 0.3529412f;
     private void OnEnable()
@@ -20,4 +22,5 @@ public class OnEnableFaded : MonoBehaviour
         }
         StartCoroutine(start());
     }
+}
 }

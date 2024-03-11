@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+namespace GameAdd_Ludopoly
+{
+    public class Player : MonoBehaviour
 {
     //Base Information
     //
@@ -489,7 +491,6 @@ public class Player : MonoBehaviour
             UIManager.Instance.DicesActive(false);
             UIManager.Instance.DicesFacesActive();
             UIManager.Instance.EndTurnActive(false);
-            print("first");
 
             moneyLeft = 0; //Calculate all the property after sell and mortgage, if it is not enough, player is bankruptcy, left the game
 
@@ -569,4 +570,5 @@ public class Player : MonoBehaviour
         isBankrupt = true;
         Table.Instance.ExecutingBankrupt(); //turn off bankruptcy panel
     } 
+}
 }

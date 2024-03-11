@@ -97,3 +97,7 @@ pawn position (done)
 
 hasPlayerTurn
 isMyTurn
+
+11/3/24
+đã xong, chờ tester và fix bug
+làm xong ludopolyadapter bên game tổng
