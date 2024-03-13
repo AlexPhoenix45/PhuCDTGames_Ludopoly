@@ -101,3 +101,6 @@ isMyTurn
 11/3/24
 đã xong, chờ tester và fix bug
 làm xong ludopolyadapter bên game tổng
+
+13/3/24
+hiện popup nhà tù khi đấu giá thành công

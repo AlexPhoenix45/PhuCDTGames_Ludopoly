@@ -2,6 +2,7 @@ using NaughtyAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using TMPro;
 //using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -42,6 +43,8 @@ namespace GameAdd_Ludopoly
         public Text player1Money;
         public CanvasGroup player1CanvasGroup;
         public GameObject player1_bankruptImage;
+        public ParticleSystem p1Earn;
+        public ParticleSystem p1Lose;
 
         [Header("Player 2")]
         public GameObject player2Panel;
@@ -49,6 +52,8 @@ namespace GameAdd_Ludopoly
         public Text player2Money;
         public CanvasGroup player2CanvasGroup;
         public GameObject player2_bankruptImage;
+        public ParticleSystem p2Earn;
+        public ParticleSystem p2Lose;
 
         [Header("Player 3")]
         public GameObject player3Panel;
@@ -56,6 +61,8 @@ namespace GameAdd_Ludopoly
         public Text player3Money;
         public CanvasGroup player3CanvasGroup;
         public GameObject player3_bankruptImage;
+        public ParticleSystem p3Earn;
+        public ParticleSystem p3Lose;
 
         [Header("Player 4")]
         public GameObject player4Panel;
@@ -63,6 +70,8 @@ namespace GameAdd_Ludopoly
         public Text player4Money;
         public CanvasGroup player4CanvasGroup;
         public GameObject player4_bankruptImage;
+        public ParticleSystem p4Earn;
+        public ParticleSystem p4Lose;
 
         [Header("Slot Information")]
         public GameObject standOnInformationPanel;
@@ -737,6 +746,15 @@ namespace GameAdd_Ludopoly
                     stepAmount = Mathf.CeilToInt((newValue - previousValue) / (CountFPS * Duration));
                 }
 
+                if (p1.oldPlayerMoney > p1.playerMoney)
+                {
+                    p1Lose.Play();
+                }
+                else if (p1.oldPlayerMoney < p1.PlayerMoney)
+                {
+                    p1Earn.Play();
+                }
+
                 if (previousValue < newValue)
                 {
                     while (previousValue < newValue)
@@ -787,6 +805,15 @@ namespace GameAdd_Ludopoly
                 else
                 {
                     stepAmount = Mathf.CeilToInt((newValue - previousValue) / (CountFPS * Duration));
+                }
+
+                if (p2.oldPlayerMoney > p2.playerMoney)
+                {
+                    p2Lose.Play();
+                }
+                else if (p2.oldPlayerMoney < p2.PlayerMoney)
+                {
+                    p2Earn.Play();
                 }
 
                 if (previousValue < newValue)
@@ -841,6 +868,15 @@ namespace GameAdd_Ludopoly
                     stepAmount = Mathf.CeilToInt((newValue - previousValue) / (CountFPS * Duration));
                 }
 
+                if (p3.oldPlayerMoney > p3.playerMoney)
+                {
+                    p3Lose.Play();
+                }
+                else if (p3.oldPlayerMoney < p3.PlayerMoney)
+                {
+                    p3Earn.Play();
+                }
+
                 if (previousValue < newValue)
                 {
                     while (previousValue < newValue)
@@ -891,6 +927,15 @@ namespace GameAdd_Ludopoly
                 else
                 {
                     stepAmount = Mathf.CeilToInt((newValue - previousValue) / (CountFPS * Duration));
+                }
+
+                if (p4.oldPlayerMoney > p4.playerMoney)
+                {
+                    p4Lose.Play();
+                }
+                else if (p4.oldPlayerMoney < p4.PlayerMoney)
+                {
+                    p4Earn.Play();
                 }
 
                 if (previousValue < newValue)
@@ -1345,22 +1390,51 @@ namespace GameAdd_Ludopoly
                 opponentProp++;
             }
 
-            if (tradeoffer_myPlayerMoneyValue.text != "" || tradeoffer_opponentMoneyValue.text != "")
+            if (tradeoffer_myPlayerMoneyValue.text == "" && tradeoffer_opponentMoneyValue.text == "") //both of money value is null => props trade
             {
-                if (myPlayerProp != 0 || int.Parse(tradeoffer_myPlayerMoneyValue.text) != 0)
+                if (myPlayerProp != 0 && opponentProp != 0) //props trade
                 {
-                    if (opponentProp != 0 || int.Parse(tradeoffer_opponentMoneyValue.text) != 0)
-                    {
-                        ShowTradeReceive();
-                        return;
-                    }
+                    ShowTradeReceive();
+                    return;
+                }
+                else //none of them are choosen
+                {
+                    ShowIllegalTrade();
                 }
             }
-
-            //print(myPlayerProp + int.Parse(tradeoffer_myPlayerMoneyValue.text) + "myplayer");
-            //print(opponentProp + int.Parse(tradeoffer_opponentMoneyValue.text) + "opponent");
-
-            ShowIllegalTrade();
+            else if (tradeoffer_myPlayerMoneyValue.text != "" && tradeoffer_opponentMoneyValue.text == "") //opponent money is null
+            {
+                if (opponentProp != 0 && int.Parse(tradeoffer_myPlayerMoneyValue.text) != 0) //opponent have props, and myPlayer money is more than 0
+                {
+                    ShowTradeReceive();
+                }
+                else //opponent have props, and myPlayer money is less than 0
+                {
+                    ShowIllegalTrade();
+                }
+            }
+            else if (tradeoffer_myPlayerMoneyValue.text == "" && tradeoffer_opponentMoneyValue.text != "") //myPlayer money is null
+            {
+                if (myPlayerProp != 0 && int.Parse(tradeoffer_opponentMoneyValue.text) != 0) //myPlayer have props, and opponent money is more than 0
+                {
+                    ShowTradeReceive();
+                }
+                else //myPlayer have props, and opponent money is less than 0
+                {
+                    ShowIllegalTrade();
+                }
+            }
+            else if (tradeoffer_myPlayerMoneyValue.text != "" && tradeoffer_opponentMoneyValue.text != "") //nothing is null
+            {
+                if (int.Parse(tradeoffer_myPlayerMoneyValue.text) != 0 && int.Parse(tradeoffer_opponentMoneyValue.text) != 0) //myPlayer have props, and opponent money is more than 0
+                {
+                    ShowTradeReceive();
+                }
+                else //myPlayer have props, and opponent money is less than 0
+                {
+                    ShowIllegalTrade();
+                }
+            }
         }
 
         public void OnClick_Trade_Accept()
@@ -1381,7 +1455,14 @@ namespace GameAdd_Ludopoly
                 }
             }
 
-            _Table.PlayerPayForPlayer(_Table.getCurrentPlayer(), trade_currentOpppnent, int.Parse(tradeoffer_myPlayerMoneyValue.text));
+            if (tradeoffer_myPlayerMoneyValue.text == "")
+            {
+                _Table.PlayerPayForPlayer(_Table.getCurrentPlayer(), trade_currentOpppnent, 0);
+            }
+            else
+            {
+                _Table.PlayerPayForPlayer(_Table.getCurrentPlayer(), trade_currentOpppnent, int.Parse(tradeoffer_myPlayerMoneyValue.text));
+            }
 
             for (int i = 0; i < tradereceive_opponentContent.childCount; i++)
             {
@@ -1399,7 +1480,14 @@ namespace GameAdd_Ludopoly
                 }
             }
 
-            _Table.PlayerPayForPlayer(trade_currentOpppnent, _Table.getCurrentPlayer(), int.Parse(tradeoffer_opponentMoneyValue.text));
+            if (tradeoffer_opponentMoneyValue.text == "")
+            {
+                _Table.PlayerPayForPlayer(trade_currentOpppnent, _Table.getCurrentPlayer(), 0);
+            }
+            else
+            {
+                _Table.PlayerPayForPlayer(trade_currentOpppnent, _Table.getCurrentPlayer(), int.Parse(tradeoffer_opponentMoneyValue.text));
+            }
 
             OnClick_ActionsClose();
             ShowTradeResult(true);
@@ -1679,7 +1767,7 @@ namespace GameAdd_Ludopoly
         {
             if (tradeoffer_myPlayerMoneyValue.text == "")
             {
-                tradeoffer_myPlayerMoneyValue.text = "0";
+                //tradeoffer_myPlayerMoneyValue.text = "0";
             }
             else if (int.Parse(tradeoffer_myPlayerMoneyValue.text) > _Table.getCurrentPlayer().playerMoney)
             {
@@ -1689,7 +1777,7 @@ namespace GameAdd_Ludopoly
 
             if (tradeoffer_opponentMoneyValue.text == "")
             {
-                tradeoffer_opponentMoneyValue.text = "0";
+                //tradeoffer_opponentMoneyValue.text = "0";
             }
             else if (int.Parse(tradeoffer_opponentMoneyValue.text) > trade_currentOpppnent.playerMoney)
             {
@@ -2439,6 +2527,7 @@ namespace GameAdd_Ludopoly
                     standOnInformationPanel.SetActive(false);
                     OnDisable_PanelForcedClose(auctionInformationPanel, auctionPanel);
                     yield return new WaitForSeconds(.5f);
+                    playerWin.notShowJail = true;
                     _Table.SwitchPlayer(playerWin);
 
                     if (_Table.getSlot(slotNumber).slotType == Slot_Type.ColorProperty)
@@ -2451,6 +2540,7 @@ namespace GameAdd_Ludopoly
                     }
 
                     _Table.Buy(slotNumber, currentPrice);
+                    playerWin.notShowJail = false;
                     _Table.SwitchPlayer(playerStart);
 
                     foreach (Player p in _Table.player) //reset lai luojt tham gia auction cua nguoi choi

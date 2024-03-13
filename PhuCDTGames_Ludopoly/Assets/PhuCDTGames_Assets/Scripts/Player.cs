@@ -81,6 +81,10 @@ namespace GameAdd_Ludopoly
     public bool joinAuction = true;
     public bool inAuction = false;
 
+    //Not showing Jail Popup Parameter
+    //
+    public bool notShowJail = false;
+
     //Set curent Slot
     //
     public void setCurrentSlot(int currentSlot)
@@ -141,7 +145,7 @@ namespace GameAdd_Ludopoly
         }
     }
 
-    public void setLateMove(int destinationSlot, bool isForward)
+    public void setLateMove(int destinationSlot, bool isForward) 
     {
         temp_destinationSlot = destinationSlot;
         temp_isForward = isForward;
@@ -179,18 +183,18 @@ namespace GameAdd_Ludopoly
                     {
                         if (i != currentSlot - 1 && i != currentSlot)
                         {
-                            LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .4f).setEaseInOutCirc();
-                            yield return new WaitForSeconds(.4f);
+                            LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .25f).setEaseInOutCirc();
+                            yield return new WaitForSeconds(.25f);
                         }
                         else if (i == currentSlot - 1)
                         {
-                            LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .4f).setEaseInOutCirc();
-                            yield return new WaitForSeconds(.4f);
+                            LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .25f).setEaseInOutCirc();
+                            yield return new WaitForSeconds(.25f);
                             Table.Instance.SetPlayerOnSlot(i+1);
                         }
                         else
                         {
-                            yield return new WaitForSeconds(.4f);
+                            yield return new WaitForSeconds(.25f);
                             continue;
                         }
                     }
@@ -231,18 +235,18 @@ namespace GameAdd_Ludopoly
                         {
                             if (i != currentSlot + 40 - 1 && i != currentSlot + 40)
                             {
-                                LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .4f).setEaseInOutCirc();
-                                yield return new WaitForSeconds(.4f);
+                                LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .25f).setEaseInOutCirc();
+                                yield return new WaitForSeconds(.25f);
                             }
                             else if (i == currentSlot + 40 - 1)
                             { 
-                                LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .4f).setEaseInOutCirc();
-                                yield return new WaitForSeconds(.4f);
+                                LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .25f).setEaseInOutCirc();
+                                yield return new WaitForSeconds(.25f);
                                 Table.Instance.SetPlayerOnSlot(i + 1);
                             }
                             else
                             {
-                                yield return new WaitForSeconds(.4f);
+                                yield return new WaitForSeconds(.25f);
                                 continue;
                             }
                         }
@@ -250,18 +254,18 @@ namespace GameAdd_Ludopoly
                         {
                             if (i != currentSlot + 40 - 1 && i != currentSlot + 40)
                             {
-                                LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .4f).setEaseInOutCirc();
-                                yield return new WaitForSeconds(.4f);
+                                LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .25f).setEaseInOutCirc();
+                                yield return new WaitForSeconds(.25f);
                             }
                             else if (i == currentSlot + 40 - 1)
                             { 
-                                LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .4f).setEaseInOutCirc();
-                                yield return new WaitForSeconds(.4f);
+                                LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .25f).setEaseInOutCirc();
+                                yield return new WaitForSeconds(.25f);
                                 Table.Instance.SetPlayerOnSlot(i - 40 + 1);
                             }
                             else
                             {
-                                yield return new WaitForSeconds(.4f);
+                                yield return new WaitForSeconds(.25f);
                                 continue;
                             }
                         }
@@ -348,7 +352,7 @@ namespace GameAdd_Ludopoly
 
         if (isMyTurn && !isBankrupt)
         {
-            if (isInJail && !inAuction)
+            if (isInJail && !inAuction && !notShowJail)
             {
                 UIManager.Instance.ShowIsInJail();
             }
