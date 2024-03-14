@@ -858,6 +858,11 @@ namespace GameAdd_Ludopoly
                     getSlot(i).slotAction = SlotAction.Idle;
                 }
 
+                if (slotNumber == 20)
+                {
+                    getCurrentPlayer().currentState = CurrentState.AfterSelection;
+                }
+
                 if (!getSlot(slotNumber).isOwned) //If that slot didnt have an owner
                 {
                     //Call Property Information Card
@@ -1799,7 +1804,6 @@ namespace GameAdd_Ludopoly
 
         public void JailPay()
         {
-            print(getCurrentPlayer().ToString() + " Pays 100$ to get out of Jail!");
             CurrentPlayerPayBank(100);
             getCurrentPlayer().JailPay();
         }
@@ -2924,8 +2928,8 @@ namespace GameAdd_Ludopoly
             int width = Screen.currentResolution.width;
             int height = Screen.currentResolution.height;
             float dpi = (float) width / height;
-            print("W: " + width + "; H: " + height);
-            print(dpi);
+            //print("W: " + width + "; H: " + height);
+            //print(dpi);
             return dpi;
         }
 

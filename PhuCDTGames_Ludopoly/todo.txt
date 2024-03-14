@@ -104,3 +104,10 @@ làm xong ludopolyadapter bên game tổng
 
 13/3/24
 hiện popup nhà tù khi đấu giá thành công
+
+14/3/24
+xử lý logic cho bot
+
+-hoàn thiện tung xúc sắc và ua đất của bot, 
+cùng với ẩn các nút khi bot chơi 
+lỗi khi bắt đầu vào mà lượt chơi là của bot, xúc sắc k được đổ ra

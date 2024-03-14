@@ -8,241 +8,221 @@ using UnityEngine;
 namespace GameAdd_Ludopoly
 {
     public class Player : MonoBehaviour
-{
-    //Base Information
-    //
-    public int currentSlot = 0;
-    public int prvSlot = 0;
-    public int playerIndex;
-    public int tradePlayerIndex;
-    public string playerName;
-    public Vector4 playerColor;
-    public bool isMyTurn = false;
-    public bool isInJail = false;
-    public bool isBankrupt = false;
-
-    public int playerRanking = -1;
-
-    public bool hasSecondTurn = false;
-
-    //Roll a double
-    //
-    public int timesGetDoubles = 0;
-    public int timesNotGetDoubles = 0;
-    public int currentDices;
-
-    //Executing Utilities and Railroads
-    //
-    public bool isRolltoPay = false;
-    public bool exeUtilities = false;
-    public bool exeRailroads = false;
-
-    //Late Move
-    //
-    public int temp_destinationSlot;
-    public bool temp_isForward;
-    public bool lateMoveSet = false;
-
-    //Jail
-    //
-    public bool rollForJail = false;
-    public short numberJailFreeCard = 0;
-
-    //Money
-    //
-    public int PlayerMoney = 1000;
-
-    public int playerMoney
     {
-        get { return PlayerMoney; }
-        set
+        #region Base Information
+        [HideInInspector]
+        public int currentSlot = 0, prvSlot = 0, playerIndex, tradePlayerIndex;
+        [HideInInspector]
+        public string playerName;
+        [HideInInspector]
+        public Vector4 playerColor;
+        [HideInInspector]
+        public bool isMyTurn = false, isInJail = false, isBankrupt = false;
+
+        [HideInInspector]
+        public int playerRanking = -1;
+
+        [HideInInspector]
+        public bool hasSecondTurn = false;
+        #endregion
+
+        #region Others Parameters
+        //Roll a double
+        //
+        [HideInInspector]
+        public int timesGetDoubles = 0, timesNotGetDoubles = 0, currentDices;
+
+        //Executing Utilities and Railroads
+        //
+        [HideInInspector]
+        public bool isRolltoPay = false, exeUtilities = false, exeRailroads = false;
+
+        //Late Move
+        //
+        [HideInInspector]
+        public int temp_destinationSlot;
+        [HideInInspector]
+        public bool temp_isForward, lateMoveSet = false, isMoving = false;
+
+        //Jail
+        //
+        [HideInInspector]
+        public bool rollForJail = false;
+        [HideInInspector]
+        public short numberJailFreeCard = 0;
+
+        //Money
+        //
+        [HideInInspector]
+        public int PlayerMoney = 1000;
+
+        public int playerMoney
         {
-            PlayerMoney = value;
-            if (PlayerMoney < 0)
+            get { return PlayerMoney; }
+            set
             {
-                CheckBankruptcy();
+                PlayerMoney = value;
+                if (PlayerMoney < 0)
+                {
+                    CheckBankruptcy();
+                }
             }
         }
-    }
 
-    public int oldPlayerMoney = 0;
-    public bool moneyWarning = false;
+        [HideInInspector]
+        public int oldPlayerMoney = 0;
+        [HideInInspector]
+        public bool moneyWarning = false;
 
-    //House
-    //
-    public short houseOwned = 0; //use to calculate bankruptcy chance
-    public short hotelOwned = 0; //use to calculate bankruptcy chance
-    public short railroadOwned = 0;
-    public short utilityOwned = 0;
-    public List<Slot> slotOwned;
+        //House (use to calculate bankruptcy chance)
+        //
+        [HideInInspector]
+        public short houseOwned = 0, hotelOwned = 0, railroadOwned = 0, utilityOwned = 0;
+        [HideInInspector]
+        public List<Slot> slotOwned;
 
-    //Auction
-    //
-    public bool joinAuction = true;
-    public bool inAuction = false;
+        //Auction
+        //
+        [HideInInspector]
+        public bool joinAuction = true, inAuction = false;
 
-    //Not showing Jail Popup Parameter
-    //
-    public bool notShowJail = false;
+        //Not showing Jail Popup Parameter
+        //
+        [HideInInspector]
+        public bool notShowJail = false;
 
-    //Set curent Slot
-    //
-    public void setCurrentSlot(int currentSlot)
-    {
-        this.currentSlot = currentSlot;
-    }
-
-    //Move with distance
-    //
-
-    public void Move(int distance, bool isFastMove)
-    {
-        bool passGo;
-        prvSlot = currentSlot;
-        Table.Instance.SetPlayLeaveSlot(this);
-        if (currentSlot + distance >= 40)
+        //Set curent Slot
+        //
+        [HideInInspector]
+        public void setCurrentSlot(int currentSlot)
         {
-            int tempCurrentSlot = (currentSlot + distance) - 40;
-            setCurrentSlot(tempCurrentSlot);
-            passGo = true;
+            this.currentSlot = currentSlot;
         }
-        else
+        #endregion
+
+        //Bot Parameter
+        //
+        [Tooltip("Check this if Bot is playing this player")]
+        public bool isBotPlaying = false;
+
+        public Bot botBrain;
+
+        public BotActions _botActions;
+        public BotActions botActions
         {
-            int tempCurrentSlot = currentSlot + distance;
-            setCurrentSlot(tempCurrentSlot);
-            passGo = false;
+            get { return _botActions; }
+            set { _botActions = value; }
         }
 
-        if (!isFastMove)
+        public CurrentState _currentActions;
+        public CurrentState currentState
         {
-            setPos(passGo, false); //Set position on table right after Move
-        }
-        else
-        {
-            setPos(passGo, true); //Set position on table right after Move
-        }
-    }
-
-    //Move with destination
-    //
-
-    public void MoveToward(int destinationSlot, bool isForward)
-    {
-        if (isForward) //Move forward
-        {
-            if (destinationSlot > currentSlot)
-            {
-                Move(destinationSlot - currentSlot, true);
-            }
-            else if (destinationSlot < currentSlot)
+            get { return _currentActions; }
+            set 
             { 
-                Move((destinationSlot + 40) - currentSlot, true);
+                _currentActions = value;
+                BotExecute();
             }
         }
-        else //Move backward (to jail or back 3 spaces)
-        {
-            setPosNeg(destinationSlot);
-        }
-    }
 
-    public void setLateMove(int destinationSlot, bool isForward) 
-    {
-        temp_destinationSlot = destinationSlot;
-        temp_isForward = isForward;
-        lateMoveSet = true;
-    }
-
-    public void LateMove()
-    {
-        if (lateMoveSet)
+        #region Move and Move Anim
+        public void Move(int distance, bool isFastMove)
         {
-            UIManager.Instance.EndTurnActive(false);
-            UIManager.Instance.ActionsActive(false);
-            if (isInJail && hasSecondTurn)
+            bool passGo;
+            prvSlot = currentSlot;
+            Table.Instance.SetPlayLeaveSlot(this);
+            if (currentSlot + distance >= 40)
             {
-                UIManager.Instance.DicesFacesActive();
-            }
-            MoveToward(temp_destinationSlot, temp_isForward);
-            lateMoveSet = false;
-        }
-    }
-
-    //This is set position on table
-    //
-
-    public void setPos(bool passGo, bool isFastMove)
-    {
-        IEnumerator move()
-        {
-            GetComponent<SpriteRenderer>().sortingOrder = 999;
-            if (!passGo)
-            {
-                for (int i = prvSlot + 1; i <= currentSlot; i++)
-                {
-                    if (!isFastMove)
-                    {
-                        if (i != currentSlot - 1 && i != currentSlot)
-                        {
-                            LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .25f).setEaseInOutCirc();
-                            yield return new WaitForSeconds(.25f);
-                        }
-                        else if (i == currentSlot - 1)
-                        {
-                            LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .25f).setEaseInOutCirc();
-                            yield return new WaitForSeconds(.25f);
-                            Table.Instance.SetPlayerOnSlot(i+1);
-                        }
-                        else
-                        {
-                            yield return new WaitForSeconds(.25f);
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        if (i != currentSlot - 1 && i != currentSlot)
-                        {
-                            LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
-                            yield return new WaitForSeconds(.15f);
-                        }
-                        else if (i == currentSlot - 1)
-                        {
-                            LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
-                            yield return new WaitForSeconds(.15f);
-                            Table.Instance.SetPlayerOnSlot(i+1);
-                        }
-                        else
-                        {
-                            yield return new WaitForSeconds(.15f);
-                            continue;
-                        }
-                    }
-                }
+                int tempCurrentSlot = (currentSlot + distance) - 40;
+                setCurrentSlot(tempCurrentSlot);
+                passGo = true;
             }
             else
             {
-                for (int i = prvSlot + 1; i <= currentSlot + 40; i++)
-                {
-                    if (i == 40)
-                    {
-                        print("Receive 200$");
-                        Table.Instance.CurrentPlayerInstantReceiveBank(200);
-                    }
+                int tempCurrentSlot = currentSlot + distance;
+                setCurrentSlot(tempCurrentSlot);
+                passGo = false;
+            }
 
-                    if (!isFastMove)
+            if (!isFastMove)
+            {
+                setPos(passGo, false); //Set position on table right after Move
+            }
+            else
+            {
+                setPos(passGo, true); //Set position on table right after Move
+            }
+        }
+
+        //Move with destination
+        //
+
+        public void MoveToward(int destinationSlot, bool isForward)
+        {
+            if (isForward) //Move forward
+            {
+                if (destinationSlot > currentSlot)
+                {
+                    Move(destinationSlot - currentSlot, true);
+                }
+                else if (destinationSlot < currentSlot)
+                { 
+                    Move((destinationSlot + 40) - currentSlot, true);
+                }
+            }
+            else //Move backward (to jail or back 3 spaces)
+            {
+                setPosNeg(destinationSlot);
+            }
+        }
+
+        public void setLateMove(int destinationSlot, bool isForward) 
+        {
+            temp_destinationSlot = destinationSlot;
+            temp_isForward = isForward;
+            lateMoveSet = true;
+        }
+
+        public void LateMove()
+        {
+            if (lateMoveSet)
+            {
+                UIManager.Instance.EndTurnActive(false);
+                UIManager.Instance.ActionsActive(false);
+                if (isInJail && hasSecondTurn)
+                {
+                    UIManager.Instance.DicesFacesActive();
+                }
+                MoveToward(temp_destinationSlot, temp_isForward);
+                lateMoveSet = false;
+            }
+        }
+
+        //This is set position on table
+        //
+
+        public void setPos(bool passGo, bool isFastMove)
+        {
+            IEnumerator move()
+            {
+                isMoving = true;
+                GetComponent<SpriteRenderer>().sortingOrder = 999;
+                if (!passGo)
+                {
+                    for (int i = prvSlot + 1; i <= currentSlot; i++)
                     {
-                        if (i <= 39)
+                        if (!isFastMove)
                         {
-                            if (i != currentSlot + 40 - 1 && i != currentSlot + 40)
+                            if (i != currentSlot - 1 && i != currentSlot)
                             {
                                 LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .25f).setEaseInOutCirc();
                                 yield return new WaitForSeconds(.25f);
                             }
-                            else if (i == currentSlot + 40 - 1)
-                            { 
+                            else if (i == currentSlot - 1)
+                            {
                                 LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .25f).setEaseInOutCirc();
                                 yield return new WaitForSeconds(.25f);
-                                Table.Instance.SetPlayerOnSlot(i + 1);
+                                Table.Instance.SetPlayerOnSlot(i+1);
                             }
                             else
                             {
@@ -252,327 +232,435 @@ namespace GameAdd_Ludopoly
                         }
                         else
                         {
-                            if (i != currentSlot + 40 - 1 && i != currentSlot + 40)
+                            if (i != currentSlot - 1 && i != currentSlot)
                             {
-                                LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .25f).setEaseInOutCirc();
-                                yield return new WaitForSeconds(.25f);
+                                LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
+                                yield return new WaitForSeconds(.15f);
                             }
-                            else if (i == currentSlot + 40 - 1)
-                            { 
-                                LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .25f).setEaseInOutCirc();
-                                yield return new WaitForSeconds(.25f);
-                                Table.Instance.SetPlayerOnSlot(i - 40 + 1);
+                            else if (i == currentSlot - 1)
+                            {
+                                LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
+                                yield return new WaitForSeconds(.15f);
+                                Table.Instance.SetPlayerOnSlot(i+1);
                             }
                             else
                             {
-                                yield return new WaitForSeconds(.25f);
+                                yield return new WaitForSeconds(.15f);
                                 continue;
                             }
                         }
                     }
-                    else
+                }
+                else
+                {
+                    for (int i = prvSlot + 1; i <= currentSlot + 40; i++)
                     {
-                        if (i <= 39)
+                        if (i == 40)
                         {
-                            if (i != currentSlot + 40 - 1 && i != currentSlot + 40)
+                            print("Receive 200$");
+                            Table.Instance.CurrentPlayerInstantReceiveBank(200);
+                        }
+
+                        if (!isFastMove)
+                        {
+                            if (i <= 39)
                             {
-                                LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
-                                yield return new WaitForSeconds(.15f);
+                                if (i != currentSlot + 40 - 1 && i != currentSlot + 40)
+                                {
+                                    LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .25f).setEaseInOutCirc();
+                                    yield return new WaitForSeconds(.25f);
+                                }
+                                else if (i == currentSlot + 40 - 1)
+                                { 
+                                    LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .25f).setEaseInOutCirc();
+                                    yield return new WaitForSeconds(.25f);
+                                    Table.Instance.SetPlayerOnSlot(i + 1);
+                                }
+                                else
+                                {
+                                    yield return new WaitForSeconds(.25f);
+                                    continue;
+                                }
                             }
-                            else /*if (i != currentSlot + 40 - 1)*/
-                            { 
-                                LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
-                                yield return new WaitForSeconds(.15f);
-                                Table.Instance.SetPlayerOnSlot(i + 1);
+                            else
+                            {
+                                if (i != currentSlot + 40 - 1 && i != currentSlot + 40)
+                                {
+                                    LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .25f).setEaseInOutCirc();
+                                    yield return new WaitForSeconds(.25f);
+                                }
+                                else if (i == currentSlot + 40 - 1)
+                                { 
+                                    LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .25f).setEaseInOutCirc();
+                                    yield return new WaitForSeconds(.25f);
+                                    Table.Instance.SetPlayerOnSlot(i - 40 + 1);
+                                }
+                                else
+                                {
+                                    yield return new WaitForSeconds(.25f);
+                                    continue;
+                                }
                             }
-                            //else
-                            //{
-                            //    yield return new WaitForSeconds(.15f);
-                            //    continue;
-                            //}
                         }
                         else
                         {
-                            if (i != currentSlot + 40 - 1 && i != currentSlot + 40)
+                            if (i <= 39)
                             {
-                                LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .15f);
-                                yield return new WaitForSeconds(.15f);
+                                if (i != currentSlot + 40 - 1 && i != currentSlot + 40)
+                                {
+                                    LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
+                                    yield return new WaitForSeconds(.15f);
+                                }
+                                else /*if (i != currentSlot + 40 - 1)*/
+                                { 
+                                    LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
+                                    yield return new WaitForSeconds(.15f);
+                                    Table.Instance.SetPlayerOnSlot(i + 1);
+                                }
+                                //else
+                                //{
+                                //    yield return new WaitForSeconds(.15f);
+                                //    continue;
+                                //}
                             }
-                            else /*if (i != currentSlot + 40 - 1)*/
+                            else
                             {
-                                LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .15f);
-                                yield return new WaitForSeconds(.15f);
-                                Table.Instance.SetPlayerOnSlot(i - 40 + 1);
+                                if (i != currentSlot + 40 - 1 && i != currentSlot + 40)
+                                {
+                                    LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .15f);
+                                    yield return new WaitForSeconds(.15f);
+                                }
+                                else /*if (i != currentSlot + 40 - 1)*/
+                                {
+                                    LeanTween.move(gameObject, Table.Instance.slot[i - 40].transform.position, .15f);
+                                    yield return new WaitForSeconds(.15f);
+                                    Table.Instance.SetPlayerOnSlot(i - 40 + 1);
+                                }
+                                //else
+                                //{
+                                //    yield return new WaitForSeconds(.15f);
+                                //    continue;
+                                //}
                             }
-                            //else
-                            //{
-                            //    yield return new WaitForSeconds(.15f);
-                            //    continue;
-                            //}
                         }
                     }
                 }
+                isMoving = false;
+                Table.Instance.AfterPlayerMove(this);
+                //Table.Instance.SwitchPlayer();
+                GetComponent<SpriteRenderer>().sortingOrder = 0;
             }
-            Table.Instance.AfterPlayerMove(this);
-            //Table.Instance.SwitchPlayer();
-            GetComponent<SpriteRenderer>().sortingOrder = 0;
+            StartCoroutine(move());
         }
-        StartCoroutine(move());
-    }
 
-    public void setPosNeg (int destinationNumber)
-    {
-        IEnumerator move()
+        public void setPosNeg (int destinationNumber)
         {
-            GetComponent<SpriteRenderer>().sortingOrder = 999;
-            for (int i = currentSlot - 1; i >= destinationNumber; i--)
+            IEnumerator move()
             {
-                LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
-                yield return new WaitForSeconds(.15f);
-            }
-
-            setCurrentSlot(destinationNumber);
-            Table.Instance.SetPlayerOnSlot(destinationNumber);
-            Table.Instance.AfterPlayerMove(this);
-            GetComponent<SpriteRenderer>().sortingOrder = 0;
-        }
-        StartCoroutine(move());
-        Table.Instance.SetPlayLeaveSlot(this);
-    }
-
-    //Turn
-    //
-
-    [SerializeField]
-    int moneyLeft = 0;
-
-    public void setIsMyTurn(bool value)
-    {
-        isMyTurn = value;
-
-        if (isMyTurn && !isBankrupt)
-        {
-            if (isInJail && !inAuction && !notShowJail)
-            {
-                UIManager.Instance.ShowIsInJail();
-            }
-
-            if (!isBankrupt)
-            {
-                CheckBankruptcy();
-            }
-        }
-    }
-
-    public bool getIsMyTurn()
-    {
-        return isMyTurn;
-    }
-
-    //Call whenever roll a double
-    //
-
-    public void setTimesGetDoubles(bool hasDoubles, bool rollForJail)
-    {
-        if (!rollForJail)
-        {
-            if (hasDoubles)
-            {
-                if (timesGetDoubles < 2)
+                isMoving = true;
+                GetComponent<SpriteRenderer>().sortingOrder = 999;
+                for (int i = currentSlot - 1; i >= destinationNumber; i--)
                 {
-                    timesGetDoubles++;
-                    hasSecondTurn = true;
+                    LeanTween.move(gameObject, Table.Instance.slot[i].transform.position, .15f);
+                    yield return new WaitForSeconds(.15f);
                 }
-                else if (timesGetDoubles >= 2)
-                {
-                    if (currentSlot < 10)
-                    {
-                        MoveToward(10, true);
-                    }
-                    else if (currentSlot > 10)
-                    {
-                        MoveToward(10, false);
-                    }
 
-                    hasSecondTurn = false;
-                    print("GO TO JAIL!");
-                    isInJail = true;    
+                isMoving = false;
+                setCurrentSlot(destinationNumber);
+                Table.Instance.SetPlayerOnSlot(destinationNumber);
+                Table.Instance.AfterPlayerMove(this);
+                GetComponent<SpriteRenderer>().sortingOrder = 0;
+            }
+            StartCoroutine(move());
+            Table.Instance.SetPlayLeaveSlot(this);
+        }
+
+        #endregion
+
+        #region Turn and Double times Call
+        int moneyLeft = 0;
+
+        public void setIsMyTurn(bool value)
+        {
+            isMyTurn = value;
+
+            if (isMyTurn && !isBankrupt)
+            {
+                if (isInJail && !inAuction && !notShowJail)
+                {
+                    UIManager.Instance.ShowIsInJail();
+                }
+
+                if (!isBankrupt)
+                {
+                    CheckBankruptcy();
+                }
+
+                if (inAuction)
+                {
+                    currentState = CurrentState.AuctionSelect;
+                }
+            }
+        }
+
+        public bool getIsMyTurn()
+        {
+            return isMyTurn;
+        }
+
+        //Call whenever roll a double
+        //
+
+        public void setTimesGetDoubles(bool hasDoubles, bool rollForJail)
+        {
+            if (!rollForJail)
+            {
+                if (hasDoubles)
+                {
+                    if (timesGetDoubles < 2)
+                    {
+                        timesGetDoubles++;
+                        hasSecondTurn = true;
+                    }
+                    else if (timesGetDoubles >= 2)
+                    {
+                        if (currentSlot < 10)
+                        {
+                            MoveToward(10, true);
+                        }
+                        else if (currentSlot > 10)
+                        {
+                            MoveToward(10, false);
+                        }
+
+                        hasSecondTurn = false;
+                        print("GO TO JAIL!");
+                        UIManager.Instance.ShowGoToJail();
+                        isInJail = true;    
+                        timesGetDoubles = 0;
+                    }
+                }
+                else
+                {
                     timesGetDoubles = 0;
+                    hasSecondTurn = false;
                 }
             }
             else
             {
-                timesGetDoubles = 0;
-                hasSecondTurn = false;
-            }
-        }
-        else
-        {
-            if (!hasDoubles)
-            {
-                if (timesNotGetDoubles < 2)
+                if (!hasDoubles)
                 {
-                    timesNotGetDoubles++;
-                    UIManager.Instance.EndTurnActive(true);
+                    if (timesNotGetDoubles < 2)
+                    {
+                        timesNotGetDoubles++;
+                        UIManager.Instance.EndTurnActive(true);
+                    }
+                    else if (timesNotGetDoubles >= 2)
+                    {
+                        print("pay 100$");
+                        Table.Instance.CurrentPlayerInstantPayBank(100);
+                        isInJail = false;
+                        timesNotGetDoubles = 0;
+                    }
                 }
-                else if (timesNotGetDoubles >= 2)
+                else
                 {
-                    print("pay 100$");
-                    Table.Instance.CurrentPlayerInstantPayBank(100);
-                    isInJail = false;
                     timesNotGetDoubles = 0;
+                    isInJail = false;
                 }
             }
-            else
+        }
+
+        #endregion
+
+        #region Jail
+
+        //Jail
+        //
+        public void setIsInJail(bool value)
+        {
+            if (isInJail && !value)
             {
-                timesNotGetDoubles = 0;
-                isInJail = false;
+                isInJail = value;
+            }
+            else if (!isInJail && value)
+            {
+                isInJail = value;
+                timesGetDoubles = 0;
+                UIManager.Instance.DicesActive(false);
             }
         }
-    }
 
-    //Jail
-    //
-    public void setIsInJail(bool value)
-    {
-        if (isInJail && !value)
+        public void JailPay()
         {
-            isInJail = value;
-        }
-        else if (!isInJail && value)
-        {
-            isInJail = value;
-            timesGetDoubles = 0;
-            UIManager.Instance.DicesActive(false);
-        }
-    }
-
-    public void JailPay()
-    {
-        print("pay 100$");
-        isInJail = false;
-        UIManager.Instance.HideInformationCard();
-    }
-
-    public void JailUseCard()
-    {
-        if (numberJailFreeCard > 0)
-        {
-            numberJailFreeCard--;
             isInJail = false;
             UIManager.Instance.HideInformationCard();
         }
-        else
-            return;
-    }
 
-    public void AddJailFreeCard()
-    {
-        numberJailFreeCard++;
-    }
-
-    public void RemoveJailFreeCard()
-    {
-        numberJailFreeCard--;
-    }
-
-    #region Money
-    public void ReceiveMoney(int amount)
-    {
-        playerMoney += amount;
-    }
-
-    public void PayMoney(int amount)
-    {
-        playerMoney -= amount;
-    }
-
-    public void CheckBankruptcy()
-    {
-        if (playerMoney < 0 && !inAuction)
+        public void JailUseCard()
         {
-            UIManager.Instance.ActionsActive(true);
-            UIManager.Instance.DicesActive(false);
-            UIManager.Instance.DicesFacesActive();
-            UIManager.Instance.EndTurnActive(false);
+            if (numberJailFreeCard > 0)
+            {
+                numberJailFreeCard--;
+                isInJail = false;
+                UIManager.Instance.HideInformationCard();
+            }
+            else
+                return;
+        }
 
-            moneyLeft = 0; //Calculate all the property after sell and mortgage, if it is not enough, player is bankruptcy, left the game
+        public void AddJailFreeCard()
+        {
+            numberJailFreeCard++;
+        }
+
+        public void RemoveJailFreeCard()
+        {
+            numberJailFreeCard--;
+        }
+
+        #endregion
+
+        #region Money
+        public void ReceiveMoney(int amount)
+        {
+            playerMoney += amount;
+        }
+
+        public void PayMoney(int amount)
+        {
+            playerMoney -= amount;
+        }
+
+        public void CheckBankruptcy()
+        {
+            if (playerMoney < 0 && !inAuction)
+            {
+                UIManager.Instance.ActionsActive(true);
+                UIManager.Instance.DicesActive(false);
+                UIManager.Instance.DicesFacesActive();
+                UIManager.Instance.EndTurnActive(false);
+
+                moneyLeft = 0; //Calculate all the property after sell and mortgage, if it is not enough, player is bankruptcy, left the game
+
+                foreach (Slot slot in slotOwned)
+                {
+                    moneyLeft += (slot.numberOfHouse * slot.getSellPrice()) + slot.getMortgagePrice();
+                }
+
+                if (moneyLeft + playerMoney > 0) //survived
+                {
+                    UIManager.Instance.ShowBankruptcy(false);
+                    moneyWarning = true;
+                }
+                else //bankruptcy
+                {
+                    UIManager.Instance.ShowBankruptcy(true);
+                }
+            }
+        }
+        #endregion
+
+        #region Trade
+
+        public int getPlayerMoney()
+        {
+            return playerMoney;
+        }
+
+        public List<Slot> getPlayerSlot()
+        {
+            List<Slot> slots = new List<Slot>();
 
             foreach (Slot slot in slotOwned)
             {
-                moneyLeft += (slot.numberOfHouse * slot.getSellPrice()) + slot.getMortgagePrice();
+                slots.Add(slot);
             }
+            return slots;
+        }
 
-            if (moneyLeft + playerMoney > 0) //survived
+        public int getPlayerJailFreeCard()
+        {
+            return numberJailFreeCard;
+        }
+
+        #endregion
+
+        public void StartBankrupt()
+        {
+            foreach (var item in slotOwned)
             {
-                UIManager.Instance.ShowBankruptcy(false);
-                moneyWarning = true;
+                item.removeOwner();
             }
-            else //bankruptcy
+
+            slotOwned.Clear();
+
+            Table.Instance.RemainingPlayer--;
+
+            if (playerIndex == 1)
             {
-                UIManager.Instance.ShowBankruptcy(true);
+                UIManager.Instance.player1_bankruptImage.SetActive(true);
+            }
+            else if (playerIndex == 2)
+            {
+                UIManager.Instance.player2_bankruptImage.SetActive(true);
+            }
+            else if (playerIndex == 3)
+            {
+                UIManager.Instance.player3_bankruptImage.SetActive(true);
+            }
+            else if (playerIndex == 4)
+            {
+                UIManager.Instance.player4_bankruptImage.SetActive(true);
+            }
+
+            this.playerRanking = Table.Instance.playerRank;
+            Table.Instance.playerRank--;
+            isBankrupt = true;
+            Table.Instance.ExecutingBankrupt(); //turn off bankruptcy panel
+            gameObject.SetActive(false);
+        } 
+
+        //Bot Execute
+        //
+        public void BotExecute()
+        {
+            if (isBotPlaying)
+            {
+                if (currentState == CurrentState.WaitToRoll)
+                {
+                    if (!isInJail)
+                    {
+                        print(playerName + " is Waiting to Roll!");
+                        botBrain.RollDice();
+                    }
+                }
+                else if (currentState == CurrentState.BuyOrAuction)
+                {
+                    print(playerName + " is Consider Buying or Auctioning!");
+                    botBrain.BuyOrAuction(this);
+                }
+                else if (currentState == CurrentState.AuctionSelect)
+                {
+                    botBrain.AuctionSelection(this);
+                }
+                else if (currentState == CurrentState.JailSelect)
+                {
+                    print(playerName + " is in Jail and Considering");
+                }
+                else if (currentState == CurrentState.AfterSelection && !isMoving)
+                {
+                    if (hasSecondTurn)
+                    {
+                        currentState = CurrentState.WaitToRoll;
+                    }
+                    else
+                    {
+                        print("What will " + playerName + " do?");
+                        botBrain.EndTurn();
+                    }
+                }
             }
         }
     }
-    #endregion
-
-    #region Trade
-
-    public int getPlayerMoney()
-    {
-        return playerMoney;
-    }
-
-    public List<Slot> getPlayerSlot()
-    {
-        List<Slot> slots = new List<Slot>();
-
-        foreach (Slot slot in slotOwned)
-        {
-            slots.Add(slot);
-        }
-        return slots;
-    }
-
-    public int getPlayerJailFreeCard()
-    {
-        return numberJailFreeCard;
-    }
-
-    #endregion
-
-    public void StartBankrupt()
-    {
-        foreach (var item in slotOwned)
-        {
-            item.removeOwner();
-        }
-
-        slotOwned.Clear();
-
-        Table.Instance.RemainingPlayer--;
-
-        if (playerIndex == 1)
-        {
-            UIManager.Instance.player1_bankruptImage.SetActive(true);
-        }
-        else if (playerIndex == 2)
-        {
-            UIManager.Instance.player2_bankruptImage.SetActive(true);
-        }
-        else if (playerIndex == 3)
-        {
-            UIManager.Instance.player3_bankruptImage.SetActive(true);
-        }
-        else if (playerIndex == 4)
-        {
-            UIManager.Instance.player4_bankruptImage.SetActive(true);
-        }
-
-        this.playerRanking = Table.Instance.playerRank;
-        Table.Instance.playerRank--;
-        isBankrupt = true;
-        Table.Instance.ExecutingBankrupt(); //turn off bankruptcy panel
-    } 
-}
 }

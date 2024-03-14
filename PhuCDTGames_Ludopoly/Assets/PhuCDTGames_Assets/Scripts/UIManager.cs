@@ -558,18 +558,23 @@ namespace GameAdd_Ludopoly
 
         public void DicesActive(bool value)
         {
-            rollDice.interactable = value;
+            rollDice.GetComponent<ButtonInteractable>().thisInteractable = value;
 
             if (_Table.getCurrentPlayer().isBankrupt)
             {
-                rollDice.interactable = false;
+                rollDice.GetComponent<ButtonInteractable>().thisInteractable = false;
                 DicesFacesActive();
+            }
+            //print(_Table.getCurrentPlayer().playerName + " roll bitch");
+            if (!_Table.getCurrentPlayer().hasSecondTurn && value && _Table.getCurrentPlayer().isBotPlaying)
+            {
+                _Table.getCurrentPlayer().currentState = CurrentState.WaitToRoll;
             }
         }
 
         public void DicesFacesActive()
         {
-            if (rollDice.interactable)
+            if (rollDice.GetComponent<ButtonInteractable>().thisInteractable)
             {
                 foreach (var dice in dice1Faces)
                 {
@@ -580,7 +585,7 @@ namespace GameAdd_Ludopoly
                     dice.GetComponent<Image>().color = new Vector4(1, 1, 1, 1);
                 }
             }
-            else
+            else 
             {
                 foreach (var dice in dice1Faces)
                 {
@@ -1149,8 +1154,8 @@ namespace GameAdd_Ludopoly
                 bankruptcyPanel.SetActive(true);
                 OnEnable_StandOnPanel(bankruptcyPanel);
                 bankruptcyPanel.transform.position = pos;
-                payDebt.interactable = true;
-                bankRupt.interactable = true;
+                payDebt.GetComponent<ButtonInteractable>().thisInteractable = true;
+                bankRupt.GetComponent<ButtonInteractable>().thisInteractable = true;
             }
             else
             {
@@ -1159,8 +1164,8 @@ namespace GameAdd_Ludopoly
                 bankruptcyPanel.SetActive(true);
                 OnEnable_StandOnPanel(bankruptcyPanel);
                 bankruptcyPanel.transform.position = pos;
-                payDebt.interactable = false;
-                bankRupt.interactable = true;
+                payDebt.GetComponent<ButtonInteractable>().thisInteractable = false;
+                bankRupt.GetComponent<ButtonInteractable>().thisInteractable = true;
             }
         }
 
@@ -1184,16 +1189,16 @@ namespace GameAdd_Ludopoly
 
         public void ActionsActive(bool value)
         {
-            build.interactable = value;
-            sell.interactable = value;
-            mortgage.interactable = value;
-            redeem.interactable = value;
-            trade.interactable = value;
+            build.GetComponent<ButtonInteractable>().thisInteractable = value;
+            sell.GetComponent<ButtonInteractable>().thisInteractable = value;
+            mortgage.GetComponent<ButtonInteractable>().thisInteractable = value;
+            redeem.GetComponent<ButtonInteractable>().thisInteractable = value;
+            trade.GetComponent<ButtonInteractable>().thisInteractable = value;
         }
 
         public void EndTurnActive(bool value)
         {
-            endTurn.interactable = value;
+            endTurn.GetComponent<ButtonInteractable>().thisInteractable = value;
         }
 
         //On_Click
@@ -1217,11 +1222,11 @@ namespace GameAdd_Ludopoly
             tradePanel.SetActive(false);
 
             //fix loi khi an vao nhieu action button cung 1 luc
-            build.interactable = false;
-            sell.interactable = false;
-            mortgage.interactable = false;
-            redeem.interactable = false;
-            trade.interactable = false;
+            build.GetComponent<ButtonInteractable>().thisInteractable = false;
+            sell.GetComponent<ButtonInteractable>().thisInteractable = false;
+            mortgage.GetComponent<ButtonInteractable>().thisInteractable = false;
+            redeem.GetComponent<ButtonInteractable>().thisInteractable = false;
+            trade.GetComponent<ButtonInteractable>().thisInteractable = false;
 
             OnEnable_MainActionsPanel(buildPanel);
             buildPanel.transform.position = pos;
@@ -1240,11 +1245,11 @@ namespace GameAdd_Ludopoly
             tradePanel.SetActive(false);
 
             //fix loi khi an vao nhieu action button cung 1 luc
-            build.interactable = false;
-            sell.interactable = false;
-            mortgage.interactable = false;
-            redeem.interactable = false;
-            trade.interactable = false;
+            build.GetComponent<ButtonInteractable>().thisInteractable = false;
+            sell.GetComponent<ButtonInteractable>().thisInteractable = false;
+            mortgage.GetComponent<ButtonInteractable>().thisInteractable = false;
+            redeem.GetComponent<ButtonInteractable>().thisInteractable = false;
+            trade.GetComponent<ButtonInteractable>().thisInteractable = false;
 
             OnEnable_MainActionsPanel(sellPanel);
             sellPanel.transform.position = pos;
@@ -1263,11 +1268,11 @@ namespace GameAdd_Ludopoly
             tradePanel.SetActive(false);
 
             //fix loi khi an vao nhieu action button cung 1 luc
-            build.interactable = false;
-            sell.interactable = false;
-            mortgage.interactable = false;
-            redeem.interactable = false;
-            trade.interactable = false;
+            build.GetComponent<ButtonInteractable>().thisInteractable = false;
+            sell.GetComponent<ButtonInteractable>().thisInteractable = false;
+            mortgage.GetComponent<ButtonInteractable>().thisInteractable = false;
+            redeem.GetComponent<ButtonInteractable>().thisInteractable = false;
+            trade.GetComponent<ButtonInteractable>().thisInteractable = false;
 
             OnEnable_MainActionsPanel(mortgagePanel);
             mortgagePanel.transform.position = pos;
@@ -1286,11 +1291,11 @@ namespace GameAdd_Ludopoly
             tradePanel.SetActive(false);
 
             //fix loi khi an vao nhieu action button cung 1 luc
-            build.interactable = false;
-            sell.interactable = false;
-            mortgage.interactable = false;
-            redeem.interactable = false;
-            trade.interactable = false;
+            build.GetComponent<ButtonInteractable>().thisInteractable = false;
+            sell.GetComponent<ButtonInteractable>().thisInteractable = false;
+            mortgage.GetComponent<ButtonInteractable>().thisInteractable = false;
+            redeem.GetComponent<ButtonInteractable>().thisInteractable = false;
+            trade.GetComponent<ButtonInteractable>().thisInteractable = false;
 
             OnEnable_MainActionsPanel(redeemPanel);
             redeemPanel.transform.position = pos;
@@ -1308,11 +1313,11 @@ namespace GameAdd_Ludopoly
             tradePanel.SetActive(true);
 
             //fix loi khi an vao nhieu action button cung 1 luc
-            build.interactable = false;
-            sell.interactable = false;
-            mortgage.interactable = false;
-            redeem.interactable = false;
-            trade.interactable = false;
+            build.GetComponent<ButtonInteractable>().thisInteractable = false;
+            sell.GetComponent<ButtonInteractable>().thisInteractable = false;
+            mortgage.GetComponent<ButtonInteractable>().thisInteractable = false;
+            redeem.GetComponent<ButtonInteractable>().thisInteractable = false;
+            trade.GetComponent<ButtonInteractable>().thisInteractable = false;
 
             trade_offerPanel.SetActive(true);
             OnEnable_Trade(trade_offerPanel);
@@ -1503,11 +1508,11 @@ namespace GameAdd_Ludopoly
         {
             if (buildPanel.activeSelf || sellPanel.activeSelf || mortgagePanel.activeSelf || redeemPanel.activeSelf || tradePanel.activeSelf)
             {
-                build.interactable = true;
-                sell.interactable = true;
-                mortgage.interactable = true;
-                redeem.interactable = true;
-                trade.interactable = true;
+                build.GetComponent<ButtonInteractable>().thisInteractable = true;
+                sell.GetComponent<ButtonInteractable>().thisInteractable = true;
+                mortgage.GetComponent<ButtonInteractable>().thisInteractable = true;
+                redeem.GetComponent<ButtonInteractable>().thisInteractable = true;
+                trade.GetComponent<ButtonInteractable>().thisInteractable = true;
             }
 
             OnClick_CloseOnClickInformation();
@@ -1833,17 +1838,18 @@ namespace GameAdd_Ludopoly
             Vector2 pos  = Camera.main.WorldToScreenPoint(_Table.transform.position);
             cpi_showButtonPanel.SetActive(true);
             cpi_boughtPanel.SetActive(false);
+            _Table.getCurrentPlayer().currentState = CurrentState.BuyOrAuction;
 
 
             if (_Table.getCurrentPlayer().playerMoney < _Table.getSlot(_Table.getCurrentPlayer().currentSlot).getSlotPrice()) //can't afford
             {
-                cpi_buyButton.interactable = false;
-                cpi_auctionButton.interactable = true;
+                cpi_buyButton.GetComponent<ButtonInteractable>().thisInteractable = false;
+                cpi_auctionButton.GetComponent<ButtonInteractable>().thisInteractable = true;
             }
             else
             {
-                cpi_buyButton.interactable = true;
-                cpi_auctionButton.interactable = true;
+                cpi_buyButton.GetComponent<ButtonInteractable>().thisInteractable = true;
+                cpi_auctionButton.GetComponent<ButtonInteractable>().thisInteractable = true;
             }
 
             colorPropertyInformationCard.transform.position = pos;
@@ -1926,17 +1932,17 @@ namespace GameAdd_Ludopoly
             specialPropertyInformationCard.transform.position = pos;
             ut_showButtonPanel.SetActive(true);
             ut_boughtPanel.SetActive(false);
-
+            _Table.getCurrentPlayer().currentState = CurrentState.BuyOrAuction;
 
             if (_Table.getCurrentPlayer().playerMoney < _Table.getSlot(_Table.getCurrentPlayer().currentSlot).getSlotPrice()) //can't afford
             {
-                sp_buyButton.interactable = false;
-                sp_auctionButton.interactable = true;
+                sp_buyButton.GetComponent<ButtonInteractable>().thisInteractable = false;
+                sp_auctionButton.GetComponent<ButtonInteractable>().thisInteractable = true;
             }
             else
             {
-                sp_buyButton.interactable = true;
-                sp_auctionButton.interactable = true;
+                sp_buyButton.GetComponent<ButtonInteractable>().thisInteractable = true;
+                sp_auctionButton.GetComponent<ButtonInteractable>().thisInteractable = true;
             }
 
             sp_specialPropertyCard.ShowCard(slotNumber);
@@ -2181,6 +2187,67 @@ namespace GameAdd_Ludopoly
             }
         }
 
+        public void ShowGoToJail()
+        {
+            _Table.getCurrentPlayer().setIsInJail(true);
+            _Table.getCurrentPlayer().setLateMove(10, false);
+
+            jailPanel.SetActive(true);
+            goToJailPanel.SetActive(true);
+            OnEnable_StandOnPanel(goToJailPanel);
+            Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
+            goToJailPanel.transform.position = pos;
+
+
+            if (_Table.getCurrentPlayer().playerColor == new Vector4(255, 0, 0, 255)) //red
+            {
+                gtj_redPawn.SetActive(true);
+                gtj_greenPawn.SetActive(false);
+                gtj_bluePawn.SetActive(false);
+                gtj_yellowPawn.SetActive(false);
+            }
+            else if (_Table.getCurrentPlayer().playerColor == new Vector4(0, 0, 255, 255)) //blue
+            {
+                gtj_redPawn.SetActive(false);
+                gtj_greenPawn.SetActive(false);
+                gtj_bluePawn.SetActive(true);
+                gtj_yellowPawn.SetActive(false);
+            }
+            else if (_Table.getCurrentPlayer().playerColor == new Vector4(0, 255, 0, 255)) //green
+            {
+                gtj_redPawn.SetActive(false);
+                gtj_greenPawn.SetActive(true);
+                gtj_bluePawn.SetActive(false);
+                gtj_yellowPawn.SetActive(false);
+            }
+            else if (_Table.getCurrentPlayer().playerColor == new Vector4(255, 255, 0, 255)) //yellow
+            {
+                gtj_redPawn.SetActive(false);
+                gtj_greenPawn.SetActive(false);
+                gtj_bluePawn.SetActive(false);
+                gtj_yellowPawn.SetActive(true);
+            }
+
+            float timeConsumed = 0;
+
+            IEnumerator actions()
+            {
+                do
+                {
+                    yield return new WaitForSeconds(.2f);
+                    timeConsumed += .2f;
+                }
+                while (timeConsumed < 1.5f);
+
+                if (timeConsumed > 1.5f)
+                {
+                    OnClick_Done();
+                }
+            }
+
+            StartCoroutine(actions());
+        }
+
         public void ShowCornerCard(int slotNumber)
         {
             if (_Table.getSlot(slotNumber).cornerSlot.slotType == CornerSlot_Type.GoToJail)
@@ -2302,7 +2369,10 @@ namespace GameAdd_Ludopoly
                     }
                 }
 
-                StartCoroutine(actions());
+                if (!_Table.getCurrentPlayer().isInJail)
+                {
+                    StartCoroutine(actions());
+                }
             }
         }
 
@@ -2310,6 +2380,7 @@ namespace GameAdd_Ludopoly
         {
             jailPanel.SetActive(true);
             inJailPanel.SetActive(true);
+            _Table.getCurrentPlayer().currentState = CurrentState.JailSelect;
             OnEnable_StandOnPanel(inJailPanel);
             Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
             inJailPanel.transform.position = pos;
@@ -2347,21 +2418,21 @@ namespace GameAdd_Ludopoly
             //Pay Button
             if (_Table.getCurrentPlayer().playerMoney > 100)
             {
-                ij_Pay.interactable = true;
+                ij_Pay.GetComponent<ButtonInteractable>().thisInteractable = true;
             }
             else
             {
-                ij_Pay.interactable = false;
+                ij_Pay.GetComponent<ButtonInteractable>().thisInteractable = false;
             }
 
             //Use Card
             if (_Table.getCurrentPlayer().numberJailFreeCard > 0)
             {
-                ij_useCard.interactable = true;
+                ij_useCard.GetComponent<ButtonInteractable>().thisInteractable = true;
             }
             else
             {
-                ij_useCard.interactable = false;
+                ij_useCard.GetComponent<ButtonInteractable>().thisInteractable = false;
             }
         }
 
@@ -2485,38 +2556,38 @@ namespace GameAdd_Ludopoly
 
             IEnumerator buttonCooldown() //Set cooldown for buttons
             {
-                ai_smallBid.interactable = false;
-                ai_bigBid.interactable = false;
-                ai_withdraw.interactable = false;
+                ai_smallBid.GetComponent<ButtonInteractable>().thisInteractable = false;
+                ai_bigBid.GetComponent<ButtonInteractable>().thisInteractable = false;
+                ai_withdraw.GetComponent<ButtonInteractable>().thisInteractable = false;
 
                 yield return new WaitForSeconds(.5f);
 
                 if (currentPlayer.playerMoney < currentPrice + 10) //just can withdraw
                 {
-                    ai_smallBid.interactable = false;
-                    ai_bigBid.interactable = false;
-                    ai_withdraw.interactable = true;
+                    ai_smallBid.GetComponent<ButtonInteractable>().thisInteractable = false;
+                    ai_bigBid.GetComponent<ButtonInteractable>().thisInteractable = false;
+                    ai_withdraw.GetComponent<ButtonInteractable>().thisInteractable = true;
                 }
                 else if (currentPlayer.playerMoney < currentPrice + 100) //can small bid
                 {
-                    ai_smallBid.interactable = true;
-                    ai_bigBid.interactable = false;
-                    ai_withdraw.interactable = true;
+                    ai_smallBid.GetComponent<ButtonInteractable>().thisInteractable = true;
+                    ai_bigBid.GetComponent<ButtonInteractable>().thisInteractable = false;
+                    ai_withdraw.GetComponent<ButtonInteractable>().thisInteractable = true;
                 }
                 else //can big bid
                 {
-                    ai_smallBid.interactable = true;
-                    ai_bigBid.interactable = true;
-                    ai_withdraw.interactable = true;
+                    ai_smallBid.GetComponent<ButtonInteractable>().thisInteractable = true;
+                    ai_bigBid.GetComponent<ButtonInteractable>().thisInteractable = true;
+                    ai_withdraw.GetComponent<ButtonInteractable>().thisInteractable = true;
                 }
             }
         }
     
         public void CloseAuction(int slotNumber, Player playerWin, Player playerStart, int currentPrice, bool isWin)
         {
-            ai_smallBid.interactable = false;
-            ai_bigBid.interactable = false;
-            ai_withdraw.interactable = false;
+            ai_smallBid.GetComponent<ButtonInteractable>().thisInteractable = false;
+            ai_bigBid.GetComponent<ButtonInteractable>().thisInteractable = false;
+            ai_withdraw.GetComponent<ButtonInteractable>().thisInteractable = false;
 
             if (isWin)
             {
@@ -2702,6 +2773,7 @@ namespace GameAdd_Ludopoly
             MoneyUpdate();
             //_Table.getCurrentPlayer().CheckBankruptcy();
             //StopAllCoroutines();
+            _Table.getCurrentPlayer().currentState = CurrentState.AfterSelection;
         }
 
         #endregion

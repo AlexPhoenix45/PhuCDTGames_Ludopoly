@@ -133,4 +133,40 @@ namespace GameAdd_Ludopoly
         SpecialProperty,
         JailFree
     }
+
+    public enum BotActions
+    {
+        //Roll dice actions
+        RollDice,
+        
+        Done,
+
+        //Buy or auction propperties
+        BuyProps,
+        AuctionProps,
+
+        //Jail Actions
+        JailPay,
+        JailUse,
+        JailRoll,
+
+        //Trade ?
+
+        //5 Main Actions
+        Build,
+        Sell,
+        Abandon,
+        Negotiate,
+
+
+    }
+
+    public enum CurrentState
+    {
+        WaitToRoll,
+        BuyOrAuction,
+        AuctionSelect,
+        JailSelect,
+        AfterSelection,
+    }
 }
