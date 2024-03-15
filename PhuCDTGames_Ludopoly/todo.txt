@@ -111,3 +111,14 @@ xử lý logic cho bot
 -hoàn thiện tung xúc sắc và ua đất của bot, 
 cùng với ẩn các nút khi bot chơi 
 lỗi khi bắt đầu vào mà lượt chơi là của bot, xúc sắc k được đổ ra
+(fail)
+
+đặt event cho bot khi các ui được bật
+
+jailPay xong thi doi sang roll
+check lai xem waittoroll o dau ma sau khi jailPay -> EndTurn xong lại ra roll
+test lại vào tù rồi jailPay
+dẵm vào próp của nhà khác thì k tiếp tục endturn
+
+không panel nào bật, !isMoving
+

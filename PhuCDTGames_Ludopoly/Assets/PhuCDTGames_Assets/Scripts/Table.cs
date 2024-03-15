@@ -120,6 +120,7 @@ namespace GameAdd_Ludopoly
                 }
                 while (timeConsumed < 1.5f);
                 SwitchPlayer(player[randomPlayer]);
+                _UIManager._LiveUpdate.OptionsUpdate();
             }
             StartCoroutine(chooseStarter());
         }
@@ -1787,7 +1788,6 @@ namespace GameAdd_Ludopoly
             if (auc_playerInAuction == 0) //when everyone leave auction
             {
                 _UIManager.CloseAuction(auc_slotNumber, getCurrentPlayer(), auc_startingPlayer, auc_currentPrice, false);
-                print("auction closed");
             }
             else
             {

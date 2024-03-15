@@ -60,6 +60,14 @@ public class Bot : MonoBehaviour
         }
     }
 
+    public void JailSelection (Player myPlayer)
+    {
+        if (myPlayer.getPlayerMoney() > 100)
+        {
+            _UIManager.OnClick_JailPay();
+        }
+    }
+
     public void EndTurn()
     {
         IEnumerator action()

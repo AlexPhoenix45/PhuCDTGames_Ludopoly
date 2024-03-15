@@ -18,6 +18,8 @@ namespace GameAdd_Ludopoly
         //Table
         public Table _Table;
 
+        public LiveUpdate _LiveUpdate;
+
         //Singleton
         public static UIManager Instance;
 
@@ -1134,7 +1136,15 @@ namespace GameAdd_Ludopoly
                     timeConsumed += .2f;
                 }
                 while (timeConsumed < 1);
-                OnDisable_TransparentPanel(paidRentPanel, moneyPanel);
+                if (bankruptcyPanel.activeSelf)
+                {
+                    paidRentPanel.SetActive(false);
+                    _LiveUpdate.PanelLiveUpdate(paidRentPanel, false);
+                }
+                else
+                {
+                    OnDisable_TransparentPanel(paidRentPanel, moneyPanel);
+                }
             }
             StartCoroutine(wait());
         }
@@ -1834,6 +1844,9 @@ namespace GameAdd_Ludopoly
             supriseInformationCard.SetActive(false);
             specialPropertyInformationCard.SetActive(false);
 
+            cpi_showButtonPanel.SetActive(true);
+            cpi_boughtPanel.SetActive(false);
+
             OnEnable_StandOnPanel(colorPropertyInformationCard);
             Vector2 pos  = Camera.main.WorldToScreenPoint(_Table.transform.position);
             cpi_showButtonPanel.SetActive(true);
@@ -1860,13 +1873,13 @@ namespace GameAdd_Ludopoly
         {
             standOnInformationPanel.SetActive(true);
             colorPropertyInformationCard.SetActive(true);
+            cpi_showButtonPanel.SetActive(false);
+            cpi_boughtPanel.SetActive(true);
             OnEnable_StandOnPanel(colorPropertyInformationCard);
             Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
             colorPropertyInformationCard.transform.position = pos;
             //cpi_buyer.text = _Table.getSlot(slotNumber).getOwner().playerName;
 
-            cpi_showButtonPanel.SetActive(false);
-            cpi_boughtPanel.SetActive(true);
 
             if (_Table.getCurrentPlayer() == _Table.player[0])
             {
@@ -1927,6 +1940,9 @@ namespace GameAdd_Ludopoly
             colorPropertyInformationCard.SetActive(false);
             supriseInformationCard.SetActive(false);
 
+            ut_showButtonPanel.SetActive(true);
+            ut_boughtPanel.SetActive(false);
+
             OnEnable_StandOnPanel(specialPropertyInformationCard);
             Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
             specialPropertyInformationCard.transform.position = pos;
@@ -1952,12 +1968,12 @@ namespace GameAdd_Ludopoly
         {
             standOnInformationPanel.SetActive(true);
             specialPropertyInformationCard.SetActive(true);
+            ut_showButtonPanel.SetActive(false);
+            ut_boughtPanel.SetActive(true);
             OnEnable_StandOnPanel(specialPropertyInformationCard);
             Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
             specialPropertyInformationCard.transform.position = pos;
 
-            ut_showButtonPanel.SetActive(false);
-            ut_boughtPanel.SetActive(true);
 
 
             if (_Table.getCurrentPlayer() == _Table.player[0])
@@ -2380,7 +2396,6 @@ namespace GameAdd_Ludopoly
         {
             jailPanel.SetActive(true);
             inJailPanel.SetActive(true);
-            _Table.getCurrentPlayer().currentState = CurrentState.JailSelect;
             OnEnable_StandOnPanel(inJailPanel);
             Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
             inJailPanel.transform.position = pos;
@@ -2594,7 +2609,6 @@ namespace GameAdd_Ludopoly
                 StartCoroutine(start());
                 IEnumerator start()
                 {
-                    print("called");
                     standOnInformationPanel.SetActive(false);
                     OnDisable_PanelForcedClose(auctionInformationPanel, auctionPanel);
                     yield return new WaitForSeconds(.5f);
@@ -2634,7 +2648,6 @@ namespace GameAdd_Ludopoly
             }
             else
             {
-                print("called false");
                 standOnInformationPanel.SetActive(false);
                 OnDisable_PanelForcedClose(auctionInformationPanel, auctionPanel);
                 _Table.SwitchPlayer(playerStart);
@@ -2760,6 +2773,10 @@ namespace GameAdd_Ludopoly
 
         public void HideInformationCard()
         {
+            if (!inJailPanel.activeSelf)
+            {
+                _Table.getCurrentPlayer().currentState = CurrentState.AfterSelection;
+            }
             //Stand-on Card
             OnDisable_Panel(colorPropertyInformationCard, standOnInformationPanel);
             OnDisable_Panel(specialPropertyInformationCard, standOnInformationPanel);
@@ -2773,7 +2790,6 @@ namespace GameAdd_Ludopoly
             MoneyUpdate();
             //_Table.getCurrentPlayer().CheckBankruptcy();
             //StopAllCoroutines();
-            _Table.getCurrentPlayer().currentState = CurrentState.AfterSelection;
         }
 
         #endregion
@@ -2963,14 +2979,41 @@ namespace GameAdd_Ludopoly
 
         public void OnEnable_StandOnPanel(GameObject panel)
         {
+            if (panel.activeSelf)
+            {
+                print(panel.name + " Open is Child of" + panel.transform.parent.name);
+                _LiveUpdate.PanelLiveUpdate(panel, true);
+
+            }
+
             //panel.SetActive(true);
             //Vector2 oldScale = panel.transform.localScale;
             panel.transform.localScale = new Vector2(0, 0);
             panel.transform.LeanScale(Scale_InformationPanel(), .25f).setEaseOutBack();
+            if (panel == paidRentPanel && _Table.getCurrentPlayer().isBotPlaying)
+            {
+                _Table.getCurrentPlayer().currentState = CurrentState.AfterSelection;
+            }
+            if (panel == inJailPanel && _Table.getCurrentPlayer().isBotPlaying)
+            {
+                IEnumerator action()
+                {
+                    yield return new WaitForSeconds(1);
+                    _Table.getCurrentPlayer().currentState = CurrentState.JailSelect;
+                }
+                StartCoroutine(action());   
+            }
         }
 
         public void OnEnable_MainActionsPanel(GameObject panel)
         {
+            if (panel.activeSelf)
+            {
+                print(panel.name + " Open is Child of" + panel.transform.parent.name);
+                _LiveUpdate.PanelLiveUpdate(panel, true);
+
+            }
+
             //panel.SetActive(true);
             //Vector2 oldScale = panel.transform.localScale;
             panel.transform.localScale = new Vector2(0, 0);
@@ -2981,6 +3024,13 @@ namespace GameAdd_Ludopoly
         {
             if (!panel.activeSelf)
             {
+                print(panel.name + " Open is Child of" + panel.transform.parent.name);
+                _LiveUpdate.PanelLiveUpdate(panel, true);
+
+            }
+
+            if (!panel.activeSelf)
+            {
                 auctionInformationPanel.SetActive(true);
                 panel.transform.localScale = new Vector2(0, 0);
                 panel.transform.LeanScale(new Vector2(1, 1), .25f).setEaseOutBack();
@@ -2989,18 +3039,39 @@ namespace GameAdd_Ludopoly
 
         public void OnEnable_Trade(GameObject panel)
         {
+            if (panel.activeSelf)
+            {
+                print(panel.name + " Open is Child of" + panel.transform.parent.name);
+                _LiveUpdate.PanelLiveUpdate(panel, true);
+
+            }
+
             panel.transform.localScale = new Vector2(0, 0);
             panel.transform.LeanScale(new Vector2(1, 1), .25f).setEaseOutBack();
         }
 
         public void OnEnable_OnClickPanel(GameObject panel)
         {
+            if (panel.activeSelf)
+            {
+                print(panel.name + " Open is Child of" + panel.transform.parent.name);
+                _LiveUpdate.PanelLiveUpdate(panel, true);
+
+            }
+
             panel.transform.localScale = new Vector2(0, 0);
             panel.transform.LeanScale(Scale_OnClickPanel(), .25f).setEaseOutBack();
         }
 
         public void OnEnable_OnClick_TradeResult(GameObject panel)
         {
+            if (panel.activeSelf)
+            {
+                print(panel.name + " Open is Child of" + panel.transform.parent.name);
+                _LiveUpdate.PanelLiveUpdate(panel, true);
+
+            }
+
             panel.transform.localScale = new Vector2(0, 0);
             panel.transform.LeanScale(Vector2.one, .25f).setEaseOutBack();
             panel.GetComponent<RectTransform>().localPosition = Vector2.zero;
@@ -3008,6 +3079,12 @@ namespace GameAdd_Ludopoly
 
         public void OnDisable_Panel(GameObject panel, GameObject parentPanel)
         {
+            if (panel.activeSelf)
+            {
+                print(panel.name + " Close is Child of" + panel.transform.parent.name);
+                _LiveUpdate.PanelLiveUpdate(panel, false);
+            }
+
             panel.transform.LeanScale(new Vector2(0, 0), .25f).setEaseInBack().setOnComplete(() =>
             {
                 panel.SetActive(false);
@@ -3023,15 +3100,28 @@ namespace GameAdd_Ludopoly
                 }
                 StartCoroutine(start());
             });
+
         }
 
         public void OnDisable_TransparentPanel(GameObject panel, GameObject parentPanel)
         {
+            if (panel.activeSelf)
+            {
+                print(panel.name + " Close is Child of" + panel.transform.parent.name);
+                _LiveUpdate.PanelLiveUpdate(panel, false);
+            }
+
             panel.transform.LeanScale(new Vector2(0, 0), .25f).setEaseInBack().setOnComplete(() => { panel.SetActive(false); parentPanel.SetActive(false); });
         }
 
         public void OnDisable_PanelForcedClose(GameObject panel, GameObject parentPanel)
         {
+            if (panel.activeSelf)
+            {
+                print(panel.name + " Close is Child of" + panel.transform.parent.name);
+                _LiveUpdate.PanelLiveUpdate(panel, false);
+            }
+
             panel.transform.LeanScale(new Vector2(0, 0), .25f).setEaseInBack().setOnComplete(() =>
             {
                 panel.SetActive(false);

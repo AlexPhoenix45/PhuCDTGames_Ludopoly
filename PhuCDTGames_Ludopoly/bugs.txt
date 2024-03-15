@@ -1,0 +1,4 @@
+sau khi jailPaid thì dính 2 lần đổ xúc sắc.
+(vì jailPay xong sẽ gọi đến HideInformationCard)
+
+đợi jailPay bật lên rồi mới chọn các options

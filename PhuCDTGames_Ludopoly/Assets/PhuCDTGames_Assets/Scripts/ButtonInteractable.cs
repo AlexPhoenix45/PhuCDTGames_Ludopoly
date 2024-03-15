@@ -12,14 +12,15 @@ public class ButtonInteractable : MonoBehaviour
         get { return GetComponent<Button>().interactable; }
         set
         {
-            if (!Table.Instance.getCurrentPlayer().isBotPlaying)
-            {
-                GetComponent<Button>().interactable = value;
-            }
-            else
-            {
-                GetComponent<Button>().interactable = false;
-            }
+            //if (!Table.Instance.getCurrentPlayer().isBotPlaying)
+            //{
+            //    GetComponent<Button>().interactable = value;
+            //}
+            //else
+            //{
+            //    GetComponent<Button>().interactable = false;
+            //}
+            GetComponent<Button>().interactable = value;
         }
     }
 }

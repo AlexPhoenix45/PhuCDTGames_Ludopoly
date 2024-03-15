@@ -19632,6 +19632,7 @@ MonoBehaviour:
   temp_destinationSlot: 0
   temp_isForward: 0
   lateMoveSet: 0
+  _isMoving: 0
   rollForJail: 0
   numberJailFreeCard: 0
   PlayerMoney: 1000
@@ -19649,6 +19650,7 @@ MonoBehaviour:
   botBrain: {fileID: 1068305332}
   _botActions: 0
   _currentActions: 0
+  _LiveUpdate: {fileID: 1916538441}
 --- !u!114 &1068305332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19661,7 +19663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d82c6eb0887fa4438c84647c486b1a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _UImanager: {fileID: 1801566339}
+  _UIManager: {fileID: 1801566339}
   _Table: {fileID: 1916538440}
 --- !u!1 &1068444211
 GameObject:
@@ -20818,6 +20820,7 @@ MonoBehaviour:
   temp_destinationSlot: 0
   temp_isForward: 0
   lateMoveSet: 0
+  _isMoving: 0
   rollForJail: 0
   numberJailFreeCard: 0
   PlayerMoney: 1000
@@ -20835,6 +20838,7 @@ MonoBehaviour:
   botBrain: {fileID: 1146962586}
   _botActions: 0
   _currentActions: 0
+  _LiveUpdate: {fileID: 1916538441}
 --- !u!114 &1146962586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20847,7 +20851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d82c6eb0887fa4438c84647c486b1a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _UImanager: {fileID: 1801566339}
+  _UIManager: {fileID: 1801566339}
   _Table: {fileID: 1916538440}
 --- !u!224 &1151940789 stripped
 RectTransform:
@@ -23487,6 +23491,7 @@ MonoBehaviour:
   temp_destinationSlot: 0
   temp_isForward: 0
   lateMoveSet: 0
+  _isMoving: 0
   rollForJail: 0
   numberJailFreeCard: 0
   PlayerMoney: 1000
@@ -23500,10 +23505,11 @@ MonoBehaviour:
   joinAuction: 1
   inAuction: 0
   notShowJail: 0
-  isBotPlaying: 0
+  isBotPlaying: 1
   botBrain: {fileID: 1330615122}
   _botActions: 0
   _currentActions: 0
+  _LiveUpdate: {fileID: 1916538441}
 --- !u!114 &1330615122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23516,7 +23522,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d82c6eb0887fa4438c84647c486b1a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _UImanager: {fileID: 1801566339}
+  _UIManager: {fileID: 1801566339}
   _Table: {fileID: 1916538440}
 --- !u!1 &1335801888
 GameObject:
@@ -24776,6 +24782,7 @@ MonoBehaviour:
   temp_destinationSlot: 0
   temp_isForward: 0
   lateMoveSet: 0
+  _isMoving: 0
   rollForJail: 0
   numberJailFreeCard: 0
   PlayerMoney: 1000
@@ -24793,6 +24800,7 @@ MonoBehaviour:
   botBrain: {fileID: 1404129431}
   _botActions: 0
   _currentActions: 0
+  _LiveUpdate: {fileID: 1916538441}
 --- !u!114 &1404129431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24805,7 +24813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d82c6eb0887fa4438c84647c486b1a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _UImanager: {fileID: 1801566339}
+  _UIManager: {fileID: 1801566339}
   _Table: {fileID: 1916538440}
 --- !u!1 &1417765261
 GameObject:
@@ -31217,6 +31225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Table: {fileID: 1916538440}
+  _LiveUpdate: {fileID: 1916538441}
   build: {fileID: 948817638}
   sell: {fileID: 445779336}
   mortgage: {fileID: 66168330}
@@ -33545,6 +33554,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1916538439}
   - component: {fileID: 1916538440}
+  - component: {fileID: 1916538441}
   m_Layer: 0
   m_Name: Table
   m_TagString: Untagged
@@ -33635,11 +33645,49 @@ MonoBehaviour:
   p2Pawn: {fileID: 1404129426}
   p3Pawn: {fileID: 1146962581}
   p4Pawn: {fileID: 1068305327}
-  test_dice1: 4
+  test_dice1: 3
   test_dice2: 3
   dice_openTest: 0
   remainingPlayer: 0
   playerRank: 0
+--- !u!114 &1916538441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1916538438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 981686e130ae11240baf4db224e60e46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Dice: 0
+  EndTurn: 0
+  Build: 0
+  Sell: 0
+  Abandon: 0
+  Reclaim: 0
+  Negotiate: 0
+  ColorProp_OnClick: 0
+  Special_OnClick: 0
+  ColorProp_StandOn: 0
+  SpecialProp_StandOn: 0
+  SupriseCard: 0
+  Auction: 0
+  GoToJail: 0
+  VisitJail: 0
+  InJail: 0
+  PaidRent: 0
+  Bankrupt: 0
+  TradeOffer: 0
+  TradeReceive: 0
+  TradeAccept: 0
+  TradeDecline: 0
+  P1Moving: 0
+  P2Moving: 0
+  P3Moving: 0
+  P4Moving: 0
 --- !u!1 &1918370287
 GameObject:
   m_ObjectHideFlags: 0

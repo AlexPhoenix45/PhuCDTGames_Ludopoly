@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using TMPro;
 using UnityEngine;
 
@@ -42,7 +43,16 @@ namespace GameAdd_Ludopoly
         [HideInInspector]
         public int temp_destinationSlot;
         [HideInInspector]
-        public bool temp_isForward, lateMoveSet = false, isMoving = false;
+        public bool temp_isForward, lateMoveSet = false, _isMoving = false;
+        public bool isMoving
+        {
+            get {  return _isMoving; }
+            set
+            {
+                _isMoving = value;
+                _LiveUpdate.MovingUpdate(this, value);
+            }
+        }
 
         //Jail
         //
@@ -121,9 +131,11 @@ namespace GameAdd_Ludopoly
             set 
             { 
                 _currentActions = value;
-                BotExecute();
+                //BotExecute();
             }
         }
+
+        public LiveUpdate _LiveUpdate;
 
         #region Move and Move Anim
         public void Move(int distance, bool isFastMove)
@@ -257,7 +269,6 @@ namespace GameAdd_Ludopoly
                     {
                         if (i == 40)
                         {
-                            print("Receive 200$");
                             Table.Instance.CurrentPlayerInstantReceiveBank(200);
                         }
 
@@ -623,44 +634,64 @@ namespace GameAdd_Ludopoly
 
         //Bot Execute
         //
-        public void BotExecute()
-        {
-            if (isBotPlaying)
-            {
-                if (currentState == CurrentState.WaitToRoll)
-                {
-                    if (!isInJail)
-                    {
-                        print(playerName + " is Waiting to Roll!");
-                        botBrain.RollDice();
-                    }
-                }
-                else if (currentState == CurrentState.BuyOrAuction)
-                {
-                    print(playerName + " is Consider Buying or Auctioning!");
-                    botBrain.BuyOrAuction(this);
-                }
-                else if (currentState == CurrentState.AuctionSelect)
-                {
-                    botBrain.AuctionSelection(this);
-                }
-                else if (currentState == CurrentState.JailSelect)
-                {
-                    print(playerName + " is in Jail and Considering");
-                }
-                else if (currentState == CurrentState.AfterSelection && !isMoving)
-                {
-                    if (hasSecondTurn)
-                    {
-                        currentState = CurrentState.WaitToRoll;
-                    }
-                    else
-                    {
-                        print("What will " + playerName + " do?");
-                        botBrain.EndTurn();
-                    }
-                }
-            }
-        }
+        //public void BotExecute()
+        //{
+        //    if (isBotPlaying)
+        //    {
+        //        if (currentState == CurrentState.WaitToRoll)
+        //        {
+        //            if (!isInJail)
+        //            {
+        //                print(playerName + " is Waiting to Roll!"); //fix for money popup
+        //                IEnumerator waitTillMoneyPopupClose()
+        //                {
+        //                    while (UIManager.Instance.moneyPanel.activeSelf)
+        //                    {
+        //                        yield return null;  
+        //                    }
+        //                    botBrain.RollDice();
+        //                }
+        //                StartCoroutine(waitTillMoneyPopupClose());
+        //            }
+        //        }
+        //        else if (currentState == CurrentState.BuyOrAuction)
+        //        {
+        //            print(playerName + " is Consider Buying or Auctioning!");
+        //            botBrain.BuyOrAuction(this);
+        //        }
+        //        else if (currentState == CurrentState.AuctionSelect)
+        //        {
+        //            botBrain.AuctionSelection(this);
+        //        }
+        //        else if (currentState == CurrentState.JailSelect)
+        //        {
+        //            print(playerName + " is in Jail and Considering");
+        //            botBrain.JailSelection(this);
+
+        //            IEnumerator waitTillInJailPopupOpen()
+        //            {
+        //                while (!UIManager.Instance.inJailPanel.activeSelf)
+        //                {
+        //                    yield return null;
+        //                }
+        //                yield return new WaitForSeconds(.5f);
+        //                botBrain.RollDice();
+        //            }
+        //            StartCoroutine(waitTillInJailPopupOpen());
+        //        }
+        //        else if (currentState == CurrentState.AfterSelection && !isMoving) //if in jail, next turn
+        //        {
+        //            if (hasSecondTurn)
+        //            {
+        //                currentState = CurrentState.WaitToRoll;
+        //            }
+        //            else
+        //            {
+        //                print("What will " + playerName + " do?");
+        //                botBrain.EndTurn();
+        //            }
+        //        }
+        //    }
+        ////}
     }
 }
