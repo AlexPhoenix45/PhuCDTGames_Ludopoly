@@ -1,4 +1,6 @@
-sau khi jailPaid thì dính 2 lần đổ xúc sắc.
-(vì jailPay xong sẽ gọi đến HideInformationCard)
+- advance to go, đến lượt bot thì lỗi k đổ xúc sắc (done)
+- sửa lỗi nhận tiền ở chest và chance, không nhận tiền luôn mà phải 
+đợi đến lượt sau (done)
+- auction luôn chọn withdraw (maybe done)
 
-đợi jailPay bật lên rồi mới chọn các options
+=> lỗi lượt đầu đổ vào người chơi không phải bot thì tự roll dice

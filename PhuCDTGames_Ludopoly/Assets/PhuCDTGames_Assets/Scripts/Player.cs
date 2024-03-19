@@ -50,7 +50,7 @@ namespace GameAdd_Ludopoly
             set
             {
                 _isMoving = value;
-                _LiveUpdate.MovingUpdate(this, value);
+                LiveUpdate.Instance.MovingUpdate(this, value);
             }
         }
 
@@ -134,8 +134,6 @@ namespace GameAdd_Ludopoly
                 //BotExecute();
             }
         }
-
-        public LiveUpdate _LiveUpdate;
 
         #region Move and Move Anim
         public void Move(int distance, bool isFastMove)
@@ -411,6 +409,8 @@ namespace GameAdd_Ludopoly
                 {
                     currentState = CurrentState.AuctionSelect;
                 }
+
+                LiveUpdate.Instance.CallBot();
             }
         }
 

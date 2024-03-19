@@ -1,42 +1,83 @@
 using GameAdd_Ludopoly;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class LiveUpdate : MonoBehaviour
 {
-    [Header("OPTIONS")]
-    public bool ReadyMainMenu = false;
+    //Singleton
+    //
+    public static LiveUpdate Instance;
+
+    [Header("MAIN MENU")]
+    [Header("OPTIONS TOGGLE")]
+    public bool _notUIExecute = false;
+    public bool NotUIExecute
+    {
+        get
+        {
+            return _notUIExecute; 
+        }
+        set
+        {
+            _notUIExecute = value;
+            if (value)
+            {
+                CallBot();
+            }
+        }
+    }
+
+    public bool _UIExecute = false;
+    public bool UIExecute
+    {
+        get
+        {
+            return _UIExecute;
+        }
+        set
+        {
+            _UIExecute = value;
+            if (value)
+            {
+                CallBot();
+            }
+        }
+    }
+
+    [Header("NOT UI OPTIONS")]
+    public bool ReadyRollDice = false;
+    public bool ReadyMainActions = false;
+    public bool ReadyEndTurn = false;
+
+    [Header("UI OPTIONS")]
     public bool ReadyToChoose_Property = false;
     public bool ReadyToChoose_Auction = false;
     public bool ReadyToChoose_Jail = false;
     public bool ReadyToChoose_Bankrupt = false;
     public bool ReadyToChoose_Trade = false;
 
+    [Header("Time Called")]
+    public int timeCalled = 0;
+
     [Header("PANEL")]
-    public bool ColorProp_OnClick = false;
-    public bool Special_OnClick = false;
-    public bool ColorProp_StandOn = false;
-    public bool SpecialProp_StandOn = false;
-    public bool SupriseCard = false;
-    public bool Auction = false;
-    public bool GoToJail = false;
-    public bool VisitJail = false;
-    public bool InJail = false;
-    public bool PaidRent = false;
-    public bool Bankrupt = false;
-    public bool TradeOffer = false;
-    public bool TradeReceive = false;
-    public bool TradeAccept = false;
-    public bool TradeDecline = false;
+    [HideInInspector] 
+    private bool ColorProp_OnClick = false, Special_OnClick = false, ColorProp_StandOn = false, SpecialProp_StandOn = false, SupriseCard = false, Auction = false, GoToJail = false, VisitJail = false, InJail = false, PaidRent = false, Bankrupt = false, TradeOffer = false, TradeReceive = false, TradeAccept = false, TradeDecline = false;
 
     [Header("MOVING")]
-    public bool P1Moving = false;
-    public bool P2Moving = false;
-    public bool P3Moving = false;
-    public bool P4Moving = false;
+    [HideInInspector] 
+    private bool P1Moving = false, P2Moving = false, P3Moving = false, P4Moving = false;
 
     private bool forcedClose_ChooseProperty = false;
+
+    private void Start()
+    {
+        if (Instance == null) 
+        {
+            Instance = this;
+        }
+    }
 
     public void PanelLiveUpdate(GameObject panel, bool value)
     {
@@ -139,11 +180,22 @@ public class LiveUpdate : MonoBehaviour
     {
         if (!ColorProp_StandOn && !SpecialProp_StandOn && !SupriseCard && !Auction && !GoToJail && !VisitJail && !InJail && !PaidRent && !Bankrupt && !TradeOffer && !TradeReceive && !TradeAccept && !TradeDecline && !P1Moving && !P2Moving && !P3Moving && !P4Moving)
         {
-            ReadyMainMenu = true;
+            if (ReadyEndTurn && !ReadyRollDice)
+            {
+                NotUIExecute = true;
+            }
+            else if (ReadyRollDice && !ReadyEndTurn)
+            {
+                NotUIExecute = true;
+            }
+            else
+            {
+                NotUIExecute = false; 
+            }
         }
         else
         {
-            ReadyMainMenu = false;
+            NotUIExecute = false;
         }
 
         if (!Auction)
@@ -196,6 +248,51 @@ public class LiveUpdate : MonoBehaviour
         else
         {
             ReadyToChoose_Trade = false;
+        }
+
+        if (ReadyToChoose_Property || ReadyToChoose_Auction || ReadyToChoose_Jail || ReadyToChoose_Bankrupt || ReadyToChoose_Trade)
+        {
+            UIExecute = true;
+        }
+        else
+        {
+            UIExecute = false;
+        }
+    }
+
+    bool CallBotIsRunning;
+    public void CallBot()
+    {
+        IEnumerator delay()
+        {
+            CallBotIsRunning = true;
+            yield return new WaitForSeconds(.05f);
+            if (NotUIExecute)
+            {
+                timeCalled++;
+                print("Not UI");
+            }
+            else if (UIExecute)
+            {
+                timeCalled++;
+                print("UI");
+            }
+
+            if (Table.Instance.getCurrentPlayer().isBotPlaying)
+            {
+                print(Table.Instance.getCurrentPlayer().playerName);
+                Table.Instance.getCurrentPlayer().botBrain.Execute();
+            }
+            CallBotIsRunning = false;
+        }
+
+        if (CallBotIsRunning)
+        {
+            return;
+        }
+        else
+        {
+            StartCoroutine(delay());
         }
     }
 }

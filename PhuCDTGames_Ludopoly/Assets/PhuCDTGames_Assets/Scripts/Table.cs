@@ -859,9 +859,9 @@ namespace GameAdd_Ludopoly
                     getSlot(i).slotAction = SlotAction.Idle;
                 }
 
-                if (slotNumber == 20)
+                if (slotNumber == 20 || slotNumber == 0)
                 {
-                    getCurrentPlayer().currentState = CurrentState.AfterSelection;
+                    LiveUpdate.Instance.OptionsUpdate();
                 }
 
                 if (!getSlot(slotNumber).isOwned) //If that slot didnt have an owner
@@ -975,7 +975,7 @@ namespace GameAdd_Ludopoly
                                     }
                                 case ChanceCards.Earn50:
                                     //print(getCurrentPlayer() + " collects 50$");
-                                    CurrentPlayerReceiveBank(50);
+                                    CurrentPlayerInstantReceiveBank(50);
                                     break;
                                 case ChanceCards.JailFree:
                                     //print(getCurrentPlayer() + " Get Out of Jail Free Card");
@@ -1031,11 +1031,11 @@ namespace GameAdd_Ludopoly
                                         break;
                                     }
                                 case ChanceCards.Repair:
-                                    CurrentPlayerPayBank(getCurrentPlayer().houseOwned * 25 + getCurrentPlayer().hotelOwned * 100);
+                                    CurrentPlayerInstantPayBank(getCurrentPlayer().houseOwned * 25 + getCurrentPlayer().hotelOwned * 100);
                                     break;
                                 case ChanceCards.Speeding:
                                     //print(getCurrentPlayer() + " Pays 15$");
-                                    CurrentPlayerPayBank(15);
+                                    CurrentPlayerInstantPayBank(15);
                                     break;
                                 case ChanceCards.ReadingRailroad:
                                     getCurrentPlayer().setLateMove(5, true);
@@ -1047,7 +1047,7 @@ namespace GameAdd_Ludopoly
                                     break;
                                 case ChanceCards.Earn150:
                                     //print(getCurrentPlayer() + " Collect 150$");
-                                    CurrentPlayerReceiveBank(150);
+                                    CurrentPlayerInstantReceiveBank(150);
                                     break;
                             }
                         }
@@ -1065,15 +1065,15 @@ namespace GameAdd_Ludopoly
                                     break;
                                 case CommunityChestCards.BankError:
                                     //print(getCurrentPlayer().ToString() + " Collect 200$");
-                                    CurrentPlayerReceiveBank(200);
+                                    CurrentPlayerInstantReceiveBank(200);
                                     break;
                                 case CommunityChestCards.Doctor:
                                     //print(getCurrentPlayer().ToString() + " Pays 50$");
-                                    CurrentPlayerPayBank(50);
+                                    CurrentPlayerInstantPayBank(50);
                                     break;
                                 case CommunityChestCards.Stock:
                                     //print(getCurrentPlayer().ToString() + " Collect 50$");
-                                    CurrentPlayerReceiveBank(50);
+                                    CurrentPlayerInstantReceiveBank(50);
                                     break;
                                 case CommunityChestCards.JailFree:
                                     //print(getCurrentPlayer().ToString() + " Get Out of Jaili Free Card");
@@ -1108,11 +1108,11 @@ namespace GameAdd_Ludopoly
                                     }
                                 case CommunityChestCards.Holiday:
                                     //print(getCurrentPlayer().ToString() + " Collect 100$");
-                                    CurrentPlayerReceiveBank(100);
+                                    CurrentPlayerInstantReceiveBank(100);
                                     break;
                                 case CommunityChestCards.Income:
                                     //print(getCurrentPlayer().ToString() + " Collect 20$");
-                                    CurrentPlayerReceiveBank(20);
+                                    CurrentPlayerInstantReceiveBank(20);
                                     break;
                                 case CommunityChestCards.Birthday:
                                     //print(getCurrentPlayer().ToString() + " Collect 10$ from each player");
@@ -1120,31 +1120,31 @@ namespace GameAdd_Ludopoly
                                     break;
                                 case CommunityChestCards.Insurance:
                                     //print(getCurrentPlayer().ToString() + " Collect 100$");
-                                    CurrentPlayerReceiveBank(100);
+                                    CurrentPlayerInstantReceiveBank(100);
                                     break;
                                 case CommunityChestCards.Hospital:
                                     //print(getCurrentPlayer().ToString() + " Pays 100$"); 
-                                    CurrentPlayerPayBank(100);
+                                    CurrentPlayerInstantPayBank(100);
                                     break;
                                 case CommunityChestCards.School:
                                     //print(getCurrentPlayer().ToString() + " Pays 50$");
-                                    CurrentPlayerPayBank(50);
+                                    CurrentPlayerInstantPayBank(50);
                                     break;
                                 case CommunityChestCards.Consultancy:
                                     //print(getCurrentPlayer().ToString() + " Collect 25$");
-                                    CurrentPlayerReceiveBank(25);
+                                    CurrentPlayerInstantReceiveBank(25);
                                     break;
                                 case CommunityChestCards.StreetRepair:
-                                    CurrentPlayerPayBank(getCurrentPlayer().houseOwned * 40 + getCurrentPlayer().hotelOwned * 115);
+                                    CurrentPlayerInstantPayBank(getCurrentPlayer().houseOwned * 40 + getCurrentPlayer().hotelOwned * 115);
                                     //print(getCurrentPlayer().ToString() + " Pay 40$ per house, 115$ per hotel");
                                     break;
                                 case CommunityChestCards.Beauty:
                                     //print(getCurrentPlayer().ToString() + " Collect 10$");
-                                    CurrentPlayerReceiveBank(10);
+                                    CurrentPlayerInstantReceiveBank(10);
                                     break;
                                 case CommunityChestCards.Inherit:
                                     //print(getCurrentPlayer().ToString() + " Collect 100$");
-                                    CurrentPlayerReceiveBank(100);
+                                    CurrentPlayerInstantReceiveBank(100);
                                     break;
                             }
                         }
@@ -1152,7 +1152,7 @@ namespace GameAdd_Ludopoly
                         {
                             //Process Tax Card in here
                             //print("Paid " + getSlot(slotNumber).supriseSlot.taxPrice);
-                            CurrentPlayerPayBank(getSlot(slotNumber).supriseSlot.taxPrice);
+                            CurrentPlayerInstantPayBank(getSlot(slotNumber).supriseSlot.taxPrice);
                         }
                     }
                 }

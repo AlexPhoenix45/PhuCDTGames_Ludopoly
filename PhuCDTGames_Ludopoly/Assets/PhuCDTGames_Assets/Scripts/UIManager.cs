@@ -2066,7 +2066,7 @@ namespace GameAdd_Ludopoly
                                 cc_description.text = "Advance to Olympus (Collect 200 Coins)";
                                 break;
                             case 2:
-                                cc_description.text = "Advance to Horus. If you pass Olympus, collect 200 Coins";
+                                cc_description.text = "Advance to Zeus. If you pass Olympus, collect 200 Coins";
                                 break;
                             case 3:
                                 cc_description.text = "Advance to Eros Place. If you pass Olympus, collect 200 Coins";
@@ -2198,7 +2198,14 @@ namespace GameAdd_Ludopoly
 
                 if (timeConsumed > 1.5f)
                 {
-                    OnClick_Done();
+                    if (chanceCardNumber != 2)
+                    {
+                        OnClick_Done(false);
+                    }
+                    else
+                    {
+                        OnClick_Done(true);
+                    }
                 }
             }
         }
@@ -2257,7 +2264,7 @@ namespace GameAdd_Ludopoly
 
                 if (timeConsumed > 1.5f)
                 {
-                    OnClick_Done();
+                    OnClick_Done(false);
                 }
             }
 
@@ -2320,7 +2327,7 @@ namespace GameAdd_Ludopoly
 
                     if (timeConsumed > 1.5f)
                     {
-                        OnClick_Done();
+                        OnClick_Done(false);
                     }
                 }
 
@@ -2381,7 +2388,7 @@ namespace GameAdd_Ludopoly
 
                     if (timeConsumed > 1.5f)
                     {
-                        OnClick_Done();
+                        OnClick_Done(false);
                     }
                 }
 
@@ -2702,9 +2709,36 @@ namespace GameAdd_Ludopoly
             _Table.Auction_Withdraw();
         }
 
-        public void OnClick_Done() //For suprise card
+        public void OnClick_Done(bool chanceCardNo24) //For suprise card
         {
-            HideInformationCard();
+            if (chanceCardNo24)
+            {
+                if (supriseInformationCard.activeSelf)
+                {
+                    print(supriseInformationCard.name + " Close is Child of" + supriseInformationCard.transform.parent.name);
+                    _LiveUpdate.PanelLiveUpdate(supriseInformationCard, false);
+                }
+
+                supriseInformationCard.transform.LeanScale(new Vector2(0, 0), .02f).setEaseInBack().setOnComplete(() =>
+                {
+                    supriseInformationCard.SetActive(false);
+                    IEnumerator start()
+                    {
+                        for (float f = 0; f <= .02f; f += Time.deltaTime)
+                        {
+                            standOnInformationPanel.GetComponent<Image>().color = new Vector4(0, 0, 0, Mathf.Lerp(0.3529412f, 0f, f / .015f));
+                            //standOnInformationCasvasGroup.alpha = Mathf.Lerp(0f, 1f, f / .15f);
+                            yield return null;
+                        }
+                        standOnInformationPanel.SetActive(false);
+                    }
+                    StartCoroutine(start());
+                });
+            }
+            else
+            {
+                HideInformationCard();
+            }
             //Then move player if needed
             _Table.getCurrentPlayer().LateMove();
         }
@@ -2981,7 +3015,7 @@ namespace GameAdd_Ludopoly
         {
             if (panel.activeSelf)
             {
-                print(panel.name + " Open is Child of" + panel.transform.parent.name);
+                //print(panel.name + " Open is Child of" + panel.transform.parent.name);
                 _LiveUpdate.PanelLiveUpdate(panel, true);
 
             }
@@ -3009,7 +3043,7 @@ namespace GameAdd_Ludopoly
         {
             if (panel.activeSelf)
             {
-                print(panel.name + " Open is Child of" + panel.transform.parent.name);
+                //print(panel.name + " Open is Child of" + panel.transform.parent.name);
                 _LiveUpdate.PanelLiveUpdate(panel, true);
 
             }
@@ -3024,7 +3058,7 @@ namespace GameAdd_Ludopoly
         {
             if (!panel.activeSelf)
             {
-                print(panel.name + " Open is Child of" + panel.transform.parent.name);
+                //print(panel.name + " Open is Child of" + panel.transform.parent.name);
                 _LiveUpdate.PanelLiveUpdate(panel, true);
 
             }
@@ -3041,7 +3075,7 @@ namespace GameAdd_Ludopoly
         {
             if (panel.activeSelf)
             {
-                print(panel.name + " Open is Child of" + panel.transform.parent.name);
+                //print(panel.name + " Open is Child of" + panel.transform.parent.name);
                 _LiveUpdate.PanelLiveUpdate(panel, true);
 
             }
@@ -3054,7 +3088,7 @@ namespace GameAdd_Ludopoly
         {
             if (panel.activeSelf)
             {
-                print(panel.name + " Open is Child of" + panel.transform.parent.name);
+                //print(panel.name + " Open is Child of" + panel.transform.parent.name);
                 _LiveUpdate.PanelLiveUpdate(panel, true);
 
             }
@@ -3067,7 +3101,7 @@ namespace GameAdd_Ludopoly
         {
             if (panel.activeSelf)
             {
-                print(panel.name + " Open is Child of" + panel.transform.parent.name);
+                //print(panel.name + " Open is Child of" + panel.transform.parent.name);
                 _LiveUpdate.PanelLiveUpdate(panel, true);
 
             }
@@ -3081,7 +3115,7 @@ namespace GameAdd_Ludopoly
         {
             if (panel.activeSelf)
             {
-                print(panel.name + " Close is Child of" + panel.transform.parent.name);
+                //print(panel.name + " Close is Child of" + panel.transform.parent.name);
                 _LiveUpdate.PanelLiveUpdate(panel, false);
             }
 
@@ -3107,7 +3141,7 @@ namespace GameAdd_Ludopoly
         {
             if (panel.activeSelf)
             {
-                print(panel.name + " Close is Child of" + panel.transform.parent.name);
+                //print(panel.name + " Close is Child of" + panel.transform.parent.name);
                 _LiveUpdate.PanelLiveUpdate(panel, false);
             }
 
@@ -3118,7 +3152,7 @@ namespace GameAdd_Ludopoly
         {
             if (panel.activeSelf)
             {
-                print(panel.name + " Close is Child of" + panel.transform.parent.name);
+                //print(panel.name + " Close is Child of" + panel.transform.parent.name);
                 _LiveUpdate.PanelLiveUpdate(panel, false);
             }
 

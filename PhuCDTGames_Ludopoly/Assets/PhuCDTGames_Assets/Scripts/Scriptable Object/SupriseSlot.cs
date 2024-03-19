@@ -79,6 +79,8 @@ namespace GameAdd_Ludopoly
         {
             int random = UnityEngine.Random.Range(0, 16);
 
+            random = 1;
+
             switch (random)
             {
                 case 0:

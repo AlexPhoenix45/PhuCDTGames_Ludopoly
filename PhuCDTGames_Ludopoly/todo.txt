@@ -120,5 +120,7 @@ check lai xem waittoroll o dau ma sau khi jailPay -> EndTurn xong lại ra roll
 test lại vào tù rồi jailPay
 dẵm vào próp của nhà khác thì k tiếp tục endturn
 
-không panel nào bật, !isMoving
+không panel nào bật, !isMoving => được phép roll
 
+15/3/24
+chiua ReadyMainMenu chia ra làm 3 mục nhỏ, tiếp tục từ phần này
