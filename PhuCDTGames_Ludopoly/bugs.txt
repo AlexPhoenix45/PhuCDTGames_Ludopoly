@@ -3,4 +3,4 @@
 đợi đến lượt sau (done)
 - auction luôn chọn withdraw (maybe done)
 
-=> lỗi lượt đầu đổ vào người chơi không phải bot thì tự roll dice
+=> lỗi lượt đầu đổ vào người chơi không phải bot thì tự roll dice (done)

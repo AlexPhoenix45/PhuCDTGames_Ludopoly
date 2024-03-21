@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace GameAdd_Ludopoly
 {
@@ -26,13 +27,13 @@ namespace GameAdd_Ludopoly
         //Auction Parameter
         //
 
-        int auc_currentPrice;
+        public int auc_currentPrice;
         Player auc_currentPlayer;
         Player auc_startingPlayer;
         [HideInInspector]
         public Player auc_playerWithHighestBid;
         int auc_playerInAuction;
-        int auc_slotNumber;
+        public int auc_slotNumber;
 
         //Pawns
         //
@@ -120,7 +121,11 @@ namespace GameAdd_Ludopoly
                 }
                 while (timeConsumed < 1.5f);
                 SwitchPlayer(player[randomPlayer]);
-                _UIManager._LiveUpdate.OptionsUpdate();
+                yield return new WaitForSeconds(1f);
+                if (player[randomPlayer].isBotPlaying)
+                {
+                    _UIManager._LiveUpdate.OptionsUpdate();
+                }
             }
             StartCoroutine(chooseStarter());
         }
@@ -180,7 +185,7 @@ namespace GameAdd_Ludopoly
                     else
                     {
                         getCurrentPlayer().setTimesGetDoubles(false, true);
-
+                        LiveUpdate.Instance.CallBot();
                         if (!getCurrentPlayer().isInJail)
                         {
                             getCurrentPlayer().Move(dice1 + dice2, false);
@@ -859,7 +864,7 @@ namespace GameAdd_Ludopoly
                     getSlot(i).slotAction = SlotAction.Idle;
                 }
 
-                if (slotNumber == 20 || slotNumber == 0)
+                if (slotNumber == 20 || slotNumber == 0 || slotNumber == 10 || slotNumber == 30 || getSlot(slotNumber).owner == getCurrentPlayer())
                 {
                     LiveUpdate.Instance.OptionsUpdate();
                 }
@@ -1818,6 +1823,7 @@ namespace GameAdd_Ludopoly
         {
             _UIManager.HideInformationCard();
             getCurrentPlayer().rollForJail = true;
+            //LiveUpdate.Instance.CallBot();
         }
 
         //5 main actions

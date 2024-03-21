@@ -63,7 +63,7 @@ namespace GameAdd_Ludopoly
 
         //Money
         //
-        [HideInInspector]
+        [SerializeField]
         public int PlayerMoney = 1000;
 
         public int playerMoney

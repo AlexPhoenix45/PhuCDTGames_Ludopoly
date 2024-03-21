@@ -831,35 +831,56 @@ namespace GameAdd_Ludopoly
             { 
                 if (slotAction == SlotAction.Build) //Build House
                 {
-                    AddHouse();
-                    Table.Instance.CurrentPlayerInstantPayBank(getBuildPrice());
-                    Table.Instance.Build();
+                    Build();
                 }
                 else if (slotAction == SlotAction.Sell)
                 {
-                    RemoveHouse();
-                    Table.Instance.CurrentPlayerInstantReceiveBank(getSellPrice());
-                    Table.Instance.Sell();
+                    Sell();
                 }
                 else if (slotAction == SlotAction.Mortgage)
                 {
-                    if (!isMortgaged)
-                    {
-                        Table.Instance.CurrentPlayerInstantReceiveBank(getMortgagePrice());
-                        isMortgaged = true;
-                        mortgagedTag.SetActive(true);
-                    }
+                    Mortgage();
                 }
                 else if (slotAction == SlotAction.Redeem)
                 {
-                    if (isMortgaged)
-                    {
-                        Table.Instance.CurrentPlayerInstantPayBank(getRedeemPrice());
-                        isMortgaged = false;
-                        mortgagedTag.SetActive(false);
-                        gameObject.GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
-                    }
+                    Redeem();
                 }
+            }
+        }
+
+        public void Build()
+        {
+
+            AddHouse();
+            Table.Instance.CurrentPlayerInstantPayBank(getBuildPrice());
+            Table.Instance.Build();
+        }
+
+        public void Sell()
+        {
+            RemoveHouse();
+            Table.Instance.CurrentPlayerInstantReceiveBank(getSellPrice());
+            Table.Instance.Sell();
+        }
+
+        public void Mortgage()
+        {
+            if (!isMortgaged)
+            {
+                Table.Instance.CurrentPlayerInstantReceiveBank(getMortgagePrice());
+                isMortgaged = true;
+                mortgagedTag.SetActive(true);
+            }
+        }
+
+        public void Redeem()
+        {
+            if (isMortgaged)
+            {
+                Table.Instance.CurrentPlayerInstantPayBank(getRedeemPrice());
+                isMortgaged = false;
+                mortgagedTag.SetActive(false);
+                gameObject.GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, .5f);
             }
         }
     }

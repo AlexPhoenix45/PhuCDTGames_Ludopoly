@@ -19666,6 +19666,13 @@ MonoBehaviour:
   _Table: {fileID: 1916538440}
   myPlayer: {fileID: 1068305331}
   _liveUpdate: {fileID: 1916538441}
+  mySlots: []
+  unSetSlot: []
+  unHouseSlot: []
+  houseSlot: []
+  OverBudgetPercentage: 125
+  stationAuction: 0
+  moneyBound: 500
 --- !u!1 &1068444211
 GameObject:
   m_ObjectHideFlags: 0
@@ -20855,6 +20862,13 @@ MonoBehaviour:
   _Table: {fileID: 1916538440}
   myPlayer: {fileID: 1146962585}
   _liveUpdate: {fileID: 1916538441}
+  mySlots: []
+  unSetSlot: []
+  unHouseSlot: []
+  houseSlot: []
+  OverBudgetPercentage: 125
+  stationAuction: 0
+  moneyBound: 500
 --- !u!224 &1151940789 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4181589020989069335, guid: 6ef579849c99c554bbab1a77a2047908, type: 3}
@@ -23527,6 +23541,13 @@ MonoBehaviour:
   _Table: {fileID: 1916538440}
   myPlayer: {fileID: 1330615121}
   _liveUpdate: {fileID: 1916538441}
+  mySlots: []
+  unSetSlot: []
+  unHouseSlot: []
+  houseSlot: []
+  OverBudgetPercentage: 125
+  stationAuction: 0
+  moneyBound: 500
 --- !u!1 &1335801888
 GameObject:
   m_ObjectHideFlags: 0
@@ -24819,6 +24840,13 @@ MonoBehaviour:
   _Table: {fileID: 1916538440}
   myPlayer: {fileID: 1404129430}
   _liveUpdate: {fileID: 1916538441}
+  mySlots: []
+  unSetSlot: []
+  unHouseSlot: []
+  houseSlot: []
+  OverBudgetPercentage: 125
+  stationAuction: 0
+  moneyBound: 500
 --- !u!1 &1417765261
 GameObject:
   m_ObjectHideFlags: 0
@@ -33644,7 +33672,9 @@ MonoBehaviour:
   - {fileID: 1068305331}
   numOfPlayers: 2
   currentPlayer: 0
+  auc_currentPrice: 0
   auc_playerWithHighestBid: {fileID: 0}
+  auc_slotNumber: 0
   p1Pawn: {fileID: 1330615117}
   p2Pawn: {fileID: 1404129426}
   p3Pawn: {fileID: 1146962581}
