@@ -305,6 +305,9 @@ namespace GameAdd_Ludopoly
 
         public void OnClick_RollDice() //This include suffle and roll an actual dices
         {
+
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Roll Dice");
             DicesActive(false);
             ActionsActive(false);
             EndTurnActive(false);
@@ -1181,11 +1184,15 @@ namespace GameAdd_Ludopoly
 
         public void OnClick_PayDebt()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Pay Debt");
             OnDisable_Panel(bankruptcyPanel, moneyPanel);
         }
 
         public void OnClick_Bankrupt()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Bankrupt");
             //End game Checker
             _Table.getCurrentPlayer().StartBankrupt();
         }
@@ -1216,6 +1223,8 @@ namespace GameAdd_Ludopoly
 
         public void OnClick_EndTurn()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Done");
             Table.Instance.SwitchPlayer();
             EndTurnActive(false);
             OnClick_ActionsClose();
@@ -1223,6 +1232,8 @@ namespace GameAdd_Ludopoly
 
         public void OnClick_Build()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Build");
             Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
             mainActionPanel.SetActive(true);
             buildPanel.SetActive(true);
@@ -1246,6 +1257,8 @@ namespace GameAdd_Ludopoly
 
         public void OnClick_Sell()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Sell");
             Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
             mainActionPanel.SetActive(true);
             buildPanel.SetActive(false);
@@ -1269,6 +1282,8 @@ namespace GameAdd_Ludopoly
 
         public void OnClick_Mortgage()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Abandon");
             Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
             mainActionPanel.SetActive(true);
             buildPanel.SetActive(false);
@@ -1292,6 +1307,8 @@ namespace GameAdd_Ludopoly
 
         public void OnClick_Redeem()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Reclaim");
             Vector2 pos = Camera.main.WorldToScreenPoint(_Table.transform.position);
             mainActionPanel.SetActive(true);
             buildPanel.SetActive(false);
@@ -1315,6 +1332,8 @@ namespace GameAdd_Ludopoly
 
         public void OnClick_Trade()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Trade");
             mainActionPanel.SetActive(true);
             buildPanel.SetActive(false);
             sellPanel.SetActive(false);
@@ -1365,6 +1384,8 @@ namespace GameAdd_Ludopoly
 
         public void OnClick_Trade_PrevPlayer()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Trade Previous Player");
             for (int i = 0; i < tradeoffer_opponentContent.childCount; i++)
             {
                 Destroy(tradeoffer_opponentContent.GetChild(i).gameObject);
@@ -1379,6 +1400,8 @@ namespace GameAdd_Ludopoly
 
         public void OnClick_Trade_NextPlayer()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Trade Next Player");
 
             for (int i = 0; i < tradeoffer_opponentContent.childCount; i++)
             {
@@ -1394,6 +1417,8 @@ namespace GameAdd_Ludopoly
 
         public void OnClick_Trade_Offer()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Trade Offer");
             int myPlayerProp = 0;
             foreach (PropertyCard card in GetTradeOffer(true))
             {
@@ -1452,8 +1477,77 @@ namespace GameAdd_Ludopoly
             }
         }
 
+        /// <summary>
+        /// This is Trade System for the Bot
+        /// </summary>
+        /// <param name="opponentCard">Opponent Card to Receive</param>
+        /// <param name="myCard">My Card to Give</param>
+        /// <param name="opponentMoney">Opponent Money to Receive</param>
+        /// <param name="myMoney">My Money to Give</param>
+        public void OnClick_Trade_Offer_Bot(PropertyCard[] opponentCard, PropertyCard[] myCard, int opponentMoney, int myMoney)
+        {
+            int myPlayerProp = 0;
+            foreach (PropertyCard card in myCard)
+            {
+                myPlayerProp++;
+            }
+            int opponentProp = 0;
+            foreach (PropertyCard card in opponentCard)
+            {
+                opponentProp++;
+            }
+
+            if (myMoney == 0 && opponentMoney == 0) //both of money value is null => props trade
+            {
+                if (myPlayerProp != 0 && opponentProp != 0) //props trade
+                {
+                    ShowTradeReceiveBot(myCard, opponentCard, myMoney, opponentMoney);
+                    return;
+                }
+                else //none of them are choosen
+                {
+                    ShowIllegalTrade();
+                }
+            }
+            else if (myMoney != 0 && opponentMoney == 0) //opponent money is null
+            {
+                if (opponentProp != 0 && myMoney != 0) //opponent have props, and myPlayer money is more than 0
+                {
+                    ShowTradeReceiveBot(myCard, opponentCard, myMoney, opponentMoney);
+                }
+                else //opponent have props, and myPlayer money is less than 0
+                {
+                    ShowIllegalTrade();
+                }
+            }
+            else if (myMoney == 0 && opponentMoney != 0) //myPlayer money is null
+            {
+                if (myPlayerProp != 0 && opponentMoney != 0) //myPlayer have props, and opponent money is more than 0
+                {
+                    ShowTradeReceiveBot(myCard, opponentCard, myMoney, opponentMoney);
+                }
+                else //myPlayer have props, and opponent money is less than 0
+                {
+                    ShowIllegalTrade();
+                }
+            }
+            else if (myMoney != 0 && opponentMoney != 0) //nothing is null
+            {
+                if (myMoney != 0 && opponentMoney != 0) //myPlayer have props, and opponent money is more than 0
+                {
+                    ShowTradeReceiveBot(myCard, opponentCard, myMoney, opponentMoney);
+                }
+                else //myPlayer have props, and opponent money is less than 0
+                {
+                    ShowIllegalTrade();
+                }
+            }
+        }
+
         public void OnClick_Trade_Accept()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Trade Accept");
             for (int i = 0; i < tradereceive_myPlayerContent.childCount; i++)
             {
                 if (tradereceive_myPlayerContent.GetChild(i).GetComponent<PropertyCard>().propCardIndex == -1) //-1 equals jailFree card
@@ -1465,7 +1559,9 @@ namespace GameAdd_Ludopoly
                 {
                     Slot tempSlot = _Table.getSlot(tradereceive_myPlayerContent.GetChild(i).GetComponent<PropertyCard>().propCardIndex);
                     _Table.getCurrentPlayer().slotOwned.Remove(tempSlot);
+                    _Table.getCurrentPlayer().setWishedSlot();
                     trade_currentOpppnent.slotOwned.Add(tempSlot);
+                    trade_currentOpppnent.setWishedSlot();
                     tempSlot.forcedSetOwner(trade_currentOpppnent);
                 }
             }
@@ -1490,7 +1586,9 @@ namespace GameAdd_Ludopoly
                 {
                     Slot tempSlot = _Table.getSlot(tradereceive_opponentContent.GetChild(i).GetComponent<PropertyCard>().propCardIndex);
                     _Table.getCurrentPlayer().slotOwned.Add(tempSlot);
+                    _Table.getCurrentPlayer().setWishedSlot();
                     trade_currentOpppnent.slotOwned.Remove(tempSlot);
+                    trade_currentOpppnent.setWishedSlot();
                     tempSlot.forcedSetOwner(_Table.getCurrentPlayer());
                 }
             }
@@ -1510,12 +1608,16 @@ namespace GameAdd_Ludopoly
 
         public void OnClick_Trade_Decline()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Trade Decline");
             ShowTradeResult(false);
             OnClick_ActionsClose();
         }
 
         public void OnClick_ActionsClose()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Action Close");
             if (buildPanel.activeSelf || sellPanel.activeSelf || mortgagePanel.activeSelf || redeemPanel.activeSelf || tradePanel.activeSelf)
             {
                 build.GetComponent<ButtonInteractable>().thisInteractable = true;
@@ -1722,6 +1824,162 @@ namespace GameAdd_Ludopoly
                     tradereceive_opponentMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(4, false);
                 }
                 else if (int.Parse(tradeoffer_opponentMoneyValue.text) >= 10000)
+                {
+                    tradereceive_opponentMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(5, false);
+                }
+            }
+
+            Vector2 ContainerSetPos(int numOfChar, bool isLeft)
+            {
+                if (isLeft)
+                {
+                    if (numOfChar == 1)
+                    {
+                        return new Vector2(-277.8f, -536f);
+                    }
+                    else if (numOfChar == 2)
+                    {
+                        return new Vector2(-266.5f, -536f);
+                    }
+                    else if (numOfChar == 3)
+                    {
+                        return new Vector2(-255.8f, -536f);
+                    }
+                    else if (numOfChar == 4)
+                    {
+                        return new Vector2(-242.6f, -536f);
+                    }
+                    else
+                    {
+                        return new Vector2(-228.5f, -536f);
+                    }
+                }
+                else
+                {
+                    if (numOfChar == 1)
+                    {
+                        return new Vector2(170.2f, -536f);
+                    }
+                    else if (numOfChar == 2)
+                    {
+                        return new Vector2(183.3f, -536f);
+                    }
+                    else if (numOfChar == 3)
+                    {
+                        return new Vector2(197.4f, -536f);
+                    }
+                    else if (numOfChar == 4)
+                    {
+                        return new Vector2(210.1f, -536f);
+                    }
+                    else
+                    {
+                        return new Vector2(222.1f, -536f);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// This Trade Offer is for calling Trade Offer panel for bot
+        /// </summary>
+        /// <param name="myCard">My Player Card to Give</param>
+        /// <param name="opponentCard">Opponent Card to Receive</param>
+        /// <param name="myMoney">My Money to Give</param>
+        /// <param name="opponentMoney">Opponent Money to Receive</param>
+        public void ShowTradeReceiveBot(PropertyCard[] myCard, PropertyCard[] opponentCard, int myMoney, int opponentMoney)
+        {
+            trade_receivePanel.SetActive(true);
+            OnEnable_Trade(trade_receivePanel);
+            trade_offerPanel.SetActive(false);
+            trade_illegalPanel.SetActive(false);
+
+            tradereceive_title.text = _Table.getCurrentPlayer().playerName + "'s Offer";
+
+            //Destroy old item
+            for (int i = 0; i < tradereceive_myPlayerContent.childCount; i++)
+            {
+                Destroy(tradereceive_myPlayerContent.GetChild(i).gameObject);
+            }
+
+            for (int i = 0; i < tradereceive_opponentContent.childCount; i++)
+            {
+                Destroy(tradereceive_opponentContent.GetChild(i).gameObject);
+            }
+
+            //Generate new item
+            foreach (PropertyCard card in myCard)
+            {
+                GameObject temp = Instantiate(card.gameObject, tradereceive_myPlayerContent);
+                temp.GetComponent<PropertyCard>().isTrade = false;
+                temp.GetComponent<PropertyCard>().tradeLeft = true;
+                temp.GetComponent<PropertyCard>().selectedMask.SetActive(false);
+            }
+
+            foreach (PropertyCard card in opponentCard)
+            {
+                GameObject temp = Instantiate(card.gameObject, tradereceive_opponentContent);
+                temp.GetComponent<PropertyCard>().isTrade = false;
+                temp.GetComponent<PropertyCard>().tradeLeft = false;
+                temp.GetComponent<PropertyCard>().selectedMask.SetActive(false);
+            }
+
+            //Money part
+            if (myMoney == 0)
+            {
+                tradereceive_myPlayerMoney.text = "0";
+                tradereceive_myPlayerMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(1, true);
+            }
+            else
+            {
+                tradereceive_myPlayerMoney.text = myMoney.ToString();
+                if (myMoney >= 0 && myMoney < 10)
+                {
+                    tradereceive_myPlayerMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(1, true);
+                }
+                else if (myMoney >= 10 && myMoney < 100)
+                {
+                    tradereceive_myPlayerMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(2, true);
+                }
+                else if (myMoney >= 100 && myMoney < 1000)
+                {
+                    tradereceive_myPlayerMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(3, true);
+                }
+                else if (myMoney >= 1000 && myMoney < 10000)
+                {
+                    tradereceive_myPlayerMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(4, true);
+                }
+                else if (myMoney >= 10000)
+                {
+                    tradereceive_myPlayerMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(5, true);
+                }
+            }
+
+            if (opponentMoney == 0)
+            {
+                tradereceive_opponentMoney.text = "0";
+                tradereceive_opponentMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(1, false);
+            }
+            else
+            {
+                tradereceive_opponentMoney.text = opponentMoney.ToString();
+                if (opponentMoney >= 0 && opponentMoney < 10)
+                {
+                    tradereceive_opponentMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(1, false);
+                }
+                else if (opponentMoney >= 10 && opponentMoney < 100)
+                {
+                    tradereceive_opponentMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(2, false);
+                }
+                else if (opponentMoney >= 100 && opponentMoney < 1000)
+                {
+                    tradereceive_opponentMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(3, false);
+                }
+                else if (opponentMoney >= 1000 && opponentMoney < 10000)
+                {
+                    tradereceive_opponentMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(4, false);
+                }
+                else if (opponentMoney >= 10000)
                 {
                     tradereceive_opponentMoney_Container.GetComponent<RectTransform>().localPosition = ContainerSetPos(5, false);
                 }
@@ -2657,8 +2915,8 @@ namespace GameAdd_Ludopoly
             {
                 standOnInformationPanel.SetActive(false);
                 OnDisable_PanelForcedClose(auctionInformationPanel, auctionPanel);
-                _Table.SwitchPlayer(playerStart);
                 HideInformationCard();
+                _Table.SwitchPlayer(playerStart);
             }
 
             foreach (Player p in _Table.player) //reset lai luojt tham gia auction cua nguoi choi
@@ -2686,26 +2944,36 @@ namespace GameAdd_Ludopoly
 
         public void OnClick_Buy()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Buy");
             _Table.Buy();
         }
 
         public void OnClick_Auction() 
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Auction");
             _Table.AuctionStart();
         }
 
         public void OnClick_Auction_SmallBid()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Small Bid");
             _Table.Auction_SmallBid();
         }
 
         public void OnClick_Auction_BigBid()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Big Bid");
             _Table.Auction_BigBid();
         }
 
         public void OnClick_Auction_Withdraw()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Withdraw");
             _Table.Auction_Withdraw();
         }
 
@@ -2745,16 +3013,22 @@ namespace GameAdd_Ludopoly
 
         public void OnClick_JailPay()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Jail Pay");
             _Table.JailPay();
         }
 
         public void OnClick_JailUseCard()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Jail Use Card");
             _Table.JailUseCard();
         }
 
         public void OnClick_JailRollDouble()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Jail Roll Double");
             _Table.JailRollDouble();
         }
 
@@ -2763,6 +3037,8 @@ namespace GameAdd_Ludopoly
 
         public void OnClick_ShowInformationCard(Slot tempSlot)
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": On Click Show Information Card");
             if (tempSlot.slotType == Slot_Type.ColorProperty)
             {
                 OCShowColorPropertyCard(tempSlot);
@@ -2801,6 +3077,8 @@ namespace GameAdd_Ludopoly
 
         public void OnClick_CloseOnClickInformation()
         {
+            if (_Table.buttonToLog)
+            print(_Table.getCurrentPlayer() + ": Close On Click Information");
             OnDisable_TransparentPanel(Onclick_SpecialPropertyInformationCard, Onclick_InformationPanel);
             OnDisable_TransparentPanel(Onclick_ColorPropertyInformationCard, Onclick_InformationPanel);
         }
@@ -3234,7 +3512,7 @@ namespace GameAdd_Ludopoly
                 scb_1st_Panel.SetActive(true);
                 scb_2nd_Panel.SetActive(true);
                 scb_3rd_Panel.SetActive(true);
-                scb_4th_Panel.SetActive(false);
+                scb_4th_Panel.SetActive(true);
                 foreach (var p in _Table.player)
                 {
                     if (p.playerRanking == 1)

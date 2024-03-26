@@ -31,7 +31,11 @@ public class Bot : MonoBehaviour
     [Tooltip("Trying to auction all stations")]
     public bool stationAuction = false;
     [Tooltip("If playerMoney < <var>, Bot will trying to Roll instead of instant Pay")]
-    public int moneyBound = 500;
+    public int moneyBound = 300;
+    [Tooltip("If playerMoney > <var>, Bot will consider to Build houses")]
+    public int buildBudget = 300;
+    [Tooltip("If playerMoney > <var>, Bot will consider to Trade")]
+    public int tradeBudget = 200;
 
 
     public void Execute()
@@ -49,7 +53,7 @@ public class Bot : MonoBehaviour
                 }
                 else if (_liveUpdate.ReadyEndTurn && _liveUpdate.ReadyMainActions) //End Turn & Main Actions
                 {
-                    EndTurn();
+                    MainActionsConsidering();
                 }
             }
             else if (_liveUpdate.UIExecute) //Do others
@@ -110,9 +114,6 @@ public class Bot : MonoBehaviour
         int maxMoney = 0;
         int currentMaxPrice = _Table.auc_currentPrice;
         int currentSlotPrice = _Table.getSlot(_Table.auc_slotNumber).getSlotPrice();
-
-        print(currentMaxPrice + " auction max");
-        print(currentSlotPrice + " slot price");
 
         foreach (Player p in _Table.player)
         {
@@ -561,33 +562,15 @@ public class Bot : MonoBehaviour
 
     public void BankruptRecover()
     {
-        mySlots = myPlayer.slotOwned;
-
-        foreach (Slot slot in mySlots)
-        {
-            if (!slot.isMortgaged && !slot.inSet && slot.numberOfHouse == 0)
-            {
-                unSetSlot.Add(slot);
-            }
-            else if (!slot.isMortgaged && slot.inSet && slot.numberOfHouse == 0)
-            {
-                unHouseSlot.Add(slot);
-            }
-            else if (!slot.isMortgaged && slot.inSet && slot.numberOfHouse != 0)
-            {
-                houseSlot.Add(slot);
-            }
-        }
+        SortingSlot();
 
         int i = 0;
-        bool delayIsRunning = false;
 
-        do
+        IEnumerator delay()
         {
-            IEnumerator delay()
+            yield return new WaitForSeconds(1f);
+            do
             {
-                delayIsRunning = true;
-                yield return new WaitForSeconds(1f);
                 if (unSetSlot.Count != 0) //ban dat k cung mau truoc 
                 {
                     unSetSlot[0].Mortgage();
@@ -605,7 +588,7 @@ public class Bot : MonoBehaviour
                         if (houseSlot[i].slotAction == SlotAction.Sell)
                         {
                             houseSlot[i].Sell();
-                            houseSlot.RemoveAt(0);
+                            houseSlot.RemoveAt(i);
                         }
                         else
                         {
@@ -613,16 +596,166 @@ public class Bot : MonoBehaviour
                         }
                     }
                 }
-                delayIsRunning = false;
             }
-            if (!delayIsRunning)
-            {
-                StartCoroutine(delay());
-            }
+            while (myPlayer.playerMoney <= 0);
+
+            //print("running slot" + unSetSlot[0].slotIndex);
+            LiveUpdate.Instance.OptionsUpdate();
         }
-        while (myPlayer.playerMoney <= 0);
+
+        StartCoroutine(delay());
     }
 
+    public void MainActionsConsidering()
+    {
+        IEnumerator wait()
+        {
+            SortingSlot();
+            if (myPlayer.playerMoney > buildBudget && (unHouseSlot.Count > 0 || houseSlot.Count > 0)) //1. Bot se dung toan bo tien xay nha thua ra buildBudget (300) vang
+            {
+                _UIManager.OnClick_Build();
+                if (unHouseSlot.Count != 0)
+                {
+                    foreach (Slot slot in unHouseSlot)
+                    {
+                        if (slot.slotAction == SlotAction.Build)
+                        {
+                            slot.Build();
+                        }
+
+                        if (myPlayer.PlayerMoney < buildBudget)
+                        {
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (Slot slot in houseSlot)
+                    {
+                        if (slot.slotAction == SlotAction.Build)
+                        {
+                            slot.Build();
+                        }
+
+                        if (myPlayer.PlayerMoney < buildBudget)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                _UIManager.OnClick_ActionsClose();
+                yield return new WaitForSeconds(UnityEngine.Random.Range(.5f, 1f));
+                EndTurn();
+            }
+            else if (myPlayer.playerMoney > tradeBudget)
+            {
+                TradeSelection();
+                yield return new WaitForSeconds(UnityEngine.Random.Range(.5f, 1f));
+                EndTurn();
+            }
+            else
+            {
+                yield return new WaitForSeconds(UnityEngine.Random.Range(.5f, 1f));
+                EndTurn();
+            }
+        }
+        StartCoroutine(wait());
+    }
+
+    /// <summary>
+    /// This function is for sorting Slot (UnColorSet, ColorSet, House Slot)
+    /// </summary>
+    public void SortingSlot()
+    {
+        mySlots = myPlayer.slotOwned;
+
+        unSetSlot.Clear();
+        unHouseSlot.Clear();
+        houseSlot.Clear();
+
+        foreach (Slot slot in mySlots)
+        {
+            if (!slot.isMortgaged && !slot.inSet && slot.numberOfHouse == 0)
+            {
+                unSetSlot.Add(slot);
+            }
+            else if (!slot.isMortgaged && slot.inSet && slot.numberOfHouse == 0)
+            {
+                unHouseSlot.Add(slot);
+            }
+            else if (!slot.isMortgaged && slot.inSet && slot.numberOfHouse != 0)
+            {
+                houseSlot.Add(slot);
+            }
+        }
+
+        //Sort
+        unSetSlot = unSetSlot.OrderBy(slot => slot.getMortgagePrice()).ToList();
+        unHouseSlot = unHouseSlot.OrderBy(slot => slot.getMortgagePrice()).ToList();
+        houseSlot = houseSlot.OrderBy(slot => slot.getMortgagePrice()).ToList();
+
+    }
+
+    public void TradeSelection()
+    {
+        myPlayer.wishedSlot = myPlayer.wishedSlot.OrderBy(x => Random.value).ToList();
+        myPlayer.slotOwned = myPlayer.slotOwned.OrderBy(x => Random.value).ToList();
+        if (myPlayer.playerMoney >= tradeBudget)
+        {
+            foreach (var opponent in _Table.player) //Trong tat ca player
+            {
+                if (opponent.gameObject.activeSelf) //Trong nhung player con choi
+                {
+                    foreach (var myWished in myPlayer.wishedSlot) //Trong tat ca nhung Wishedslot cua minh`
+                    {
+                        if (opponent.slotOwned.Find(x => x = myWished) && !myWished.isMortgaged) //Trong slotOwned cua doi thu do WishedSlot cua minh
+                        {
+                            foreach (var mySlot in myPlayer.slotOwned) //Trong slotOwned cua minh
+                            {
+                                if (opponent.wishedSlot.Find(x => x = mySlot) && !mySlot.isMortgaged) //Neu so WishedSlot cua doi phuong thi`
+                                {
+                                    PropertyCard[] myCard = new PropertyCard[1];
+                                    myCard[0].TradeShowCard(mySlot.slotIndex);
+                                    PropertyCard[] opponentCard = new PropertyCard[1];
+                                    opponentCard[0].TradeShowCard(myWished.slotIndex);
+                                    _UIManager.OnClick_Trade_Offer_Bot(opponentCard, myCard, 0, 0);
+                                }
+                                else if (!mySlot.inSet) //not in set Slot
+                                {
+                                    PropertyCard[] myCard = new PropertyCard[1];
+                                    myCard[0].TradeShowCard(mySlot.slotIndex);
+                                    PropertyCard[] opponentCard = new PropertyCard[1];
+                                    opponentCard[0].TradeShowCard(myWished.slotIndex);
+                                    _UIManager.OnClick_Trade_Offer_Bot(opponentCard, myCard, 0, 0);
+                                }
+                                else if (myPlayer.playerMoney > mySlot.getSlotPrice() / 2) //my money is larger than slot money / 2
+                                {
+                                    PropertyCard[] myCard = new PropertyCard[0];
+                                    //myCard[0].TradeShowCard(mySlot.slotIndex);
+                                    PropertyCard[] opponentCard = new PropertyCard[1];
+                                    opponentCard[0].TradeShowCard(myWished.slotIndex);
+                                    int myMoneyToTrade = (int)(mySlot.getSlotPrice() / UnityEngine.Random.Range(1.15f, 2f));
+                                    _UIManager.OnClick_Trade_Offer_Bot(opponentCard, myCard, 0, myMoneyToTrade);
+                                }
+                                else //neu k du tien bang 1/2 slot do thi` lay 90% so tien ra doi
+                                {
+                                    PropertyCard[] myCard = new PropertyCard[0];
+                                    //myCard[0].TradeShowCard(mySlot.slotIndex);
+                                    PropertyCard[] opponentCard = new PropertyCard[1];
+                                    opponentCard[0].TradeShowCard(myWished.slotIndex);
+                                    int myMoneyToTrade = myPlayer.playerMoney / 100 * 90;
+                                    _UIManager.OnClick_Trade_Offer_Bot(opponentCard, myCard, 0, myMoneyToTrade);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     public void EndTurn()
     {
         _UIManager.OnClick_EndTurn();

@@ -27,12 +27,14 @@ namespace GameAdd_Ludopoly
         //Auction Parameter
         //
 
+        [HideInInspector]
         public int auc_currentPrice;
         Player auc_currentPlayer;
         Player auc_startingPlayer;
         [HideInInspector]
         public Player auc_playerWithHighestBid;
         int auc_playerInAuction;
+        [HideInInspector]
         public int auc_slotNumber;
 
         //Pawns
@@ -68,7 +70,10 @@ namespace GameAdd_Ludopoly
     
 
         [HideInInspector]
-        public int playerRank;
+        public int playerRank = 4;
+
+        [Tooltip("Check this if you want to see which button was clicked")]
+        public bool buttonToLog = true;
 
         private void Start()
         {
@@ -864,7 +869,7 @@ namespace GameAdd_Ludopoly
                     getSlot(i).slotAction = SlotAction.Idle;
                 }
 
-                if (slotNumber == 20 || slotNumber == 0 || slotNumber == 10 || slotNumber == 30 || getSlot(slotNumber).owner == getCurrentPlayer())
+                if (slotNumber == 20 || slotNumber == 0 || slotNumber == 10 || slotNumber == 30 || getSlot(slotNumber).isOwned)
                 {
                     LiveUpdate.Instance.OptionsUpdate();
                 }

@@ -401,6 +401,7 @@ namespace GameAdd_Ludopoly
                 owner = player;
                 isOwned = true;
                 Table.Instance.getCurrentPlayer().slotOwned.Add(this);
+                player.setWishedSlot();
 
                 if (player.playerColor == new Vector4(255, 0, 0, 255)) //red
                 {

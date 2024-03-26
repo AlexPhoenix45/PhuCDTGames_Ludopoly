@@ -19621,6 +19621,7 @@ MonoBehaviour:
   isMyTurn: 0
   isInJail: 0
   isBankrupt: 0
+  jailOutTrigger: 0
   playerRanking: -1
   hasSecondTurn: 0
   timesGetDoubles: 0
@@ -19650,6 +19651,7 @@ MonoBehaviour:
   botBrain: {fileID: 1068305332}
   _botActions: 0
   _currentActions: 0
+  wishedSlot: []
 --- !u!114 &1068305332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19673,6 +19675,8 @@ MonoBehaviour:
   OverBudgetPercentage: 125
   stationAuction: 0
   moneyBound: 500
+  buildBudget: 500
+  tradeBudget: 200
 --- !u!1 &1068444211
 GameObject:
   m_ObjectHideFlags: 0
@@ -20817,6 +20821,7 @@ MonoBehaviour:
   isMyTurn: 0
   isInJail: 0
   isBankrupt: 0
+  jailOutTrigger: 0
   playerRanking: -1
   hasSecondTurn: 0
   timesGetDoubles: 0
@@ -20842,10 +20847,11 @@ MonoBehaviour:
   joinAuction: 1
   inAuction: 0
   notShowJail: 0
-  isBotPlaying: 0
+  isBotPlaying: 1
   botBrain: {fileID: 1146962586}
   _botActions: 0
   _currentActions: 0
+  wishedSlot: []
 --- !u!114 &1146962586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20869,6 +20875,8 @@ MonoBehaviour:
   OverBudgetPercentage: 125
   stationAuction: 0
   moneyBound: 500
+  buildBudget: 500
+  tradeBudget: 200
 --- !u!224 &1151940789 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4181589020989069335, guid: 6ef579849c99c554bbab1a77a2047908, type: 3}
@@ -23496,6 +23504,7 @@ MonoBehaviour:
   isMyTurn: 0
   isInJail: 0
   isBankrupt: 0
+  jailOutTrigger: 0
   playerRanking: -1
   hasSecondTurn: 0
   timesGetDoubles: 0
@@ -23521,10 +23530,11 @@ MonoBehaviour:
   joinAuction: 1
   inAuction: 0
   notShowJail: 0
-  isBotPlaying: 0
+  isBotPlaying: 1
   botBrain: {fileID: 1330615122}
   _botActions: 0
   _currentActions: 0
+  wishedSlot: []
 --- !u!114 &1330615122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23546,8 +23556,10 @@ MonoBehaviour:
   unHouseSlot: []
   houseSlot: []
   OverBudgetPercentage: 125
-  stationAuction: 0
-  moneyBound: 500
+  stationAuction: 1
+  moneyBound: 300
+  buildBudget: 300
+  tradeBudget: 200
 --- !u!1 &1335801888
 GameObject:
   m_ObjectHideFlags: 0
@@ -24795,6 +24807,7 @@ MonoBehaviour:
   isMyTurn: 0
   isInJail: 0
   isBankrupt: 0
+  jailOutTrigger: 0
   playerRanking: -1
   hasSecondTurn: 0
   timesGetDoubles: 0
@@ -24824,6 +24837,7 @@ MonoBehaviour:
   botBrain: {fileID: 1404129431}
   _botActions: 0
   _currentActions: 0
+  wishedSlot: []
 --- !u!114 &1404129431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24845,8 +24859,10 @@ MonoBehaviour:
   unHouseSlot: []
   houseSlot: []
   OverBudgetPercentage: 125
-  stationAuction: 0
-  moneyBound: 500
+  stationAuction: 1
+  moneyBound: 300
+  buildBudget: 300
+  tradeBudget: 200
 --- !u!1 &1417765261
 GameObject:
   m_ObjectHideFlags: 0
@@ -33670,7 +33686,7 @@ MonoBehaviour:
   - {fileID: 1404129430}
   - {fileID: 1146962585}
   - {fileID: 1068305331}
-  numOfPlayers: 2
+  numOfPlayers: 3
   currentPlayer: 0
   auc_currentPrice: 0
   auc_playerWithHighestBid: {fileID: 0}
@@ -33679,11 +33695,12 @@ MonoBehaviour:
   p2Pawn: {fileID: 1404129426}
   p3Pawn: {fileID: 1146962581}
   p4Pawn: {fileID: 1068305327}
-  test_dice1: 3
-  test_dice2: 3
+  test_dice1: 1
+  test_dice2: 2
   dice_openTest: 0
   remainingPlayer: 0
   playerRank: 0
+  buttonToLog: 0
 --- !u!114 &1916538441
 MonoBehaviour:
   m_ObjectHideFlags: 0

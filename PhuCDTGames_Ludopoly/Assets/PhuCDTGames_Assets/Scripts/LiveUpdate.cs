@@ -63,7 +63,7 @@ public class LiveUpdate : MonoBehaviour
 
     [Header("PANEL")]
     [HideInInspector] 
-    private bool ColorProp_OnClick = false, Special_OnClick = false, ColorProp_StandOn = false, SpecialProp_StandOn = false, SupriseCard = false, Auction = false, GoToJail = false, VisitJail = false, InJail = false, PaidRent = false, Bankrupt = false, TradeOffer = false, TradeReceive = false, TradeAccept = false, TradeDecline = false;
+    private bool ColorProp_OnClick = false, Special_OnClick = false, ColorProp_StandOn = false, SpecialProp_StandOn = false, SupriseCard = false, Auction = false, GoToJail = false, VisitJail = false, InJail = false, PaidRent = false, Bankrupt = false, TradeOffer = false, TradeReceive = false, TradeAccept = false, TradeDecline = false, Build = false, Redeem = false;
 
     [Header("MOVING")]
     [HideInInspector] 
@@ -150,7 +150,15 @@ public class LiveUpdate : MonoBehaviour
         }
         else if (panel.name == "Decline")
         {
-            TradeAccept = value;
+            TradeDecline = value;
+        }
+        else if (panel.name == "Build")
+        {
+            Build = value;
+        }
+        else if (panel.name == "Redeem")
+        {
+            Redeem = value;
         }
         OptionsUpdate();
     }
@@ -178,7 +186,7 @@ public class LiveUpdate : MonoBehaviour
 
     public void OptionsUpdate()
     {
-        if (!ColorProp_StandOn && !SpecialProp_StandOn && !SupriseCard && !Auction && !GoToJail && !VisitJail && !InJail && !PaidRent && !Bankrupt && !TradeOffer && !TradeReceive && !TradeAccept && !TradeDecline && !P1Moving && !P2Moving && !P3Moving && !P4Moving)
+        if (!ColorProp_StandOn && !SpecialProp_StandOn && !SupriseCard && !Auction && !GoToJail && !VisitJail && !InJail && !PaidRent && !Bankrupt && !TradeOffer && !TradeReceive && !TradeAccept && !TradeDecline && !P1Moving && !P2Moving && !P3Moving && !P4Moving && !Build && !Redeem)
         {
             if (ReadyEndTurn && !ReadyRollDice)
             {
@@ -260,7 +268,7 @@ public class LiveUpdate : MonoBehaviour
         }
     }
 
-    bool CallBotIsRunning;
+    bool CallBotIsRunning = false;
     public void CallBot()
     {
         IEnumerator delay()
@@ -270,17 +278,14 @@ public class LiveUpdate : MonoBehaviour
             if (NotUIExecute)
             {
                 timeCalled++;
-                print("Not UI");
             }
             else if (UIExecute)
             {
                 timeCalled++;
-                print("UI");
             }
 
             if (Table.Instance.getCurrentPlayer().isBotPlaying)
             {
-                print(Table.Instance.getCurrentPlayer().playerName);
                 Table.Instance.getCurrentPlayer().botBrain.Execute();
             }
             CallBotIsRunning = false;

@@ -18,8 +18,10 @@ public class ButtonInteractable : MonoBehaviour
             }
             else
             {
-                GetComponent<Button>().interactable = false;
+                GetComponent<Button>().interactable = value; //false
             }
+
+
             if (GetComponent<Button>().gameObject.name == "Roll Dice")
             {
                 UIManager.Instance._LiveUpdate.ReadyRollDice = value;
